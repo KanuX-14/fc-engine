@@ -39,7 +39,8 @@ const char **button_imagenames = (const char *[]) {
 	"jump_btn.png",
 	"down.png",
 	"zoom.png",
-	"aux1_btn.png"
+	"aux1_btn.png",
+	"aux2_btn.png"
 };
 
 const char **joystick_imagenames = (const char *[]) {
@@ -81,6 +82,9 @@ static irr::EKEY_CODE id2keycode(touch_gui_button_id id)
 			break;
 		case aux1_id:
 			key = "aux1";
+			break;
+		case aux2_id:
+			key = "aux2";
 			break;
 		case fly_id:
 			key = "freemove";

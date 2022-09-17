@@ -1,4 +1,4 @@
-Minetest
+FreeCraft Engine (Minetest fork)
 ========
 
 ![Build Status](https://github.com/minetest/minetest/workflows/build/badge.svg)
@@ -7,13 +7,15 @@ Minetest
 
 Minetest is a free open-source voxel game engine with easy modding and game creation.
 
+FreeCraft Engine is a patched version of Minetest engine, used for extra content under the [FreeCraft](https://github.com/KanuX-14/freecraft) game.
+
 Copyright (C) 2010-2022 Perttu Ahola <celeron55@gmail.com>
 and contributors (see source file comments and the version control log)
 
 In case you downloaded the source code
 --------------------------------------
-If you downloaded the Minetest Engine source code in which this file is
-contained, you probably want to download the [Minetest Game](https://github.com/minetest/minetest_game/)
+If you downloaded the FreeCraft Engine source code in which this file is
+contained, you probably want to download the [FreeCraft game](https://github.com/KanuX-14/freecraft)
 project too. See its README.txt for more information.
 
 Table of Contents
@@ -54,10 +56,10 @@ Some can be changed in the key config dialog in the settings tab.
 | Left mouse button             | Dig/punch/take item                                            |
 | Right mouse button            | Place/use                                                      |
 | Shift + right mouse button    | Build (without using)                                          |
-| I                             | Inventory menu                                                 |
+| E                             | Inventory menu                                                 |
 | Mouse wheel                   | Select item                                                    |
 | 0-9                           | Select item                                                    |
-| Z                             | Zoom (needs zoom privilege)                                    |
+| C                             | Zoom (needs zoom privilege)                                    |
 | T                             | Chat                                                           |
 | /                             | Command                                                        |
 | Esc                           | Pause menu/abort/exit (pauses only singleplayer game)          |
@@ -68,18 +70,19 @@ Some can be changed in the key config dialog in the settings tab.
 | P                             | Enable/disable pitch move mode                                 |
 | J                             | Enable/disable fast mode (needs fast privilege)                |
 | H                             | Enable/disable noclip mode (needs noclip privilege)            |
-| E                             | Aux1 (Move fast in fast mode. Games may add special features)  |
-| C                             | Cycle through camera modes                                     |
-| V                             | Cycle through minimap modes                                    |
+| Ctrl                          | Aux1 (Move fast in fast mode. Games may add special features)  |
+| Z                             | Aux2 (Prone. On Minetest it is used the zoom button)           |
+| M                             | Cycle through minimap modes                                    |
 | Shift + V                     | Change minimap orientation                                     |
 | F1                            | Hide/show HUD                                                  |
-| F2                            | Hide/show chat                                                 |
-| F3                            | Disable/enable fog                                             |
+| F2                            | Take screenshot                                                |
+| F3                            | Cycle through debug information screens                        |
 | F4                            | Disable/enable camera update (Mapblocks are not updated anymore when disabled, disabled in release builds)  |
-| F5                            | Cycle through debug information screens                        |
+| F5                            | Cycle through camera modes                                     |
 | F6                            | Cycle through profiler info screens                            |
+| F7                            | Disable/enable fog                                             |
 | F10                           | Show/hide console                                              |
-| F12                           | Take screenshot                                                |
+| F12                           | Hide/show chat                                                 |
 
 Paths
 -----
@@ -172,12 +175,12 @@ For Fedora users:
 
 Download source (this is the URL to the latest of source repository, which might not work at all times) using Git:
 
-    git clone --depth 1 https://github.com/minetest/minetest.git
-    cd minetest
+    git clone --depth 1 https://github.com/KanuX-14/fc-engine.git
+    cd fc-engine
 
 Download minetest_game (otherwise only the "Development Test" game is available) using Git:
 
-    git clone --depth 1 https://github.com/minetest/minetest_game.git games/minetest_game
+    git clone --depth 1 https://github.com/KanuX-14/freecraft.git games/freecraft
 
 Download IrrlichtMt to `lib/irrlichtmt`, it will be used to satisfy the IrrlichtMt dependency that way:
 
@@ -185,14 +188,14 @@ Download IrrlichtMt to `lib/irrlichtmt`, it will be used to satisfy the Irrlicht
 
 Download source, without using Git:
 
-    wget https://github.com/minetest/minetest/archive/master.tar.gz
+    wget https://github.com/KanuX-14/fc-engine/archive/master.tar.gz
     tar xf master.tar.gz
     cd minetest-master
 
 Download minetest_game, without using Git:
 
     cd games/
-    wget https://github.com/minetest/minetest_game/archive/master.tar.gz
+    wget https://github.com/KanuX-14/freecraft/archive/master.tar.gz
     tar xf master.tar.gz
     mv minetest_game-master minetest_game
     cd ..
