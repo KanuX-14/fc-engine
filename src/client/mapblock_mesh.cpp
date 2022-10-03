@@ -651,7 +651,7 @@ static u8 face_contents(content_t m1, content_t m2, bool *equivalent,
 	const ContentFeatures &f2 = ndef->get(m2);
 
 	// Contents don't differ for different forms of same liquid
-	if (f1.sameLiquid(f2))
+	if (f1.sameLiquidRender(f2))
 		return 0;
 
 	u8 c1 = f1.solidness;
@@ -668,9 +668,9 @@ static u8 face_contents(content_t m1, content_t m2, bool *equivalent,
 	if (c1 == c2) {
 		*equivalent = true;
 		// If same solidness, liquid takes precense
-		if (f1.isLiquid())
+		if (f1.isLiquidRender())
 			return 1;
-		if (f2.isLiquid())
+		if (f2.isLiquidRender())
 			return 2;
 	}
 
@@ -1031,9 +1031,9 @@ void MapBlockBspTree::buildTree(const std::vector<MeshTriangle> *triangles)
 
 /**
  * @brief Find a candidate plane to split a set of triangles in two
- * 
+ *
  * The candidate plane is represented by one of the triangles from the set.
- * 
+ *
  * @param list Vector of indexes of the triangles in the set
  * @param triangles Vector of all triangles in the BSP tree
  * @return Address of the triangle that represents the proposed split plane
@@ -1225,7 +1225,7 @@ MapBlockMesh::MapBlockMesh(MeshMakeData *data, v3s16 camera_offset):
 		Convert FastFaces to MeshCollector
 	*/
 
-	MeshCollector collector;
+	MeshCollector collector(m_bounding_sphere_center);
 
 	{
 		// avg 0ms (100ms spikes when loading textures the first time)
@@ -1260,6 +1260,8 @@ MapBlockMesh::MapBlockMesh(MeshMakeData *data, v3s16 camera_offset):
 
 	const bool desync_animations = g_settings->getBool(
 		"desynchronize_mapblock_texture_animation");
+
+	m_bounding_radius = std::sqrt(collector.m_bounding_radius_sq);
 
 	for (int layer = 0; layer < MAX_TILE_LAYERS; layer++) {
 		for(u32 i = 0; i < collector.prebuffers[layer].size(); i++)
