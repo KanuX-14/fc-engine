@@ -408,7 +408,7 @@ Biome *read_biome_def(lua_State *L, int index, const NodeDefManager *ndef)
 
 	size_t nnames = getstringlistfield(L, index, "node_cave_liquid", &nn);
 	// If no cave liquids defined, set list to "ignore" to trigger old hardcoded
-	// cave liquid behaviour.
+	// cave liquid behavior.
 	if (nnames == 0) {
 		nn.emplace_back("ignore");
 		nnames = 1;
@@ -1429,7 +1429,7 @@ int ModApiMapgen::l_generate_ores(lua_State *L)
 	Mapgen mg;
 	// Intentionally truncates to s32, see Mapgen::Mapgen()
 	mg.seed = (s32)emerge->mgparams->seed;
-	mg.vm   = LuaVoxelManip::checkobject(L, 1)->vm;
+	mg.vm   = checkObject<LuaVoxelManip>(L, 1)->vm;
 	mg.ndef = getServer(L)->getNodeDefManager();
 
 	v3s16 pmin = lua_istable(L, 2) ? check_v3s16(L, 2) :
@@ -1458,7 +1458,7 @@ int ModApiMapgen::l_generate_decorations(lua_State *L)
 	Mapgen mg;
 	// Intentionally truncates to s32, see Mapgen::Mapgen()
 	mg.seed = (s32)emerge->mgparams->seed;
-	mg.vm   = LuaVoxelManip::checkobject(L, 1)->vm;
+	mg.vm   = checkObject<LuaVoxelManip>(L, 1)->vm;
 	mg.ndef = getServer(L)->getNodeDefManager();
 
 	v3s16 pmin = lua_istable(L, 2) ? check_v3s16(L, 2) :
@@ -1597,7 +1597,7 @@ int ModApiMapgen::l_place_schematic_on_vmanip(lua_State *L)
 	SchematicManager *schemmgr = getServer(L)->getEmergeManager()->schemmgr;
 
 	//// Read VoxelManip object
-	MMVManip *vm = LuaVoxelManip::checkobject(L, 1)->vm;
+	MMVManip *vm = checkObject<LuaVoxelManip>(L, 1)->vm;
 
 	//// Read position
 	v3s16 p = check_v3s16(L, 2);
@@ -1694,6 +1694,7 @@ int ModApiMapgen::l_read_schematic(lua_State *L)
 
 	const SchematicManager *schemmgr =
 		getServer(L)->getEmergeManager()->getSchematicManager();
+	const NodeDefManager *ndef = getGameDef(L)->ndef();
 
 	//// Read options
 	std::string write_yslice = getstringfield_default(L, 2, "write_yslice_prob", "all");
@@ -1713,6 +1714,7 @@ int ModApiMapgen::l_read_schematic(lua_State *L)
 
 	//// Create the Lua table
 	u32 numnodes = schem->size.X * schem->size.Y * schem->size.Z;
+	bool resolve_done = schem->isResolveDone();
 	const std::vector<std::string> &names = schem->m_nodenames;
 
 	lua_createtable(L, 0, (write_yslice == "none") ? 2 : 3);
@@ -1742,10 +1744,12 @@ int ModApiMapgen::l_read_schematic(lua_State *L)
 	lua_createtable(L, numnodes, 0); // data table
 	for (u32 i = 0; i < numnodes; ++i) {
 		MapNode node = schem->schemdata[i];
+		const std::string &name =
+				resolve_done ? ndef->get(node.getContent()).name : names[node.getContent()];
 		u8 probability   = node.param1 & MTSCHEM_PROB_MASK;
 		bool force_place = node.param1 & MTSCHEM_FORCE_PLACE;
 		lua_createtable(L, 0, force_place ? 4 : 3);
-		lua_pushstring(L, names[schem->schemdata[i].getContent()].c_str());
+		lua_pushstring(L, name.c_str());
 		lua_setfield(L, 3, "name");
 		lua_pushinteger(L, probability * 2);
 		lua_setfield(L, 3, "prob");

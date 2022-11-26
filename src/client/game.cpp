@@ -432,8 +432,12 @@ class GameGlobalShaderConstantSetter : public IShaderConstantSetter
 	bool m_bloom_enabled;
 	CachedPixelShaderSetting<float> m_bloom_intensity_pixel;
 	float m_bloom_intensity;
+	CachedPixelShaderSetting<float> m_bloom_strength_pixel;
+	float m_bloom_strength;
 	CachedPixelShaderSetting<float> m_bloom_radius_pixel;
 	float m_bloom_radius;
+	float m_saturation;
+	CachedPixelShaderSetting<float> m_saturation_pixel;
 
 public:
 	void onSettingsChange(const std::string &name)
@@ -444,8 +448,12 @@ public:
 			m_user_exposure_factor = g_settings->getFloat("exposure_factor", 0.1f, 10.0f);
 		if (name == "bloom_intensity")
 			m_bloom_intensity = g_settings->getFloat("bloom_intensity", 0.01f, 1.0f);
+		if (name == "bloom_strength_factor")
+			m_bloom_strength = RenderingEngine::BASE_BLOOM_STRENGTH * g_settings->getFloat("bloom_strength_factor", 0.1f, 10.0f);
 		if (name == "bloom_radius")
-			m_bloom_radius = g_settings->getFloat("bloom_radius", 1.0f, 64.0f);
+			m_bloom_radius = g_settings->getFloat("bloom_radius", 0.1f, 8.0f);
+		if (name == "saturation")
+			m_saturation = g_settings->getFloat("saturation", 0.0f, 5.0f);
 	}
 
 	static void settingsCallback(const std::string &name, void *userdata)
@@ -479,17 +487,23 @@ public:
 		m_texel_size0("texelSize0"),
 		m_exposure_factor_pixel("exposureFactor"),
 		m_bloom_intensity_pixel("bloomIntensity"),
-		m_bloom_radius_pixel("bloomRadius")
+		m_bloom_strength_pixel("bloomStrength"),
+		m_bloom_radius_pixel("bloomRadius"),
+		m_saturation_pixel("saturation")
 	{
 		g_settings->registerChangedCallback("enable_fog", settingsCallback, this);
 		g_settings->registerChangedCallback("exposure_factor", settingsCallback, this);
 		g_settings->registerChangedCallback("bloom_intensity", settingsCallback, this);
+		g_settings->registerChangedCallback("bloom_strength_factor", settingsCallback, this);
 		g_settings->registerChangedCallback("bloom_radius", settingsCallback, this);
+		g_settings->registerChangedCallback("saturation", settingsCallback, this);
 		m_fog_enabled = g_settings->getBool("enable_fog");
 		m_user_exposure_factor = g_settings->getFloat("exposure_factor", 0.1f, 10.0f);
 		m_bloom_enabled = g_settings->getBool("enable_bloom");
 		m_bloom_intensity = g_settings->getFloat("bloom_intensity", 0.01f, 1.0f);
-		m_bloom_radius = g_settings->getFloat("bloom_radius", 1.0f, 64.0f);
+		m_bloom_strength = RenderingEngine::BASE_BLOOM_STRENGTH * g_settings->getFloat("bloom_strength_factor", 0.1f, 10.0f);
+		m_bloom_radius = g_settings->getFloat("bloom_radius", 0.1f, 8.0f);
+		m_saturation = g_settings->getFloat("saturation", 0.0f, 5.0f);
 	}
 
 	~GameGlobalShaderConstantSetter()
@@ -567,15 +581,17 @@ public:
 
 		m_texel_size0.set(m_texel_size0_values.data(), services);
 
-		float exposure_factor = RenderingEngine::DEFAULT_EXPOSURE_FACTOR * m_user_exposure_factor;
+		float exposure_factor = m_user_exposure_factor;
 		if (std::isnan(exposure_factor))
-			exposure_factor = RenderingEngine::DEFAULT_EXPOSURE_FACTOR;
+			exposure_factor = 1.0f;
 		m_exposure_factor_pixel.set(&exposure_factor, services);
 
 		if (m_bloom_enabled) {
 			m_bloom_intensity_pixel.set(&m_bloom_intensity, services);
 			m_bloom_radius_pixel.set(&m_bloom_radius, services);
+			m_bloom_strength_pixel.set(&m_bloom_strength, services);
 		}
+		m_saturation_pixel.set(&m_saturation, services);
 	}
 
 	void onSetMaterial(const video::SMaterial &material)
@@ -879,7 +895,7 @@ private:
 	void updateChat(f32 dtime);
 
 	bool nodePlacement(const ItemDefinition &selected_def, const ItemStack &selected_item,
-		const v3s16 &nodepos, const v3s16 &neighbourpos, const PointedThing &pointed,
+		const v3s16 &nodepos, const v3s16 &neighborpos, const PointedThing &pointed,
 		const NodeMetadata *meta);
 	static const ClientEventHandler clientEventHandler[CLIENTEVENT_MAX];
 
@@ -1196,8 +1212,6 @@ void Game::run()
 		processQueues();
 
 		m_game_ui->clearInfoText();
-		hud->resizeHotbar();
-
 
 		updateProfilers(stats, draw_times, dtime);
 		processUserInput(dtime);
@@ -1407,6 +1421,7 @@ bool Game::createClient(const GameStartData &start_data)
 	if (g_touchscreengui) {
 		g_touchscreengui->init(texture_src);
 		g_touchscreengui->hide();
+		g_touchscreengui->setUseCrosshair(!isNoCrosshairAllowed());
 	}
 #endif
 	if (!connectToServer(start_data, &could_connect, &connect_aborted))
@@ -3298,7 +3313,7 @@ PointedThing Game::updatePointedThing(
 {
 	std::vector<aabb3f> *selectionboxes = hud->getSelectionBoxes();
 	selectionboxes->clear();
-	hud->setSelectedFaceNormal(v3f(0.0, 0.0, 0.0));
+	hud->setSelectedFaceNormal(v3f());
 	static thread_local const bool show_entity_selectionbox = g_settings->getBool(
 		"show_entity_selectionbox");
 
@@ -3322,7 +3337,13 @@ PointedThing Game::updatePointedThing(
 			v3f pos = runData.selected_object->getPosition();
 			selectionboxes->push_back(aabb3f(selection_box));
 			hud->setSelectionPos(pos, camera_offset);
+			GenericCAO* gcao = dynamic_cast<GenericCAO*>(runData.selected_object);
+			if (gcao != nullptr && gcao->getProperties().rotate_selectionbox)
+				hud->setSelectionRotation(gcao->getSceneNode()->getAbsoluteTransformation().getRotationDegrees());
+			else
+				hud->setSelectionRotation(v3f());
 		}
+		hud->setSelectedFaceNormal(result.raw_intersection_normal);
 	} else if (result.type == POINTEDTHING_NODE) {
 		// Update selection boxes
 		MapNode n = map.getNode(result.node_undersurface);
@@ -3340,10 +3361,8 @@ PointedThing Game::updatePointedThing(
 		}
 		hud->setSelectionPos(intToFloat(result.node_undersurface, BS),
 			camera_offset);
-		hud->setSelectedFaceNormal(v3f(
-			result.intersection_normal.X,
-			result.intersection_normal.Y,
-			result.intersection_normal.Z));
+		hud->setSelectionRotation(v3f());
+		hud->setSelectedFaceNormal(result.intersection_normal);
 	}
 
 	// Update selection mesh light level and vertex colors
@@ -3397,7 +3416,7 @@ void Game::handlePointingAtNode(const PointedThing &pointed,
 	const ItemStack &selected_item, const ItemStack &hand_item, f32 dtime)
 {
 	v3s16 nodepos = pointed.node_undersurface;
-	v3s16 neighbourpos = pointed.node_abovesurface;
+	v3s16 neighborpos = pointed.node_abovesurface;
 
 	/*
 		Check information text of node
@@ -3441,7 +3460,7 @@ void Game::handlePointingAtNode(const PointedThing &pointed,
 		// And also set the sound and send the interact
 		// But first check for meta formspec and rightclickable
 		auto &def = selected_item.getDefinition(itemdef_manager);
-		bool placed = nodePlacement(def, selected_item, nodepos, neighbourpos,
+		bool placed = nodePlacement(def, selected_item, nodepos, neighborpos,
 			pointed, meta);
 
 		if (placed && client->modsLoaded())
@@ -3450,7 +3469,7 @@ void Game::handlePointingAtNode(const PointedThing &pointed,
 }
 
 bool Game::nodePlacement(const ItemDefinition &selected_def,
-	const ItemStack &selected_item, const v3s16 &nodepos, const v3s16 &neighbourpos,
+	const ItemStack &selected_item, const v3s16 &nodepos, const v3s16 &neighborpos,
 	const PointedThing &pointed, const NodeMetadata *meta)
 {
 	const auto &prediction = selected_def.node_placement_prediction;
@@ -3500,7 +3519,7 @@ bool Game::nodePlacement(const ItemDefinition &selected_def,
 
 	verbosestream << "Node placement prediction for "
 		<< selected_def.name << " is " << prediction << std::endl;
-	v3s16 p = neighbourpos;
+	v3s16 p = neighborpos;
 
 	// Place inside node itself if buildable_to
 	MapNode n_under = map.getNode(nodepos, &is_valid_position);
@@ -3544,7 +3563,7 @@ bool Game::nodePlacement(const ItemDefinition &selected_def,
 		param2 = place_param2;
 	} else if (predicted_f.param_type_2 == CPT2_WALLMOUNTED ||
 			predicted_f.param_type_2 == CPT2_COLORED_WALLMOUNTED) {
-		v3s16 dir = nodepos - neighbourpos;
+		v3s16 dir = nodepos - neighborpos;
 
 		if (abs(dir.Y) > MYMAX(abs(dir.X), abs(dir.Z))) {
 			param2 = dir.Y < 0 ? 1 : 0;
@@ -3567,22 +3586,30 @@ bool Game::nodePlacement(const ItemDefinition &selected_def,
 	}
 
 	// Check attachment if node is in group attached_node
-	if (itemgroup_get(predicted_f.groups, "attached_node") != 0) {
-		const static v3s16 wallmounted_dirs[8] = {
-			v3s16(0, 1, 0),
-			v3s16(0, -1, 0),
-			v3s16(1, 0, 0),
-			v3s16(-1, 0, 0),
-			v3s16(0, 0, 1),
-			v3s16(0, 0, -1),
-		};
+	int an = itemgroup_get(predicted_f.groups, "attached_node");
+	if (an != 0) {
 		v3s16 pp;
 
-		if (predicted_f.param_type_2 == CPT2_WALLMOUNTED ||
-				predicted_f.param_type_2 == CPT2_COLORED_WALLMOUNTED)
-			pp = p + wallmounted_dirs[param2];
-		else
+		if (an == 3) {
 			pp = p + v3s16(0, -1, 0);
+		} else if (an == 4) {
+			pp = p + v3s16(0, 1, 0);
+		} else if (an == 2) {
+			if (predicted_f.param_type_2 == CPT2_FACEDIR ||
+					predicted_f.param_type_2 == CPT2_COLORED_FACEDIR) {
+				pp = p + facedir_dirs[param2];
+			} else if (predicted_f.param_type_2 == CPT2_4DIR ||
+					predicted_f.param_type_2 == CPT2_COLORED_4DIR ) {
+				pp = p + fourdir_dirs[param2];
+			} else {
+				pp = p;
+			}
+		} else if (predicted_f.param_type_2 == CPT2_WALLMOUNTED ||
+				predicted_f.param_type_2 == CPT2_COLORED_WALLMOUNTED) {
+			pp = p + wallmounted_dirs[param2];
+		} else {
+			pp = p + v3s16(0, -1, 0);
+		}
 
 		if (!nodedef->get(map.getNode(pp)).walkable) {
 			soundmaker->m_player_rightpunch_sound = selected_def.sound_place_failed;
@@ -3622,14 +3649,14 @@ bool Game::nodePlacement(const ItemDefinition &selected_def,
 	try {
 		LocalPlayer *player = client->getEnv().getLocalPlayer();
 
-		// Dont place node when player would be inside new node
+		// Don't place node when player would be inside new node
 		// NOTE: This is to be eventually implemented by a mod as client-side Lua
 		if (!nodedef->get(n).walkable ||
 				g_settings->getBool("enable_build_where_you_stand") ||
 				(client->checkPrivilege("noclip") && g_settings->getBool("noclip")) ||
 				(nodedef->get(n).walkable &&
-					neighbourpos != player->getStandingNodePos() + v3s16(0, 1, 0) &&
-					neighbourpos != player->getStandingNodePos() + v3s16(0, 2, 0))) {
+					neighborpos != player->getStandingNodePos() + v3s16(0, 1, 0) &&
+					neighborpos != player->getStandingNodePos() + v3s16(0, 2, 0))) {
 			// This triggers the required mesh update too
 			client->addNode(p, n);
 			// Report to server

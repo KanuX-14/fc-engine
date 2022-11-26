@@ -127,23 +127,7 @@ GUIFormSpecMenu::GUIFormSpecMenu(JoystickController *joystick,
 
 GUIFormSpecMenu::~GUIFormSpecMenu()
 {
-	removeAllChildren();
-	removeTooltip();
-
-	for (auto &table_it : m_tables)
-		table_it.second->drop();
-	for (auto &inventorylist_it : m_inventorylists)
-		inventorylist_it->drop();
-	for (auto &checkbox_it : m_checkboxes)
-		checkbox_it.second->drop();
-	for (auto &scrollbar_it : m_scrollbars)
-		scrollbar_it.second->drop();
-	for (auto &tooltip_rect_it : m_tooltip_rects)
-		tooltip_rect_it.first->drop();
-	for (auto &clickthrough_it : m_clickthrough_elements)
-		clickthrough_it->drop();
-	for (auto &scroll_container_it : m_scroll_containers)
-		scroll_container_it.second->drop();
+	removeAll();
 
 	delete m_selected_item;
 	delete m_form_src;
@@ -2807,6 +2791,28 @@ void GUIFormSpecMenu::parseModel(parserData *data, const std::string &element)
 	m_fields.push_back(spec);
 }
 
+void GUIFormSpecMenu::removeAll()
+{
+	// Remove children
+	removeAllChildren();
+	removeTooltip();
+
+	for (auto &table_it : m_tables)
+		table_it.second->drop();
+	for (auto &inventorylist_it : m_inventorylists)
+		inventorylist_it->drop();
+	for (auto &checkbox_it : m_checkboxes)
+		checkbox_it.second->drop();
+	for (auto &scrollbar_it : m_scrollbars)
+		scrollbar_it.second->drop();
+	for (auto &tooltip_rect_it : m_tooltip_rects)
+		tooltip_rect_it.first->drop();
+	for (auto &clickthrough_it : m_clickthrough_elements)
+		clickthrough_it->drop();
+	for (auto &scroll_container_it : m_scroll_containers)
+		scroll_container_it.second->drop();
+}
+
 void GUIFormSpecMenu::parseElement(parserData* data, const std::string &element)
 {
 	//some prechecks
@@ -3046,27 +3052,10 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 		}
 	} else {
 		// Don't keep old focus value
-		m_focused_element.clear();
+		m_focused_element = nullopt;
 	}
 
-	// Remove children
-	removeAllChildren();
-	removeTooltip();
-
-	for (auto &table_it : m_tables)
-		table_it.second->drop();
-	for (auto &inventorylist_it : m_inventorylists)
-		inventorylist_it->drop();
-	for (auto &checkbox_it : m_checkboxes)
-		checkbox_it.second->drop();
-	for (auto &scrollbar_it : m_scrollbars)
-		scrollbar_it.second->drop();
-	for (auto &tooltip_rect_it : m_tooltip_rects)
-		tooltip_rect_it.first->drop();
-	for (auto &clickthrough_it : m_clickthrough_elements)
-		clickthrough_it->drop();
-	for (auto &scroll_container_it : m_scroll_containers)
-		scroll_container_it.second->drop();
+	removeAll();
 
 	mydata.size = v2s32(100, 100);
 	mydata.screensize = screensize;
@@ -3515,10 +3504,10 @@ GUIInventoryList::ItemSpec GUIFormSpecMenu::getItemAtPos(v2s32 p) const
 		s32 item_index = e->getItemIndexAtPos(p);
 		if (item_index != -1)
 			return GUIInventoryList::ItemSpec(e->getInventoryloc(), e->getListname(),
-					item_index);
+					item_index, e->getSlotSize());
 	}
 
-	return GUIInventoryList::ItemSpec(InventoryLocation(), "", -1);
+	return GUIInventoryList::ItemSpec(InventoryLocation(), "", -1, {0,0});
 }
 
 void GUIFormSpecMenu::drawSelectedItem()
@@ -3540,7 +3529,8 @@ void GUIFormSpecMenu::drawSelectedItem()
 	ItemStack stack = list->getItem(m_selected_item->i);
 	stack.count = m_selected_amount;
 
-	core::rect<s32> imgrect(0,0,imgsize.X,imgsize.Y);
+	v2s32 slotsize = m_selected_item->slotsize;
+	core::rect<s32> imgrect(0, 0, slotsize.X, slotsize.Y);
 	core::rect<s32> rect = imgrect + (m_pointer - imgrect.getCenter());
 	rect.constrainTo(driver->getViewPort());
 	drawItemStack(driver, m_font, stack, rect, NULL, m_client, IT_ROT_DRAGGED);
@@ -3791,6 +3781,7 @@ void GUIFormSpecMenu::updateSelectedItem()
 			m_selected_item->inventoryloc = e->getInventoryloc();
 			m_selected_item->listname = "craftresult";
 			m_selected_item->i = 0;
+			m_selected_item->slotsize = e->getSlotSize();
 			m_selected_amount = item.count;
 			m_selected_dragging = false;
 			break;

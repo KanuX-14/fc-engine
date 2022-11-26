@@ -213,10 +213,10 @@ enum NodeDrawType
 	// paramtype2 = "meshoptions" allows various forms, sizes and
 	// vertical and horizontal random offsets.
 	NDT_PLANTLIKE,
-	// Fenceposts that connect to neighbouring fenceposts with horizontal bars
+	// Fenceposts that connect to neighboring fenceposts with horizontal bars
 	NDT_FENCELIKE,
 	// Selects appropriate junction texture to connect like rails to
-	// neighbouring raillikes.
+	// neighboring raillikes.
 	NDT_RAILLIKE,
 	// Custom Lua-definable structure of multiple cuboids
 	NDT_NODEBOX,
@@ -225,7 +225,7 @@ enum NodeDrawType
 	// Uses 3 textures, one for frames, second for faces,
 	// optional third is a 'special tile' for the liquid.
 	NDT_GLASSLIKE_FRAMED,
-	// Draw faces slightly rotated and only on neighbouring nodes
+	// Draw faces slightly rotated and only on neighboring nodes
 	NDT_FIRELIKE,
 	// Enabled -> ndt_glasslike_framed, disabled -> ndt_glasslike
 	NDT_GLASSLIKE_FRAMED_OPTIONAL,
@@ -321,6 +321,9 @@ struct ContentFeatures
 	bool has_on_construct;
 	bool has_on_destruct;
 	bool has_after_destruct;
+
+	// "float" group
+	bool floats;
 
 	/*
 		Actual data
@@ -505,10 +508,13 @@ struct ContentFeatures
 			liquid_alternative_source_id == f.liquid_alternative_source_id;
 	}
 
-	bool lightingEquivalent(const ContentFeatures &other) const {
-		return light_propagates == other.light_propagates
-				&& sunlight_propagates == other.sunlight_propagates
-				&& light_source == other.light_source;
+	ContentLightingFlags getLightingFlags() const {
+		ContentLightingFlags flags;
+		flags.has_light = param_type == CPT_LIGHT;
+		flags.light_propagates = light_propagates;
+		flags.sunlight_propagates = sunlight_propagates;
+		flags.light_source = light_source;
+		return flags;
 	}
 
 	int getGroup(const std::string &group) const
@@ -578,6 +584,15 @@ public:
 	 */
 	inline const ContentFeatures& get(const MapNode &n) const {
 		return get(n.getContent());
+	}
+
+	inline ContentLightingFlags getLightingFlags(content_t c) const {
+		// No bound check is necessary, since the array's length is CONTENT_MAX + 1.
+		return m_content_lighting_flag_cache[c];
+	}
+
+	inline ContentLightingFlags getLightingFlags(const MapNode &n) const {
+		return getLightingFlags(n.getContent());
 	}
 
 	/*!
@@ -826,6 +841,11 @@ private:
 	 * Even constant NodeDefManager instances can register listeners.
 	 */
 	mutable std::vector<NodeResolver *> m_pending_resolve_callbacks;
+
+	/*!
+	 * Fast cache of content lighting flags.
+	 */
+	ContentLightingFlags m_content_lighting_flag_cache[CONTENT_MAX + 1L];
 };
 
 NodeDefManager *createNodeDefManager();

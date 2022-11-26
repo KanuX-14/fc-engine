@@ -67,6 +67,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "server/serverinventorymgr.h"
 #include "translation.h"
 #include "database/database-sqlite3.h"
+#if USE_POSTGRESQL
+#include "database/database-postgresql.h"
+#endif
 #include "database/database-files.h"
 #include "database/database-dummy.h"
 #include "gameparams.h"
@@ -447,6 +450,7 @@ void Server::init()
 	m_inventory_mgr = std::make_unique<ServerInventoryManager>();
 
 	m_script->loadMod(getBuiltinLuaPath() + DIR_DELIM "init.lua", BUILTIN_MOD_NAME);
+	m_script->checkSetByBuiltin();
 
 	m_gamespec.checkAndLog();
 	m_modmgr->loadMods(m_script);
@@ -1091,7 +1095,7 @@ PlayerSAO* Server::StageTwoClientInit(session_t peer_id)
 	if (!playersao || !player) {
 		if (player && player->getPeerId() != PEER_ID_INEXISTENT) {
 			actionstream << "Server: Failed to emerge player \"" << playername
-					<< "\" (player allocated to an another client)" << std::endl;
+					<< "\" (player allocated to another client)" << std::endl;
 			DenyAccess(peer_id, SERVER_ACCESSDENIED_ALREADY_CONNECTED);
 		} else {
 			errorstream << "Server: " << playername << ": Failed to emerge player"
@@ -1869,7 +1873,7 @@ void Server::SendSetLighting(session_t peer_id, const Lighting &lighting)
 {
 	NetworkPacket pkt(TOCLIENT_SET_LIGHTING,
 			4, peer_id);
-	
+
 	pkt << lighting.shadow_intensity;
 
 	Send(&pkt);
@@ -2250,50 +2254,31 @@ void Server::fadeSound(s32 handle, float step, float gain)
 void Server::sendRemoveNode(v3s16 p, std::unordered_set<u16> *far_players,
 		float far_d_nodes)
 {
-	float maxd = far_d_nodes * BS;
 	v3f p_f = intToFloat(p, BS);
 	v3s16 block_pos = getNodeBlockPos(p);
 
 	NetworkPacket pkt(TOCLIENT_REMOVENODE, 6);
 	pkt << p;
 
-	std::vector<session_t> clients = m_clients.getClientIDs();
-	ClientInterface::AutoLock clientlock(m_clients);
-
-	for (session_t client_id : clients) {
-		RemoteClient *client = m_clients.lockedGetClientNoEx(client_id);
-		if (!client)
-			continue;
-
-		RemotePlayer *player = m_env->getPlayer(client_id);
-		PlayerSAO *sao = player ? player->getPlayerSAO() : nullptr;
-
-		// If player is far away, only set modified blocks not sent
-		if (!client->isBlockSent(block_pos) || (sao &&
-				sao->getBasePosition().getDistanceFrom(p_f) > maxd)) {
-			if (far_players)
-				far_players->emplace(client_id);
-			else
-				client->SetBlockNotSent(block_pos);
-			continue;
-		}
-
-		// Send as reliable
-		m_clients.send(client_id, 0, &pkt, true);
-	}
+	sendNodeChangePkt(pkt, block_pos, p_f, far_d_nodes, far_players);
 }
 
 void Server::sendAddNode(v3s16 p, MapNode n, std::unordered_set<u16> *far_players,
 		float far_d_nodes, bool remove_metadata)
 {
-	float maxd = far_d_nodes * BS;
 	v3f p_f = intToFloat(p, BS);
 	v3s16 block_pos = getNodeBlockPos(p);
 
 	NetworkPacket pkt(TOCLIENT_ADDNODE, 6 + 2 + 1 + 1 + 1);
 	pkt << p << n.param0 << n.param1 << n.param2
 			<< (u8) (remove_metadata ? 0 : 1);
+	sendNodeChangePkt(pkt, block_pos, p_f, far_d_nodes, far_players);
+}
 
+void Server::sendNodeChangePkt(NetworkPacket &pkt, v3s16 block_pos,
+		v3f p, float far_d_nodes, std::unordered_set<u16> *far_players)
+{
+	float maxd = far_d_nodes * BS;
 	std::vector<session_t> clients = m_clients.getClientIDs();
 	ClientInterface::AutoLock clientlock(m_clients);
 
@@ -2307,7 +2292,7 @@ void Server::sendAddNode(v3s16 p, MapNode n, std::unordered_set<u16> *far_player
 
 		// If player is far away, only set modified blocks not sent
 		if (!client->isBlockSent(block_pos) || (sao &&
-				sao->getBasePosition().getDistanceFrom(p_f) > maxd)) {
+				sao->getBasePosition().getDistanceFrom(p) > maxd)) {
 			if (far_players)
 				far_players->emplace(client_id);
 			else
@@ -4019,7 +4004,7 @@ Translations *Server::getTranslationLanguage(const std::string &lang_code)
 	return translations;
 }
 
-ModMetadataDatabase *Server::openModStorageDatabase(const std::string &world_path)
+ModStorageDatabase *Server::openModStorageDatabase(const std::string &world_path)
 {
 	std::string world_mt_path = world_path + DIR_DELIM + "world.mt";
 	Settings world_mt;
@@ -4037,14 +4022,22 @@ ModMetadataDatabase *Server::openModStorageDatabase(const std::string &world_pat
 	return openModStorageDatabase(backend, world_path, world_mt);
 }
 
-ModMetadataDatabase *Server::openModStorageDatabase(const std::string &backend,
+ModStorageDatabase *Server::openModStorageDatabase(const std::string &backend,
 		const std::string &world_path, const Settings &world_mt)
 {
 	if (backend == "sqlite3")
-		return new ModMetadataDatabaseSQLite3(world_path);
+		return new ModStorageDatabaseSQLite3(world_path);
+
+#if USE_POSTGRESQL
+	if (backend == "postgresql") {
+		std::string connect_string;
+		world_mt.getNoEx("pgsql_mod_storage_connection", connect_string);
+		return new ModStorageDatabasePostgreSQL(connect_string);
+	}
+#endif // USE_POSTGRESQL
 
 	if (backend == "files")
-		return new ModMetadataDatabaseFiles(world_path);
+		return new ModStorageDatabaseFiles(world_path);
 
 	if (backend == "dummy")
 		return new Database_Dummy();
@@ -4070,8 +4063,8 @@ bool Server::migrateModStorageDatabase(const GameParams &game_params, const Sett
 		return false;
 	}
 
-	ModMetadataDatabase *srcdb = nullptr;
-	ModMetadataDatabase *dstdb = nullptr;
+	ModStorageDatabase *srcdb = nullptr;
+	ModStorageDatabase *dstdb = nullptr;
 
 	bool succeeded = false;
 

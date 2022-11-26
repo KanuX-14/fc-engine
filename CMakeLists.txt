@@ -16,7 +16,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set(GCC_MINIMUM_VERSION "5.1")
 set(CLANG_MINIMUM_VERSION "3.5")
 
-# Also remember to set PROTOCOL_VERSION in network/networkprotocol.h when releasing
+# You should not need to edit these manually, use util/bump_version.sh
 set(VERSION_MAJOR 5)
 set(VERSION_MINOR 7)
 set(VERSION_PATCH 0)
@@ -136,6 +136,17 @@ if(BUILD_CLIENT AND TARGET IrrlichtMt::IrrlichtMt)
 	endif()
 endif()
 
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS "${GCC_MINIMUM_VERSION}")
+		message(FATAL_ERROR "Insufficient gcc version, found ${CMAKE_CXX_COMPILER_VERSION}. "
+			"Version ${GCC_MINIMUM_VERSION} or higher is required.")
+	endif()
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "(Apple)?Clang")
+	if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "${CLANG_MINIMUM_VERSION}")
+		message(FATAL_ERROR "Insufficient clang version, found ${CMAKE_CXX_COMPILER_VERSION}. "
+			"Version ${CLANG_MINIMUM_VERSION} or higher is required.")
+	endif()
+endif()
 
 # Installation
 
@@ -278,21 +289,7 @@ find_package(GMP REQUIRED)
 find_package(Json REQUIRED)
 find_package(Lua REQUIRED)
 if(NOT USE_LUAJIT)
-	set(LUA_BIT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/bitop)
-	set(LUA_BIT_LIBRARY bitop)
 	add_subdirectory(lib/bitop)
-endif()
-
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-	if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS "${GCC_MINIMUM_VERSION}")
-		message(FATAL_ERROR "Insufficient gcc version, found ${CMAKE_CXX_COMPILER_VERSION}. "
-			"Version ${GCC_MINIMUM_VERSION} or higher is required.")
-	endif()
-elseif(CMAKE_CXX_COMPILER_ID MATCHES "(Apple)?Clang")
-	if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "${CLANG_MINIMUM_VERSION}")
-		message(FATAL_ERROR "Insufficient clang version, found ${CMAKE_CXX_COMPILER_VERSION}. "
-			"Version ${CLANG_MINIMUM_VERSION} or higher is required.")
-	endif()
 endif()
 
 if(BUILD_BENCHMARKS)
@@ -302,7 +299,6 @@ endif()
 # Subdirectories
 # Be sure to add all relevant definitions above this
 add_subdirectory(src)
-
 
 # CPack
 
@@ -338,7 +334,7 @@ cpack_add_component_group(Subgames
 )
 
 if(WIN32)
-	# Include all dynamically linked runtime libaries such as MSVCRxxx.dll
+	# Include all dynamically linked runtime libraries such as MSVCRxxx.dll
 	include(InstallRequiredSystemLibraries)
 
 	if(RUN_IN_PLACE)

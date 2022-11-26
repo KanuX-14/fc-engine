@@ -146,12 +146,8 @@ void ClientMap::OnRegisterSceneNode()
 	}
 
 	ISceneNode::OnRegisterSceneNode();
-
-	if (!m_added_to_shadow_renderer) {
-		m_added_to_shadow_renderer = true;
-		if (auto shadows = m_rendering_engine->get_shadow_renderer())
-			shadows->addNodeToShadowList(this);
-	}
+	// It's not needed to register this node to the shadow renderer
+	// we have other way to find it
 }
 
 void ClientMap::getBlocksInViewRange(v3s16 cam_pos_nodes,
@@ -259,11 +255,13 @@ void ClientMap::updateDrawList()
 			}
 
 			v3s16 block_coord = block->getPos();
-			v3s16 block_position = block->getPosRelative() + MAP_BLOCKSIZE / 2;
-
-			// First, perform a simple distance check, with a padding of one extra block.
+			v3f mesh_sphere_center = intToFloat(block->getPosRelative(), BS)
+					+ block->mesh->getBoundingSphereCenter();
+			f32 mesh_sphere_radius = block->mesh->getBoundingRadius();
+			// First, perform a simple distance check.
 			if (!m_control.range_all &&
-					block_position.getDistanceFrom(cam_pos_nodes) > m_control.wanted_range)
+				mesh_sphere_center.getDistanceFrom(intToFloat(cam_pos_nodes, BS)) >
+					m_control.wanted_range * BS + mesh_sphere_radius)
 				continue; // Out of range, skip.
 
 			// Keep the block alive as long as it is in range.
@@ -274,9 +272,6 @@ void ClientMap::updateDrawList()
 			// Only do coarse culling here, to account for fast camera movement.
 			// This is needed because this function is not called every frame.
 			constexpr float frustum_cull_extra_radius = 300.0f;
-			v3f mesh_sphere_center = intToFloat(block->getPosRelative(), BS)
-					+ block->mesh->getBoundingSphereCenter();
-			f32 mesh_sphere_radius = block->mesh->getBoundingRadius();
 			if (is_frustum_culled(mesh_sphere_center,
 					mesh_sphere_radius + frustum_cull_extra_radius))
 				continue;
@@ -527,8 +522,8 @@ static bool getVisibleBrightness(Map *map, const v3f &p0, v3f dir, float step,
 	{
 		v3s16 p = floatToInt(p0 /*+ dir * 3*BS*/, BS);
 		MapNode n = map->getNode(p);
-		if(ndef->get(n).param_type == CPT_LIGHT &&
-				!ndef->get(n).sunlight_propagates)
+		if(ndef->getLightingFlags(n).has_light &&
+				!ndef->getLightingFlags(n).sunlight_propagates)
 			allow_allowing_non_sunlight_propagates = true;
 	}
 	// If would start at CONTENT_IGNORE, start closer
@@ -549,15 +544,13 @@ static bool getVisibleBrightness(Map *map, const v3f &p0, v3f dir, float step,
 
 		v3s16 p = floatToInt(pf, BS);
 		MapNode n = map->getNode(p);
+		ContentLightingFlags f = ndef->getLightingFlags(n);
 		if (allow_allowing_non_sunlight_propagates && i == 0 &&
-				ndef->get(n).param_type == CPT_LIGHT &&
-				!ndef->get(n).sunlight_propagates) {
+				f.has_light && !f.sunlight_propagates) {
 			allow_non_sunlight_propagates = true;
 		}
 
-		if (ndef->get(n).param_type != CPT_LIGHT ||
-				(!ndef->get(n).sunlight_propagates &&
-					!allow_non_sunlight_propagates)){
+		if (!f.has_light || (!f.sunlight_propagates && !allow_non_sunlight_propagates)){
 			nonlight_seen = true;
 			noncount++;
 			if(noncount >= 4)
@@ -566,10 +559,10 @@ static bool getVisibleBrightness(Map *map, const v3f &p0, v3f dir, float step,
 		}
 
 		if (distance >= sunlight_min_d && !*sunlight_seen && !nonlight_seen)
-			if (n.getLight(LIGHTBANK_DAY, ndef) == LIGHT_SUN)
+			if (n.getLight(LIGHTBANK_DAY, f) == LIGHT_SUN)
 				*sunlight_seen = true;
 		noncount = 0;
-		brightness_sum += decode_light(n.getLightBlend(daylight_factor, ndef));
+		brightness_sum += decode_light(n.getLightBlend(daylight_factor, f));
 		brightness_count++;
 	}
 	*result = 0;
@@ -653,8 +646,9 @@ int ClientMap::getBackgroundBrightness(float max_d, u32 daylight_factor,
 	int ret = 0;
 	if(brightness_count == 0){
 		MapNode n = getNode(floatToInt(m_camera_position, BS));
-		if(m_nodedef->get(n).param_type == CPT_LIGHT){
-			ret = decode_light(n.getLightBlend(daylight_factor, m_nodedef));
+		ContentLightingFlags f = m_nodedef->getLightingFlags(n);
+		if(f.has_light){
+			ret = decode_light(n.getLightBlend(daylight_factor, f));
 		} else {
 			ret = oldvalue;
 		}
@@ -723,7 +717,7 @@ void ClientMap::renderMapShadows(video::IVideoDriver *driver,
 		return;
 	}
 
-	for (auto &i : m_drawlist_shadow) {
+	for (const auto &i : m_drawlist_shadow) {
 		// only process specific part of the list & break early
 		++count;
 		if (count <= low_bound)

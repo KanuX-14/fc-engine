@@ -41,7 +41,7 @@ void ModApiStorage::Initialize(lua_State *L, int top)
 	API_FCT(get_mod_storage);
 }
 
-void StorageRef::create(lua_State *L, const std::string &mod_name, ModMetadataDatabase *db)
+void StorageRef::create(lua_State *L, const std::string &mod_name, ModStorageDatabase *db)
 {
 	StorageRef *o = new StorageRef(mod_name, db);
 	*(void **)(lua_newuserdata(L, sizeof(void *))) = o;
@@ -49,52 +49,9 @@ void StorageRef::create(lua_State *L, const std::string &mod_name, ModMetadataDa
 	lua_setmetatable(L, -2);
 }
 
-int StorageRef::gc_object(lua_State *L)
-{
-	StorageRef *o = *(StorageRef **)(lua_touserdata(L, 1));
-	delete o;
-	return 0;
-}
-
 void StorageRef::Register(lua_State *L)
 {
-	lua_newtable(L);
-	int methodtable = lua_gettop(L);
-	luaL_newmetatable(L, className);
-	int metatable = lua_gettop(L);
-
-	lua_pushliteral(L, "__metatable");
-	lua_pushvalue(L, methodtable);
-	lua_settable(L, metatable);  // hide metatable from Lua getmetatable()
-
-	lua_pushliteral(L, "metadata_class");
-	lua_pushlstring(L, className, strlen(className));
-	lua_settable(L, metatable);
-
-	lua_pushliteral(L, "__index");
-	lua_pushvalue(L, methodtable);
-	lua_settable(L, metatable);
-
-	lua_pushliteral(L, "__gc");
-	lua_pushcfunction(L, gc_object);
-	lua_settable(L, metatable);
-
-	lua_pushliteral(L, "__eq");
-	lua_pushcfunction(L, l_equals);
-	lua_settable(L, metatable);
-
-	lua_pop(L, 1);  // drop metatable
-
-	luaL_register(L, nullptr, methods);  // fill methodtable
-	lua_pop(L, 1);  // drop methodtable
-}
-
-StorageRef* StorageRef::checkobject(lua_State *L, int narg)
-{
-	luaL_checktype(L, narg, LUA_TUSERDATA);
-	void *ud = luaL_checkudata(L, narg, className);
-	if (!ud) luaL_typerror(L, narg, className);
-	return *(StorageRef**)ud;  // unbox pointer
+	registerMetadataClass(L, className, methods);
 }
 
 IMetadata* StorageRef::getmeta(bool auto_create)
@@ -117,6 +74,7 @@ const luaL_Reg StorageRef::methods[] = {
 	luamethod(MetaDataRef, set_int),
 	luamethod(MetaDataRef, get_float),
 	luamethod(MetaDataRef, set_float),
+	luamethod(MetaDataRef, get_keys),
 	luamethod(MetaDataRef, to_table),
 	luamethod(MetaDataRef, from_table),
 	luamethod(MetaDataRef, equals),
