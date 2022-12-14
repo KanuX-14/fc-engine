@@ -4879,6 +4879,18 @@ Utilities
   or checking if a mod is enabled.
 * `minetest.get_modnames()`: returns a list of enabled mods, sorted alphabetically.
     * Does not include disabled mods, even if they are installed.
+* `minetest.get_game_info()`: returns a table containing information about the
+  current game. Note that other meta information (e.g. version/release number)
+  can be manually read from `game.conf` in the game's root directory.
+
+      {
+          id = string,
+          title = string,
+          author = string,
+          -- The root directory of the game
+          path = string,
+      }
+
 * `minetest.get_worldpath()`: returns e.g. `"/home/user/.minetest/world"`
     * Useful for storing custom data
 * `minetest.is_singleplayer()`
@@ -5616,6 +5628,13 @@ Environment access
       prefix `"no"` is attached, clears instead.
     * `flags` is in the same format and has the same options as `mg_flags` in
       `minetest.conf`.
+* `minetest.get_mapgen_edges([mapgen_limit[, chunksize]])`
+    * Returns the minimum and maximum possible generated node positions
+      in that order.
+    * `mapgen_limit` is an optional number. If it is absent, its value is that
+      of the *active* mapgen setting `"mapgen_limit"`.
+    * `chunksize` is an optional number. If it is absent, its value is that
+      of the *active* mapgen setting `"chunksize"`.
 * `minetest.get_mapgen_setting(name)`
     * Gets the *active* mapgen setting (or nil if none exists) in string
       format with the following order of precedence:
@@ -6513,12 +6532,16 @@ Misc.
     * You may want to cache and call the old function to allow multiple mods to
       change knockback behavior.
 
-* `minetest.forceload_block(pos[, transient])`
+* `minetest.forceload_block(pos[, transient[, limit]])`
     * forceloads the position `pos`.
     * returns `true` if area could be forceloaded
     * If `transient` is `false` or absent, the forceload will be persistent
       (saved between server runs). If `true`, the forceload will be transient
       (not saved between server runs).
+    * `limit` is an optional limit on the number of blocks that can be
+      forceloaded at once. If `limit` is negative, there is no limit. If it is
+      absent, the limit is the value of the setting `"max_forceloaded_blocks"`.
+      If the call would put the number of blocks over the limit, the call fails.
 
 * `minetest.forceload_free_block(pos[, transient])`
     * stops forceloading the position `pos`
@@ -7949,8 +7972,10 @@ gets activated (not loaded!)
         -- and not only the first time the block gets activated after the LBM
         -- was introduced.
 
-        action = function(pos, node),
+        action = function(pos, node, dtime_s),
         -- Function triggered for each qualifying node.
+        -- `dtime_s` is the in-game time (in seconds) elapsed since the block
+        -- was last active
     }
 
 Tile definition

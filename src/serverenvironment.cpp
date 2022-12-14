@@ -249,7 +249,8 @@ std::string LBMManager::createIntroductionTimesString()
 	return oss.str();
 }
 
-void LBMManager::applyLBMs(ServerEnvironment *env, MapBlock *block, u32 stamp)
+void LBMManager::applyLBMs(ServerEnvironment *env, MapBlock *block,
+		const u32 stamp, const float dtime_s)
 {
 	// Precondition, we need m_lbm_lookup to be initialized
 	FATAL_ERROR_IF(!m_query_mode,
@@ -280,7 +281,7 @@ void LBMManager::applyLBMs(ServerEnvironment *env, MapBlock *block, u32 stamp)
 					if (!lbm_list)
 						continue;
 					for (auto lbmdef : *lbm_list) {
-						lbmdef->trigger(env, pos + pos_of_block, n);
+						lbmdef->trigger(env, pos + pos_of_block, n, dtime_s);
 					}
 				}
 	}
@@ -888,7 +889,7 @@ public:
 		for(p0.Y=0; p0.Y<MAP_BLOCKSIZE; p0.Y++)
 		for(p0.Z=0; p0.Z<MAP_BLOCKSIZE; p0.Z++)
 		{
-			const MapNode &n = block->getNodeNoCheck(p0);
+			MapNode n = block->getNodeNoCheck(p0);
 			content_t c = n.getContent();
 			// Cache content types as we go
 			if (!block->contents_cached && !block->do_not_cache_contents) {
@@ -950,6 +951,11 @@ public:
 					active_object_count = countObjects(block, map, active_object_count_wider);
 					m_env->m_added_objects = 0;
 				}
+
+				// Update and check node after possible modification
+				n = block->getNodeNoCheck(p0);
+				if (n.getContent() != c)
+					break;
 			}
 		}
 		block->contents_cached = !block->do_not_cache_contents;
@@ -992,7 +998,7 @@ void ServerEnvironment::activateBlock(MapBlock *block, u32 additional_dtime)
 	activateObjects(block, dtime_s);
 
 	/* Handle LoadingBlockModifiers */
-	m_lbm_mgr.applyLBMs(this, block, stamp);
+	m_lbm_mgr.applyLBMs(this, block, stamp, (float)dtime_s);
 
 	// Run node timers
 	block->step((float)dtime_s, [&](v3s16 p, MapNode n, f32 d) -> bool {
@@ -1435,6 +1441,9 @@ void ServerEnvironment::step(float dtime)
 	if (m_active_block_modifier_interval.step(dtime, m_cache_abm_interval)) {
 		ScopeProfiler sp(g_profiler, "SEnv: modify in blocks avg per interval", SPT_AVG);
 		TimeTaker timer("modify in active blocks per interval");
+
+		// Shuffle to prevent persistent artifacts of ordering
+		std::shuffle(m_abms.begin(), m_abms.end(), m_rgen);
 
 		// Initialize handling of ActiveBlockModifiers
 		ABMHandler abmhandler(m_abms, m_cache_abm_interval, this, true);
