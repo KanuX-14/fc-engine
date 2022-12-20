@@ -1,6 +1,0 @@
-[submodule "games/freecraft"]
-	path = games/freecraft
-	url = https://github.com/KanuX-14/freecraft.git
-[submodule "lib/irrlichtmt"]
-	path = lib/irrlichtmt
-	url = https://github.com/minetest/irrlicht.git
