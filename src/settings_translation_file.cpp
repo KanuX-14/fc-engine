@@ -880,6 +880,8 @@ fake_function() {
 	gettext("Center of light curve boost range.\nWhere 0.0 is minimum light level, 1.0 is maximum light level.");
 	gettext("Light curve boost spread");
 	gettext("Spread of light curve boost range.\nControls the width of the range to be boosted.\nStandard deviation of the light curve boost Gaussian.");
+	gettext("General gamma");
+	gettext("General brightness of dark nodes.\nRanges from 0 to 100.");
 	gettext("Networking");
 	gettext("Prometheus listener address");
 	gettext("Prometheus listener address.\nIf Minetest is compiled with ENABLE_PROMETHEUS option enabled,\nenable metrics listener for Prometheus on that address.\nMetrics can be fetched on http://127.0.0.1:30000/metrics");

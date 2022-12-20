@@ -2831,6 +2831,11 @@
 #    type: float min: 0 max: 0.4
 # lighting_boost_spread = 0.2
 
+#    General brightness of dark nodes.
+#    Ranges from 0 to 100.
+#    Defaults to 15.
+# lighting_gamma = 15
+
 ### Networking
 
 #    Prometheus listener address.
