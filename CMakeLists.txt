@@ -8,8 +8,8 @@ else()
 endif()
 
 # This can be read from ${PROJECT_NAME} after project() is called
-project(minetest)
-set(PROJECT_NAME_CAPITALIZED "Minetest")
+project(freecraft)
+set(PROJECT_NAME_CAPITALIZED "FreeCraft")
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
@@ -247,10 +247,10 @@ if(RUN_IN_PLACE)
 	install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/textures/texture_packs_here.txt" DESTINATION "${SHAREDIR}/textures")
 endif()
 
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/games/minetest_game" DESTINATION "${SHAREDIR}/games/"
-	COMPONENT "SUBGAME_MINETEST_GAME" OPTIONAL PATTERN ".git*" EXCLUDE )
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/games/devtest" DESTINATION "${SHAREDIR}/games/"
-	COMPONENT "SUBGAME_MINIMAL" OPTIONAL PATTERN ".git*" EXCLUDE )
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/games/freecraft" DESTINATION "${SHAREDIR}/games/"
+	COMPONENT "SUBGAME_FREECRAFT_GAME" OPTIONAL PATTERN ".git*" EXCLUDE )
+# install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/games/devtest" DESTINATION "${SHAREDIR}/games/"
+#	COMPONENT "SUBGAME_MINIMAL" OPTIONAL PATTERN ".git*" EXCLUDE )
 
 if(BUILD_CLIENT)
 	install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/client/shaders" DESTINATION "${SHAREDIR}/client")
@@ -316,9 +316,9 @@ cpack_add_component(Docs
 	DESCRIPTION "Documentation about Minetest and Minetest modding"
 )
 
-cpack_add_component(SUBGAME_MINETEST_GAME
-	DISPLAY_NAME "Minetest Game"
-	DESCRIPTION "The default game bundled in the Minetest engine. Mainly used as a modding base."
+cpack_add_component(SUBGAME_FREECRAFT_GAME
+	DISPLAY_NAME "FreeCraft"
+	DESCRIPTION "The default game bundled in the FreeCraft engine."
 	GROUP "Games"
 )
 
@@ -330,7 +330,7 @@ cpack_add_component(SUBGAME_MINIMAL
 )
 
 cpack_add_component_group(Subgames
-	DESCRIPTION "Games for the Minetest engine."
+	DESCRIPTION "Games for the FreeCraft engine."
 )
 
 if(WIN32)

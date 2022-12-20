@@ -3183,7 +3183,7 @@
 #    Default game when creating a new world.
 #    This will be overridden when creating a world from the main menu.
 #    type: string
-# default_game = minetest
+# default_game = freecraft
 
 #    Enable players getting damage and dying.
 #    type: bool

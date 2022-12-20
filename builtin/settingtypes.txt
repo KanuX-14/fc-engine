@@ -2073,7 +2073,7 @@ remote_port (Remote port) int 30000 1 65535
 
 #    Default game when creating a new world.
 #    This will be overridden when creating a world from the main menu.
-default_game (Default game) string minetest
+default_game (Default game) string freecraft
 
 #    Enable players getting damage and dying.
 enable_damage (Damage) bool false

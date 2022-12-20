@@ -89,7 +89,7 @@ local function init_globals()
 	local gameid = core.settings:get("menu_last_game")
 	local game = gameid and pkgmgr.find_by_gameid(gameid)
 	if not game then
-		gameid = core.settings:get("default_game") or "minetest"
+		gameid = core.settings:get("default_game") or "freecraft"
 		game = pkgmgr.find_by_gameid(gameid)
 		core.settings:set("menu_last_game", gameid)
 	end
