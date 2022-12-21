@@ -1,15 +1,18 @@
-FreeCraft Engine (Minetest fork)
-========
+<p align="center">
+<img src="./.media/page_images/header.png" alt="FreeCraft logo" width="50%"/>
+</p>
 
-![Build Status](https://github.com/minetest/minetest/workflows/build/badge.svg)
+![Build Status](https://github.com/KanuX-14/fc-engine/workflows/build/badge.svg)
 [![Translation status](https://hosted.weblate.org/widgets/minetest/-/svg-badge.svg)](https://hosted.weblate.org/engage/minetest/?utm_source=widget)
 [![License](https://img.shields.io/badge/license-LGPLv2.1%2B-blue.svg)](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html)
 
-Minetest is a free open-source voxel game engine with easy modding and game creation.
+FreeCraft is a free open-source voxel game engine with easy modding and game creation.
 
-FreeCraft Engine is a patched version of Minetest engine, used for extra content under the [FreeCraft](https://github.com/KanuX-14/freecraft) game.
+FreeCraft Engine is a modificated version of Minetest engine, used for extra content under the [FreeCraft](https://github.com/KanuX-14/freecraft) game.
 
-Copyright (C) 2010-2022 Perttu Ahola <celeron55@gmail.com>
+Copyright (C):<br>
+2010-2022 Perttu Ahola <celeron55@gmail.com> (Minetest creator)<br>
+2022-2022 KanuX-14 <kanux.dev@gmail.com> (FreeCraft creator)<br>
 and contributors (see source file comments and the version control log)
 
 In case you downloaded the source code
@@ -33,11 +36,11 @@ Table of Contents
 
 Further documentation
 ----------------------
-- Website: https://minetest.net/
+- Website: Here.
 - Wiki: https://wiki.minetest.net/
 - Developer wiki: https://dev.minetest.net/
 - Forum: https://forum.minetest.net/
-- GitHub: https://github.com/minetest/minetest/
+- GitHub: https://github.com/KanuX-14/fc-engine/
 - [doc/](doc/) directory of source distribution
 
 Default controls
@@ -71,7 +74,7 @@ Some can be changed in the key config dialog in the settings tab.
 | J                             | Enable/disable fast mode (needs fast privilege)                |
 | H                             | Enable/disable noclip mode (needs noclip privilege)            |
 | Ctrl                          | Aux1 (Move fast in fast mode. Games may add special features)  |
-| Z                             | Aux2 (Prone. On Minetest it is used the zoom button)           |
+| Z                             | Aux2 (Prone. In Minetest the zoom button is used)              |
 | M                             | Cycle through minimap modes                                    |
 | Shift + V                     | Change minimap orientation                                     |
 | F1                            | Hide/show HUD                                                  |
@@ -99,29 +102,29 @@ Where each location is on each platform:
     * `share` = `.`
     * `user`  = `.`
 * Windows installed:
-    * `bin`   = `C:\Program Files\Minetest\bin (Depends on the install location)`
-    * `share` = `C:\Program Files\Minetest (Depends on the install location)`
-    * `user`  = `%APPDATA%\Minetest` or `%MINETEST_USER_PATH%`
+    * `bin`   = `C:\Program Files\FreeCraft\bin (Depends on the install location)`
+    * `share` = `C:\Program Files\FreeCraft (Depends on the install location)`
+    * `user`  = `%APPDATA%\FreeCraft` or `%FREECRAFT_USER_PATH%`
 * Linux installed:
     * `bin`   = `/usr/bin`
-    * `share` = `/usr/share/minetest`
-    * `user`  = `~/.minetest` or `$MINETEST_USER_PATH`
+    * `share` = `/usr/share/freecraft`
+    * `user`  = `~/.freecraft` or `$FREECRAFT_USER_PATH`
 * macOS:
     * `bin`   = `Contents/MacOS`
     * `share` = `Contents/Resources`
-    * `user`  = `Contents/User` or `~/Library/Application Support/minetest` or `$MINETEST_USER_PATH`
+    * `user`  = `Contents/User` or `~/Library/Application Support/freecraft` or `$FREECRAFT_USER_PATH`
 
 Worlds can be found as separate folders in: `user/worlds/`
 
 Configuration file
 ------------------
 - Default location:
-    `user/minetest.conf`
-- This file is created by closing Minetest for the first time.
+    `user/freecraft.conf`
+- This file is created by closing FreeCraft for the first time.
 - A specific file can be specified on the command line:
     `--config <path-to-file>`
 - A run-in-place build will look for the configuration file in
-    `location_of_exe/../minetest.conf` and also `location_of_exe/../../minetest.conf`
+    `location_of_exe/../freecraft.conf` and also `location_of_exe/../../freecraft.conf`
 
 Command-line options
 --------------------
@@ -178,7 +181,7 @@ Download source (this is the URL to the latest of source repository, which might
     git clone --depth 1 https://github.com/KanuX-14/fc-engine.git
     cd fc-engine
 
-Download minetest_game (otherwise only the "Development Test" game is available) using Git:
+Download FreeCraft game using Git:
 
     git clone --depth 1 https://github.com/KanuX-14/freecraft.git games/freecraft
 
@@ -190,14 +193,14 @@ Download source, without using Git:
 
     wget https://github.com/KanuX-14/fc-engine/archive/master.tar.gz
     tar xf master.tar.gz
-    cd minetest-master
+    cd fc-engine-master
 
-Download minetest_game, without using Git:
+Download FreeCraft game, without using Git:
 
     cd games/
     wget https://github.com/KanuX-14/freecraft/archive/master.tar.gz
     tar xf master.tar.gz
-    mv minetest_game-master minetest_game
+    mv freecraft-master freecraft
     cd ..
 
 Download IrrlichtMt, without using Git:
@@ -212,12 +215,14 @@ Download IrrlichtMt, without using Git:
 
 Build a version that runs directly from the source directory:
 
-    cmake . -DRUN_IN_PLACE=TRUE
+    mkdir build
+    cd build
+    cmake .. -DRUN_IN_PLACE=TRUE
     make -j$(nproc)
 
 Run it:
 
-    ./bin/minetest
+    ../bin/freecraft
 
 - Use `cmake . -LH` to see all CMake options and their current state.
 - If you want to install it system-wide (or are making a distribution package),
@@ -229,7 +234,7 @@ Run it:
 - If you build a bare server you don't need to compile IrrlichtMt, just the headers suffice.
   - In that case use `-DIRRLICHT_INCLUDE_DIR=/some/where/irrlichtmt/include`.
 
-- Minetest will use the IrrlichtMt package that is found first, given by the following order:
+- FreeCraft will use the IrrlichtMt package that is found first, given by the following order:
   1. Specified `IRRLICHTMT_BUILD_DIR` CMake variable
   2. `${PROJECT_SOURCE_DIR}/lib/irrlichtmt` (if existent)
   3. Installation of IrrlichtMt in the system-specific library paths
@@ -240,8 +245,8 @@ Run it:
 
 General options and their default values:
 
-    BUILD_CLIENT=TRUE          - Build Minetest client
-    BUILD_SERVER=FALSE         - Build Minetest server
+    BUILD_CLIENT=TRUE          - Build FreeCraft client
+    BUILD_SERVER=FALSE         - Build FreeCraft server
     BUILD_UNITTESTS=TRUE       - Build unittest sources
     BUILD_BENCHMARKS=FALSE     - Build benchmark sources
     CMAKE_BUILD_TYPE=Release   - Type of build (Release vs. Debug)
@@ -266,7 +271,7 @@ General options and their default values:
     RUN_IN_PLACE=FALSE         - Create a portable install (worlds, settings etc. in current directory)
     ENABLE_UPDATE_CHECKER=TRUE - Whether to enable update checks by default
     USE_GPROF=FALSE            - Enable profiling using GProf
-    VERSION_EXTRA=             - Text to append to version (e.g. VERSION_EXTRA=foobar -> Minetest 0.4.9-foobar)
+    VERSION_EXTRA=             - Text to append to version (e.g. VERSION_EXTRA=foobar -> FreeCraft 0.4.9-foobar)
     ENABLE_TOUCH=FALSE         - Enable Touchscreen support (requires support by IrrlichtMt)
 
 Library specific options:
@@ -346,12 +351,12 @@ There are other optional libraries, but they are not tested if they can build an
 
 Use `--triplet` to specify the target triplet, e.g. `x64-windows` or `x86-windows`.
 
-### Compile Minetest
+### Compile FreeCraft
 
 #### a) Using the vcpkg toolchain and CMake GUI
 1. Start up the CMake GUI
-2. Select **Browse Source...** and select DIR/minetest
-3. Select **Browse Build...** and select DIR/minetest-build
+2. Select **Browse Source...** and select DIR/fc-engine
+3. Select **Browse Build...** and select DIR/fc-engine-build
 4. Select **Configure**
 5. Choose the right visual Studio version and target platform. It has to match the version of the installed dependencies
 6. Choose **Specify toolchain file for cross-compiling**
@@ -362,7 +367,7 @@ Use `--triplet` to specify the target triplet, e.g. `x64-windows` or `x86-window
 11. If there are any errors, solve them and hit **Configure**
 12. Click **Generate**
 13. Click **Open Project**
-14. Compile Minetest inside Visual studio.
+14. Compile FreeCraft inside Visual studio.
 
 #### b) Using the vcpkg toolchain and the commandline
 
@@ -404,14 +409,14 @@ brew install cmake freetype gettext gmp hiredis jpeg jsoncpp leveldb libogg libp
 Download source (this is the URL to the latest of source repository, which might not work at all times) using Git:
 
 ```bash
-git clone --depth 1 https://github.com/minetest/minetest.git
-cd minetest
+git clone --depth 1 https://github.com/KanuX-14/fc-engine.git
+cd fc-engine
 ```
 
-Download minetest_game (otherwise only the "Development Test" game is available) using Git:
+Download FreeCraft game using Git:
 
 ```
-git clone --depth 1 https://github.com/minetest/minetest_game.git games/minetest_game
+git clone --depth 1 https://github.com/KanuX-14/freecraft.git games/freecraft
 ```
 
 Download Minetest's fork of Irrlicht:
@@ -439,12 +444,12 @@ make install
 #### Run
 
 ```
-open ./build/macos/minetest.app
+open ./build/macos/freecraft.app
 ```
 
 Docker
 ------
-We provide Minetest server Docker images using the GitLab mirror registry.
+We provide FreeCraft server Docker images using the GitLab mirror registry.
 
 Images are built on each commit and available using the following tag scheme:
 
@@ -459,13 +464,13 @@ If you want to test it on a Docker server you can easily run:
 If you want to use it in a production environment you should use volumes bound to the Docker host
 to persist data and modify the configuration:
 
-	sudo docker create -v /home/minetest/data/:/var/lib/minetest/ -v /home/minetest/conf/:/etc/minetest/ registry.gitlab.com/minetest/minetest/server:master
+	sudo docker create -v /home/freecraft/data/:/var/lib/freecraft/ -v /home/freecraft/conf/:/etc/freecraft/ registry.gitlab.com/minetest/minetest/server:master
 
-Data will be written to `/home/minetest/data` on the host, and configuration will be read from `/home/minetest/conf/minetest.conf`.
+Data will be written to `/home/freecraft/data` on the host, and configuration will be read from `/home/freecraft/conf/freecraft.conf`.
 
 **Note:** If you don't understand the previous commands please read the official Docker documentation before use.
 
-You can also host your Minetest server inside a Kubernetes cluster. See our example implementation in [`misc/kubernetes.yml`](misc/kubernetes.yml).
+You can also host your FreeCraft server inside a Kubernetes cluster. See our example implementation in [`misc/kubernetes.yml`](misc/kubernetes.yml).
 
 
 Version scheme
