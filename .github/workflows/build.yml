@@ -52,7 +52,7 @@ jobs:
 
       - name: Test
         run: |
-          ./bin/minetest --run-unittests
+          ./bin/freecraft --run-unittests
 
   # Current gcc version
   gcc_12:
