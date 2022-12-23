@@ -169,7 +169,7 @@ local function formspec(tabview, name, tabdata)
 		"label[4.25,2.15;" .. fgettext("Antialiasing:") .. "]" ..
 		"dropdown[4.25,2.6;3.5;dd_antialiasing;" .. dd_options.antialiasing[1] .. ";"
 				.. getSettingIndex.Antialiasing() .. "]" ..
-		"box[8,0;3.75,4.5;#999999]"
+		"box[8,0;3.75,5.0;#999999]"
 
 	local video_driver = core.settings:get("video_driver")
 	local shaders_enabled = core.settings:get_bool("enable_shaders")
@@ -190,11 +190,11 @@ local function formspec(tabview, name, tabdata)
 	end
 
 	tab_string = tab_string ..
-		"button[8,4.75;3.95,1;btn_change_keys;"
+		"button[8,5.25;3.95,1;btn_change_keys;"
 		.. fgettext("Change Keys") .. "]"
 
 	tab_string = tab_string ..
-		"button[0,4.75;3.95,1;btn_advanced_settings;"
+		"button[0,5.25;3.95,1;btn_advanced_settings;"
 		.. fgettext("All Settings") .. "]"
 
 
@@ -220,17 +220,19 @@ local function formspec(tabview, name, tabdata)
 			"checkbox[8.25,1.5;cb_waving_leaves;" .. fgettext("Waving Leaves") .. ";"
 					.. dump(core.settings:get_bool("enable_waving_leaves")) .. "]" ..
 			"checkbox[8.25,2;cb_waving_plants;" .. fgettext("Waving Plants") .. ";"
-					.. dump(core.settings:get_bool("enable_waving_plants")) .. "]"
+					.. dump(core.settings:get_bool("enable_waving_plants")) .. "]" ..
+			"checkbox[8.25,2.5;cb_enable_bloom;" .. fgettext("Bloom") .. ";"
+					.. dump(core.settings:get_bool("enable_bloom")) .. "]"
 
 		if video_driver == "opengl" then
 			tab_string = tab_string ..
-				"label[8.25,2.8;" .. fgettext("Dynamic shadows:") .. "]" ..
-				"label[8.25,3.2;" .. fgettext("(game support required)") .. "]" ..
-					"dropdown[8.25,3.7;3.5;dd_shadows;" .. dd_options.shadow_levels[1] .. ";"
+				"label[8.25,3.3;" .. fgettext("Dynamic shadows:") .. "]" ..
+				"label[8.25,3.7;" .. fgettext("(game support required)") .. "]" ..
+					"dropdown[8.25,4.2;3.5;dd_shadows;" .. dd_options.shadow_levels[1] .. ";"
 					.. getSettingIndex.ShadowMapping() .. "]"
 		else
 			tab_string = tab_string ..
-				"label[8.38,2.7;" .. core.colorize("#888888",
+				"label[8.38,3.2;" .. core.colorize("#888888",
 					fgettext("Dynamic shadows")) .. "]"
 		end
 	else
@@ -244,6 +246,8 @@ local function formspec(tabview, name, tabdata)
 			"label[8.38,2.2;" .. core.colorize("#888888",
 					fgettext("Waving Plants")) .. "]"..
 			"label[8.38,2.7;" .. core.colorize("#888888",
+					fgettext("Bloom")) .. "]" ..
+			"label[8.38,3.2;" .. core.colorize("#888888",
 					fgettext("Dynamic shadows")) .. "]"
 	end
 
@@ -302,6 +306,10 @@ local function handle_settings_buttons(this, fields, tabname, tabdata)
 	end
 	if fields["cb_waving_plants"] then
 		core.settings:set("enable_waving_plants", fields["cb_waving_plants"])
+		return true
+	end
+	if fields["cb_enable_bloom"] then
+		core.settings:set("enable_bloom", fields["cb_enable_bloom"])
 		return true
 	end
 	if fields["btn_change_keys"] then

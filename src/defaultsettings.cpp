@@ -216,7 +216,7 @@ void set_default_settings()
 	settings->setDefault("video_driver", "opengl");
 #endif
 	settings->setDefault("cinematic", "false");
-	settings->setDefault("camera_smoothing", "0");
+	settings->setDefault("camera_smoothing", "0.35");
 	settings->setDefault("cinematic_camera_smoothing", "0.7");
 	settings->setDefault("enable_clouds", "true");
 	settings->setDefault("view_bobbing_amount", "1.0");
@@ -237,9 +237,9 @@ void set_default_settings()
 	settings->setDefault("node_highlighting", "box");
 	settings->setDefault("crosshair_color", "(255,255,255)");
 	settings->setDefault("crosshair_alpha", "255");
-	settings->setDefault("recent_chat_messages", "6");
-	settings->setDefault("hud_scaling", "1.0");
-	settings->setDefault("gui_scaling", "1.0");
+	settings->setDefault("recent_chat_messages", "5");
+	settings->setDefault("hud_scaling", "0.8");
+	settings->setDefault("gui_scaling", "0.8");
 	settings->setDefault("gui_scaling_filter", "false");
 	settings->setDefault("gui_scaling_filter_txr2img", "true");
 	settings->setDefault("desynchronize_mapblock_texture_animation", "true");
@@ -277,17 +277,17 @@ void set_default_settings()
 	settings->setDefault("water_wave_speed", "5.0");
 	settings->setDefault("enable_waving_leaves", "false");
 	settings->setDefault("enable_waving_plants", "false");
-	settings->setDefault("exposure_factor", "1.0");
+	settings->setDefault("exposure_factor", "1.5");
 	settings->setDefault("enable_bloom", "false");
 	settings->setDefault("enable_bloom_debug", "false");
-	settings->setDefault("bloom_strength_factor", "1.0");
+	settings->setDefault("bloom_strength_factor", "1.5");
 	settings->setDefault("bloom_intensity", "0.05");
-	settings->setDefault("bloom_radius", "1");
-	settings->setDefault("saturation", "1.0");
+	settings->setDefault("bloom_radius", "3.5");
+	settings->setDefault("saturation", "1.2");
 
 	// Effects Shadows
 	settings->setDefault("enable_dynamic_shadows", "false");
-	settings->setDefault("shadow_strength_gamma", "1.0");
+	settings->setDefault("shadow_strength_gamma", "1.5");
 	settings->setDefault("shadow_map_max_distance", "200.0");
 	settings->setDefault("shadow_map_texture_size", "2048");
 	settings->setDefault("shadow_map_texture_32bit", "true");
