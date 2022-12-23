@@ -206,12 +206,8 @@ void set_default_settings()
 	settings->setDefault("lighting_gamma", "15");
 	settings->setDefault("texture_path", "");
 	settings->setDefault("shader_path", "");
-#if ENABLE_GLES
-#ifdef _IRR_COMPILE_WITH_OGLES1_
+#ifdef HAVE_TOUCHSCREENGUI
 	settings->setDefault("video_driver", "ogles1");
-#else
-	settings->setDefault("video_driver", "ogles2");
-#endif
 #else
 	settings->setDefault("video_driver", "opengl");
 #endif

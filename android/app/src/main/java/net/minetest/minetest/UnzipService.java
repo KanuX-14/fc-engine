@@ -18,7 +18,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-package net.minetest.minetest;
+package net.freecraft.freecraft;
 
 import android.app.IntentService;
 import android.app.Notification;
@@ -46,10 +46,10 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 public class UnzipService extends IntentService {
-	public static final String ACTION_UPDATE = "net.minetest.minetest.UPDATE";
-	public static final String ACTION_PROGRESS = "net.minetest.minetest.PROGRESS";
-	public static final String ACTION_PROGRESS_MESSAGE = "net.minetest.minetest.PROGRESS_MESSAGE";
-	public static final String ACTION_FAILURE = "net.minetest.minetest.FAILURE";
+	public static final String ACTION_UPDATE = "net.freecraft.freecraft.UPDATE";
+	public static final String ACTION_PROGRESS = "net.freecraft.freecraft.PROGRESS";
+	public static final String ACTION_PROGRESS_MESSAGE = "net.freecraft.freecraft.PROGRESS_MESSAGE";
+	public static final String ACTION_FAILURE = "net.freecraft.freecraft.FAILURE";
 	public static final int SUCCESS = -1;
 	public static final int FAILURE = -2;
 	public static final int INDETERMINATE = -3;
@@ -67,13 +67,13 @@ public class UnzipService extends IntentService {
 	}
 
 	public UnzipService() {
-		super("net.minetest.minetest.UnzipService");
+		super("net.freecraft.freecraft.UnzipService");
 	}
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		Notification.Builder notificationBuilder = createNotification();
-		final File zipFile = new File(getCacheDir(), "Minetest.zip");
+		final File zipFile = new File(getCacheDir(), "FreeCraft.zip");
 		try {
 			setIsRunning(true);
 			File userDataDirectory = Utils.getUserDataDirectory(this);
@@ -96,15 +96,15 @@ public class UnzipService extends IntentService {
 		} finally {
 			setIsRunning(false);
 			if (!zipFile.delete()) {
-				Log.w("UnzipService", "Minetest installation ZIP cannot be deleted");
+				Log.w("UnzipService", "FreeCraft installation ZIP cannot be deleted");
 			}
 		}
 	}
 
 	private Notification.Builder createNotification() {
-		String name = "net.minetest.minetest";
-		String channelId = "Minetest channel";
-		String description = "notifications from Minetest";
+		String name = "net.freecraft.freecraft";
+		String channelId = "FreeCraft channel";
+		String description = "notifications from FreeCraft";
 		Notification.Builder builder;
 		if (mNotifyManager == null)
 			mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -208,7 +208,7 @@ public class UnzipService extends IntentService {
 			return;
 		}
 
-		File oldLocation = new File(Environment.getExternalStorageDirectory(), "Minetest");
+		File oldLocation = new File(Environment.getExternalStorageDirectory(), "FreeCraft");
 		if (!oldLocation.isDirectory())
 			return;
 
@@ -226,7 +226,7 @@ public class UnzipService extends IntentService {
 			}
 		}
 
-		for (String filename : new String[] { "minetest.conf" }) {
+		for (String filename : new String[] { "freecraft.conf" }) {
 			File file = new File(oldLocation, filename), file2 = new File(newLocation, filename);
 			if (file.isFile() && !file2.isFile()) {
 				moveFileOrDir(file, file2);

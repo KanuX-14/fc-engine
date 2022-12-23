@@ -18,7 +18,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-package net.minetest.minetest;
+package net.freecraft.freecraft;
 
 import android.app.NativeActivity;
 import android.content.Intent;
@@ -49,7 +49,7 @@ import java.util.Objects;
 public class GameActivity extends NativeActivity {
 	static {
 		System.loadLibrary("c++_shared");
-		System.loadLibrary("Minetest");
+		System.loadLibrary("FreeCraft");
 	}
 
 	private int messageReturnCode = -1;
@@ -86,7 +86,7 @@ public class GameActivity extends NativeActivity {
 
 	@Override
 	public void onBackPressed() {
-		// Ignore the back press so Minetest can handle it
+		// Ignore the back press so FreeCraft can handle it
 	}
 
 	public void showDialog(String acceptButton, String hint, String current, int editType) {
@@ -195,7 +195,7 @@ public class GameActivity extends NativeActivity {
 			return;
 		}
 
-		Uri fileUri = FileProvider.getUriForFile(this, "net.minetest.minetest.fileprovider", file);
+		Uri fileUri = FileProvider.getUriForFile(this, "net.freecraft.freecraft.fileprovider", file);
 
 		Intent intent = new Intent(Intent.ACTION_SEND, fileUri);
 		intent.setDataAndType(fileUri, getContentResolver().getType(fileUri));

@@ -98,7 +98,7 @@ LOCAL_SRC_FILES := deps/$(APP_ABI)/Zstd/libzstd.a
 include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := Minetest
+LOCAL_MODULE := FreeCraft
 
 LOCAL_CFLAGS += \
 	-DJSONCPP_NO_LOCALE_SUPPORT     \
