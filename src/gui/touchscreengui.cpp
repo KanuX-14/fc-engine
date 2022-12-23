@@ -517,7 +517,7 @@ void TouchScreenGUI::init(ISimpleTextureSource *tsrc)
 			L"H", false);
 
 	// init zoom button
-	initButton(zoom_id,
+	initButton(aux2_id,
 			rect<s32>(m_screensize.X - (1.25 * button_size),
 					m_screensize.Y - (4 * button_size),
 					m_screensize.X - (0.25 * button_size),

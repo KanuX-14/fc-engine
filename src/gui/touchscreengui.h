@@ -40,6 +40,7 @@ typedef enum
 	crunch_id,
 	zoom_id,
 	aux1_id,
+	aux2_id,
 	after_last_element_id,
 	settings_starter_id,
 	rare_controls_starter_id,
