@@ -32,7 +32,7 @@ the `init.lua` scripts in a shared environment.
 
 In order to load client-side mods, the following conditions need to be satisfied:
 
-1) `$path_user/minetest.conf` contains the setting `enable_client_modding = true`
+1) `$path_user/freecraft.conf` contains the setting `enable_client_modding = true`
 
 2) The client-side mod located in `$path_user/clientmods/<modname>` is added to
     `$path_user/clientmods/mods.conf` as `load_mod_<modname> = true`.
@@ -47,11 +47,11 @@ Paths
     * `$path_share`: `<build directory>`
 * `RUN_IN_PLACE=0`: (Linux release)
     * `$path_share`:
-        * Linux: `/usr/share/minetest`
-        * Windows: `<install directory>/minetest-0.4.x`
+        * Linux: `/usr/share/freecraft`
+        * Windows: `<install directory>/freecraft-0.4.x`
     * `$path_user`:
-        * Linux: `$HOME/.minetest`
-        * Windows: `C:/users/<user>/AppData/minetest` (maybe)
+        * Linux: `$HOME/.freecraft`
+        * Windows: `C:/users/<user>/AppData/freecraft` (maybe)
 
 Mod load path
 -------------
@@ -62,12 +62,12 @@ Generic:
 
 In a run-in-place version (e.g. the distributed windows version):
 
-* `minetest-0.4.x/clientmods/` (User-installed mods)
+* `freecraft-0.4.x/clientmods/` (User-installed mods)
 
 On an installed version on Linux:
 
-* `/usr/share/minetest/clientmods/`
-* `$HOME/.minetest/clientmods/` (User-installed mods)
+* `/usr/share/freecraft/clientmods/`
+* `$HOME/.freecraft/clientmods/` (User-installed mods)
 
 Modpack support
 ----------------
@@ -97,7 +97,7 @@ The location of this directory.
 
 An (optional) settings file that provides meta information about the mod.
 
-* `name`: The mod name. Allows Minetest to determine the mod name even if the
+* `name`: The mod name. Allows FreeCraft to determine the mod name even if the
           folder is wrongly named.
 * `description`: Description of mod to be shown in the Mods tab of the main
                  menu.
@@ -109,7 +109,7 @@ An (optional) settings file that provides meta information about the mod.
 ### `init.lua`
 
 The main Lua script. Running this script should register everything it
-wants to register. Subsequent execution depends on minetest calling the
+wants to register. Subsequent execution depends on freecraft calling the
 registered callbacks.
 
 **NOTE**: Client mods currently can't provide textures, sounds, or models by
@@ -625,7 +625,7 @@ Helper functions
 * `table.copy(table)`: returns a table
     * returns a deep copy of `table`
 
-Minetest namespace reference
+FreeCraft namespace reference
 ------------------------------
 
 ### Utilities
@@ -1145,7 +1145,7 @@ Methods:
     * Returns `true` on success, otherwise returns `nil`
 
 ### Settings
-An interface to read config files in the format of `minetest.conf`.
+An interface to read config files in the format of `freecraft.conf`.
 
 It can be created via `Settings(filename)`.
 

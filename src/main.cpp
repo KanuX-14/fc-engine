@@ -63,7 +63,7 @@ extern "C" {
 }
 
 #if !defined(__cpp_rtti) || !defined(__cpp_exceptions)
-#error Minetest cannot be built without exceptions or RTTI
+#error FreeCraft cannot be built without exceptions or RTTI
 #endif
 
 #if defined(__MINGW32__) && !defined(__MINGW64__) && !defined(__clang__) && \
@@ -346,15 +346,15 @@ static void set_allowed_options(OptionList *allowed_options)
 	allowed_options->insert(std::make_pair("gameid", ValueSpec(VALUETYPE_STRING,
 			_("Set gameid (\"--gameid list\" prints available ones)"))));
 	allowed_options->insert(std::make_pair("migrate", ValueSpec(VALUETYPE_STRING,
-			_("Migrate from current map backend to another (Only works when using minetestserver or with --server)"))));
+			_("Migrate from current map backend to another (Only works when using freecraftserver or with --server)"))));
 	allowed_options->insert(std::make_pair("migrate-players", ValueSpec(VALUETYPE_STRING,
-		_("Migrate from current players backend to another (Only works when using minetestserver or with --server)"))));
+		_("Migrate from current players backend to another (Only works when using freecraftserver or with --server)"))));
 	allowed_options->insert(std::make_pair("migrate-auth", ValueSpec(VALUETYPE_STRING,
-		_("Migrate from current auth backend to another (Only works when using minetestserver or with --server)"))));
+		_("Migrate from current auth backend to another (Only works when using freecraftserver or with --server)"))));
 	allowed_options->insert(std::make_pair("migrate-mod-storage", ValueSpec(VALUETYPE_STRING,
-		_("Migrate from current mod storage backend to another (Only works when using minetestserver or with --server)"))));
+		_("Migrate from current mod storage backend to another (Only works when using freecraftserver or with --server)"))));
 	allowed_options->insert(std::make_pair("terminal", ValueSpec(VALUETYPE_FLAG,
-			_("Feature an interactive terminal (Only works when using minetestserver or with --server)"))));
+			_("Feature an interactive terminal (Only works when using freecraftserver or with --server)"))));
 	allowed_options->insert(std::make_pair("recompress", ValueSpec(VALUETYPE_FLAG,
 			_("Recompress the blocks of the given map database."))));
 #ifndef SERVER
@@ -598,16 +598,16 @@ static bool read_config_file(const Settings &cmd_args)
 		g_settings_path = cmd_args.get("config");
 	} else {
 		std::vector<std::string> filenames;
-		filenames.push_back(porting::path_user + DIR_DELIM + "minetest.conf");
+		filenames.push_back(porting::path_user + DIR_DELIM + "freecraft.conf");
 		// Legacy configuration file location
 		filenames.push_back(porting::path_user +
-				DIR_DELIM + ".." + DIR_DELIM + "minetest.conf");
+				DIR_DELIM + ".." + DIR_DELIM + "freecreaft.conf");
 
 #if RUN_IN_PLACE
 		// Try also from a lower level (to aid having the same configuration
 		// for many RUN_IN_PLACE installs)
 		filenames.push_back(porting::path_user +
-				DIR_DELIM + ".." + DIR_DELIM + ".." + DIR_DELIM + "minetest.conf");
+				DIR_DELIM + ".." + DIR_DELIM + ".." + DIR_DELIM + "freecraft.conf");
 #endif
 
 		for (const std::string &filename : filenames) {
