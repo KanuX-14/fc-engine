@@ -9,7 +9,7 @@ stages:
   - deploy
 
 variables:
-  MINETEST_GAME_REPO: "https://github.com/minetest/minetest_game.git"
+  FREECRAFT_GAME_REPO: "https://github.com/KanuX-14/freecraft.git"
   CONTAINER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH
 
 .build_template:
@@ -20,7 +20,7 @@ variables:
   script:
     - git clone https://github.com/minetest/irrlicht lib/irrlichtmt --depth 1 -b $(cat misc/irrlichtmt_tag.txt)
     - mkdir build && cd build
-    - cmake -DCMAKE_INSTALL_PREFIX=../artifact/minetest/usr/ -DRUN_IN_PLACE=FALSE -DENABLE_GETTEXT=TRUE ..
+    - cmake -DCMAKE_INSTALL_PREFIX=../artifact/freecraft/usr/ -DRUN_IN_PLACE=FALSE -DENABLE_GETTEXT=TRUE ..
     - make -j $(($(nproc) + 1))
     - make install
   artifacts:
@@ -55,12 +55,12 @@ build:ubuntu-20.04:
   artifacts:
     expire_in: 90 day
     paths:
-      - minetest-*-win*/*
+      - freecraft-*-win*/*
 
 build:win32:
   extends: .build_win_template
   script:
-    - EXISTING_MINETEST_DIR=$PWD ./util/buildbot/buildwin32.sh build
+    - EXISTING_FREECRAFT_DIR=$PWD ./util/buildbot/buildwin32.sh build
     - unzip -q build/build/*.zip
   variables:
     WIN_ARCH: "i686"
@@ -68,7 +68,7 @@ build:win32:
 build:win64:
   extends: .build_win_template
   script:
-    - EXISTING_MINETEST_DIR=$PWD ./util/buildbot/buildwin64.sh build
+    - EXISTING_FREECRAFT_DIR=$PWD ./util/buildbot/buildwin64.sh build
     - unzip -q build/build/*.zip
   variables:
     WIN_ARCH: "x86_64"
@@ -118,12 +118,12 @@ package:appimage-client:
     - apt-get install -y git
     # Collect files
     - mkdir AppDir
-    - cp -a artifact/minetest/usr/ AppDir/usr/
-    - cp -a clientmods AppDir/usr/share/minetest
-    - git clone $MINETEST_GAME_REPO AppDir/usr/share/minetest/games/minetest_game
-    - rm -rf AppDir/usr/share/minetest/games/minetest_game/.git
+    - cp -a artifact/freecraft/usr/ AppDir/usr/
+    - cp -a clientmods AppDir/usr/share/freecraft
+    - git clone $FREECRAFT_GAME_REPO AppDir/usr/share/freecraft/games/freecraft
+    - rm -rf AppDir/usr/share/freecraft/games/freecraft/.git
     # Remove PrefersNonDefaultGPU property due to validation errors
-    - sed -i '/PrefersNonDefaultGPU/d' AppDir/usr/share/applications/net.minetest.minetest.desktop
+    - sed -i '/PrefersNonDefaultGPU/d' AppDir/usr/share/applications/net.freecraft.freecraft.desktop
   script:
     - export VERSION=$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA
     - appimage-builder --skip-test --recipe misc/AppImageBuilder.yml

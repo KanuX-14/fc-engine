@@ -71,7 +71,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <cstdio>
 
 #if !defined(SERVER) && defined(_WIN32)
-// On Windows export some driver-specific variables to encourage Minetest to be
+// On Windows export some driver-specific variables to encourage FreeCraft to be
 // executed on the discrete GPU in case of systems with two. Portability is fun.
 extern "C" {
 	__declspec(dllexport) DWORD NvOptimusEnablement = 1;
@@ -422,9 +422,9 @@ bool setSystemPaths()
 		path_share += DIR_DELIM "..";
 	}
 
-	// Use %MINETEST_USER_PATH%
-	DWORD len = GetEnvironmentVariable("MINETEST_USER_PATH", buf, sizeof(buf));
-	FATAL_ERROR_IF(len > sizeof(buf), "Failed to get MINETEST_USER_PATH (too large for buffer)");
+	// Use %FREECRAFT_USER_PATH%
+	DWORD len = GetEnvironmentVariable("FREECRAFT_USER_PATH", buf, sizeof(buf));
+	FATAL_ERROR_IF(len > sizeof(buf), "Failed to get FREECRAFT_USER_PATH (too large for buffer)");
 	if (len == 0) {
 		// Use "C:\Users\<user>\AppData\Roaming\<PROJECT_NAME_C>"
 		len = GetEnvironmentVariable("APPDATA", buf, sizeof(buf));
@@ -493,9 +493,9 @@ bool setSystemPaths()
 	}
 
 #ifndef __ANDROID__
-	const char *const minetest_user_path = getenv("MINETEST_USER_PATH");
-	if (minetest_user_path && minetest_user_path[0] != '\0') {
-		path_user = std::string(minetest_user_path);
+	const char *const FREECRAFT_USER_PATH = getenv("FREECRAFT_USER_PATH");
+	if (FREECRAFT_USER_PATH && FREECRAFT_USER_PATH[0] != '\0') {
+		path_user = std::string(FREECRAFT_USER_PATH);
 	} else {
 		path_user = std::string(getHomeOrFail()) + DIR_DELIM "."
 			+ PROJECT_NAME;
@@ -522,9 +522,9 @@ bool setSystemPaths()
 	}
 	CFRelease(resources_url);
 
-	const char *const minetest_user_path = getenv("MINETEST_USER_PATH");
-	if (minetest_user_path && minetest_user_path[0] != '\0') {
-		path_user = std::string(minetest_user_path);
+	const char *const FREECRAFT_USER_PATH = getenv("FREECRAFT_USER_PATH");
+	if (FREECRAFT_USER_PATH && FREECRAFT_USER_PATH[0] != '\0') {
+		path_user = std::string(FREECRAFT_USER_PATH);
 	} else {
 		path_user = std::string(getHomeOrFail())
 			+ "/Library/Application Support/"
@@ -539,9 +539,9 @@ bool setSystemPaths()
 bool setSystemPaths()
 {
 	path_share = STATIC_SHAREDIR;
-	const char *const minetest_user_path = getenv("MINETEST_USER_PATH");
-	if (minetest_user_path && minetest_user_path[0] != '\0') {
-		path_user = std::string(minetest_user_path);
+	const char *const FREECRAFT_USER_PATH = getenv("FREECRAFT_USER_PATH");
+	if (FREECRAFT_USER_PATH && FREECRAFT_USER_PATH[0] != '\0') {
+		path_user = std::string(FREECRAFT_USER_PATH);
 	} else {
 		path_user  = std::string(getHomeOrFail()) + DIR_DELIM "."
 			+ lowercase(PROJECT_NAME);

@@ -530,7 +530,7 @@ bool ScriptApiSecurity::checkPath(lua_State *L, const char *path,
 		cur_path = fs::RemoveLastPathComponent(cur_path, &component);
 		if (component == "..") {
 			// Parent components can't be allowed or we could allow something like
-			// /home/user/minetest/worlds/foo/noexist/../../../../../../etc/passwd.
+			// /home/user/freecraft/worlds/foo/noexist/../../../../../../etc/passwd.
 			// If we have previous non-relative elements in the path we might be
 			// able to remove them so that things like worlds/foo/noexist/../auth.txt
 			// could be allowed, but those paths will be interpreted as nonexistent

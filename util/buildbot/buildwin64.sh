@@ -1,12 +1,12 @@
 #!/bin/bash
 set -e
 
-CORE_GIT=https://github.com/minetest/minetest
+CORE_GIT=https://github.com/KanuX-14/fc-engine
 CORE_BRANCH=master
-CORE_NAME=minetest
-GAME_GIT=https://github.com/minetest/minetest_game
+CORE_NAME=fc-engine
+GAME_GIT=https://github.com/KanuX-14/freecraft
 GAME_BRANCH=master
-GAME_NAME=minetest_game
+GAME_NAME=freecraft
 
 topdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 if [ $# -ne 1 ]; then
@@ -94,14 +94,14 @@ download "http://minetest.kitsunemimi.pw/libleveldb-$leveldb_version-win64.zip" 
 download "http://minetest.kitsunemimi.pw/openal-soft-$openal_version-win64.zip"
 
 # Set source dir, downloading Minetest as needed
-if [ -n "$EXISTING_MINETEST_DIR" ]; then
-	sourcedir="$( cd "$EXISTING_MINETEST_DIR" && pwd )"
+if [ -n "$EXISTING_FREECRAFT_DIR" ]; then
+	sourcedir="$( cd "$EXISTING_FREECRAFT_DIR" && pwd )"
 else
 	cd $builddir
 	sourcedir=$PWD/$CORE_NAME
 	[ -d $CORE_NAME ] && { pushd $CORE_NAME; git pull; popd; } || \
 		git clone -b $CORE_BRANCH $CORE_GIT $CORE_NAME
-	if [ -z "$NO_MINETEST_GAME" ]; then
+	if [ -z "$NO_FREECRAFT_GAME" ]; then
 		cd $sourcedir
 		[ -d games/$GAME_NAME ] && { pushd games/$GAME_NAME; git pull; popd; } || \
 			git clone -b $GAME_BRANCH $GAME_GIT games/$GAME_NAME

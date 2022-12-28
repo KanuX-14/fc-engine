@@ -17,9 +17,9 @@ set(GCC_MINIMUM_VERSION "5.1")
 set(CLANG_MINIMUM_VERSION "3.5")
 
 # You should not need to edit these manually, use util/bump_version.sh
-set(VERSION_MAJOR 5)
-set(VERSION_MINOR 7)
-set(VERSION_PATCH 0)
+set(VERSION_MAJOR 0)
+set(VERSION_MINOR 1)
+set(VERSION_PATCH 3)
 set(VERSION_EXTRA "" CACHE STRING "Stuff to append to version string")
 
 # Change to false for releases
@@ -29,7 +29,7 @@ set(VERSION_STRING "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 if(VERSION_EXTRA)
 	set(VERSION_STRING "${VERSION_STRING}-${VERSION_EXTRA}")
 elseif(DEVELOPMENT_BUILD)
-	set(VERSION_STRING "${VERSION_STRING}-dev")
+	set(VERSION_STRING "${VERSION_STRING}-devonly")
 endif()
 
 if (CMAKE_BUILD_TYPE STREQUAL Debug)

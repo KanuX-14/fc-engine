@@ -5,17 +5,17 @@ local insert = table.insert
 local sprintf = string.format
 local rep = string.rep
 
-local minetest_example_header = [[
-#    This file contains a list of all available settings and their default value for minetest.conf
+local freecraft_example_header = [[
+#    This file contains a list of all available settings and their default value for freecraft.conf
 
 #    By default, all the settings are commented and not functional.
 #    Uncomment settings by removing the preceding #.
 
-#    minetest.conf is read by default from:
-#    ../minetest.conf
-#    ../../minetest.conf
+#    freecraft.conf is read by default from:
+#    ../freecraft.conf
+#    ../../freecraft.conf
 #    Any other path can be chosen by passing the path as a parameter
-#    to the program, eg. "minetest.exe --config ../minetest.conf.example".
+#    to the program, eg. "freecraft.exe --config ../freecraft.conf.example".
 
 #    Further documentation:
 #    https://wiki.minetest.net/
@@ -36,8 +36,8 @@ local group_format_template = [[
 
 ]]
 
-local function create_minetest_conf_example()
-	local result = { minetest_example_header }
+local function create_freecraft_conf_example()
+	local result = { freecraft_example_header }
 	for _, entry in ipairs(settings) do
 		if entry.type == "category" then
 			if entry.level == 0 then
@@ -131,12 +131,12 @@ local function create_translation_file()
 	return concat(result, "\n")
 end
 
-local file = assert(io.open("minetest.conf.example", "w"))
-file:write(create_minetest_conf_example())
+local file = assert(io.open("freecraft.conf.example", "w"))
+file:write(create_freecraft_conf_example())
 file:close()
 
 file = assert(io.open("src/settings_translation_file.cpp", "w"))
--- If 'minetest.conf.example' appears in the 'bin' folder, the line below may have to be
+-- If 'freecraft.conf.example' appears in the 'bin' folder, the line below may have to be
 -- used instead. The file will also appear in the 'bin' folder.
 --file = assert(io.open("settings_translation_file.cpp", "w"))
 file:write(create_translation_file())

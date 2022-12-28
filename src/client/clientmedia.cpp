@@ -158,7 +158,7 @@ void ClientMediaDownloader::step(Client *client)
 			startRemoteMediaTransfers();
 
 		// Did all remote transfers end and no new ones can be started?
-		// If so, request still missing files from the minetest server
+		// If so, request still missing files from the freecraft server
 		// (Or report that we have all files.)
 		if (m_httpfetch_active == 0) {
 			if (m_uncached_received_count < m_uncached_count) {
@@ -452,7 +452,7 @@ void ClientMediaDownloader::startConventionalTransfers(Client *client)
 
 	if (m_uncached_received_count != m_uncached_count) {
 		// Some media files have not been received yet, use the
-		// conventional slow method (minetest protocol) to get them
+		// conventional slow method (freecraft protocol) to get them
 		std::vector<std::string> file_requests;
 		for (auto &file : m_files) {
 			if (!file.second->received)
@@ -588,7 +588,7 @@ bool IClientMediaDownloader::checkAndLoad(
 }
 
 /*
-	Minetest Hashset File Format
+	FreeCraft Hashset File Format
 
 	All values are stored in big-endian byte order.
 	[u32] signature: 'MTHS'

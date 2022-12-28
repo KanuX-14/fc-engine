@@ -1,4 +1,4 @@
-Minetest Lua Mainmenu API Reference 5.7.0
+FreeCraft Lua Mainmenu API Reference 5.7.0
 =========================================
 
 Introduction
@@ -99,11 +99,11 @@ HTTP Requests
 * `core.download_file(url, target)` (possible in async calls)
     * `url` to download, and `target` to store to
     * returns true/false
-* `minetest.get_http_api()` (possible in async calls)
+* `freecraft.get_http_api()` (possible in async calls)
     * returns `HTTPApiTable` containing http functions.
     * The returned table contains the functions `fetch_sync`, `fetch_async` and
       `fetch_async_get` described below.
-    * Function only exists if minetest server was built with cURL support.
+    * Function only exists if freecraft server was built with cURL support.
 * `HTTPApiTable.fetch_sync(HTTPRequest req)`: returns HTTPRequestResult
     * Performs given request synchronously
 * `HTTPApiTable.fetch_async(HTTPRequest req)`: returns handle
@@ -129,7 +129,7 @@ Used by `HTTPApiTable.fetch` and `HTTPApiTable.fetch_async`.
         -- If post_data is not specified, a GET request is performed instead.
 
         user_agent = "ExampleUserAgent",
-        -- Optional, if specified replaces the default minetest user agent with
+        -- Optional, if specified replaces the default freecraft user agent with
         -- given string
 
         extra_headers = { "Accept-Language: en-us", "Accept-Charset: utf-8" },
@@ -230,16 +230,16 @@ Package - content which is downloadable from the content db, may or may not be i
 * `core.get_modpaths()` (possible in async calls)
     * returns table of virtual path to global modpaths, where mods have been installed
       The difference with `core.get_modpath` is that no mods should be installed in these
-      directories by Minetest -- they might be read-only.
+      directories by FreeCraft -- they might be read-only.
 
       Ex:
 
       ```
       {
-          mods = "/home/user/.minetest/mods",
-          share = "/usr/share/minetest/mods",
+          mods = "/home/user/.freecraft/mods",
+          share = "/usr/share/freecraft/mods",
 
-          -- Custom dirs can be specified by the MINETEST_MOD_DIR env variable
+          -- Custom dirs can be specified by the FREECRAFT_MOD_DIR env variable
           ["/path/to/custom/dir"] = "/path/to/custom/dir",
       }
       ```
@@ -310,7 +310,7 @@ Settings
 * `core.settings:save()` -> nil, save all settings to config file
 
 For a complete list of methods of the `Settings` object see
-[lua_api.txt](https://github.com/minetest/minetest/blob/master/doc/lua_api.txt)
+[lua_api.txt](https://github.com/KanuX-14/fc-engine/blob/master/doc/lua_api.txt)
 
 
 Worlds
@@ -352,9 +352,9 @@ Helpers
   * eg. `string.trim("\n \t\tfoo bar\t ")` == `"foo bar"`
 * `core.is_yes(arg)` (possible in async calls)
   * returns whether `arg` can be interpreted as yes
-* `minetest.encode_base64(string)` (possible in async calls)
+* `freecraft.encode_base64(string)` (possible in async calls)
   * Encodes a string in base64.
-* `minetest.decode_base64(string)` (possible in async calls)
+* `freecraft.decode_base64(string)` (possible in async calls)
   * Decodes a string encoded in base64.
 
 

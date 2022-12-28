@@ -858,7 +858,7 @@ static bool determine_subgame(GameParams *game_params)
 		if (game_params->game_spec.isValid()) {
 			gamespec = game_params->game_spec;
 			infostream << "Using commanded gameid [" << gamespec.id << "]" << std::endl;
-		} else { // Otherwise we will be using "minetest"
+		} else { // Otherwise we will be using "freecraft"
 			gamespec = findSubgame(g_settings->get("default_game"));
 			infostream << "Using default gameid [" << gamespec.id << "]" << std::endl;
 			if (!gamespec.isValid()) {
@@ -955,7 +955,7 @@ static bool run_dedicated_server(const GameParams &game_params, const Settings &
 		if (!name_ok) {
 			if (admin_nick.empty()) {
 				errorstream << "No name given for admin. "
-					<< "Please check your minetest.conf that it "
+					<< "Please check your freecraft.conf that it "
 					<< "contains a 'name = ' to your main admin account."
 					<< std::endl;
 			} else {

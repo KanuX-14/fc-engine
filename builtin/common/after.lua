@@ -29,7 +29,7 @@ end)
 
 function core.after(after, func, ...)
 	assert(tonumber(after) and type(func) == "function",
-		"Invalid minetest.after invocation")
+		"Invalid freecraft.after invocation")
 	local expire = time + after
 	local new_job = {
 		func = func,

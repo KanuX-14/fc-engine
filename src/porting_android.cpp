@@ -69,11 +69,11 @@ void android_main(android_app *app)
  * ToDo: this doesn't work as expected, there's a workaround for it right now
  */
 extern "C" {
-	JNIEXPORT void JNICALL Java_net_minetest_minetest_GameActivity_putMessageBoxResult(
+	JNIEXPORT void JNICALL Java_net_freecraft_freecraft_GameActivity_putMessageBoxResult(
 			JNIEnv *env, jclass thiz, jstring text)
 	{
 		errorstream <<
-			"Java_net_minetest_minetest_GameActivity_putMessageBoxResult got: " <<
+			"Java_net_freecraft_freecraft_GameActivity_putMessageBoxResult got: " <<
 			std::string((const char*) env->GetStringChars(text, nullptr)) << std::endl;
 	}
 }
@@ -114,7 +114,7 @@ void initAndroid()
 		exit(-1);
 	}
 
-	nativeActivity = findClass("net/minetest/minetest/GameActivity");
+	nativeActivity = findClass("net/freecraft/freecraft/GameActivity");
 	if (nativeActivity == nullptr)
 		errorstream <<
 			"porting::initAndroid unable to find java native activity class" <<

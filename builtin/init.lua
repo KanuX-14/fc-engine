@@ -1,5 +1,5 @@
 --
--- This file contains built-in stuff in Minetest implemented in Lua.
+-- This file contains built-in stuff in FreeCraft implemented in Lua.
 --
 -- It is always loaded and executed after registration of the C API,
 -- before loading and running any mods.
@@ -24,7 +24,6 @@ do
 	end
 end
 math.randomseed(os.time())
-minetest = core
 
 -- Load other files
 local scriptdir = core.get_builtin_path()
@@ -32,6 +31,8 @@ local gamepath = scriptdir .. "game" .. DIR_DELIM
 local clientpath = scriptdir .. "client" .. DIR_DELIM
 local commonpath = scriptdir .. "common" .. DIR_DELIM
 local asyncpath = scriptdir .. "async" .. DIR_DELIM
+
+freecraft = core
 
 dofile(commonpath .. "vector.lua")
 dofile(commonpath .. "strict.lua")

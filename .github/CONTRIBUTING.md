@@ -14,7 +14,7 @@ Contributions are welcome! Here's how you can help:
    [clone](https://help.github.com/articles/cloning-a-repository/) your fork.
 
 2. Before you start coding, consider opening an
-   [issue at Github](https://github.com/minetest/minetest/issues) to discuss the
+   [issue at Github](https://github.com/KanuX-14/fc-engine/issues) to discuss the
    suitability and implementation of your intended contribution with the core
    developers.
 
@@ -30,9 +30,9 @@ Contributions are welcome! Here's how you can help:
 
 3. Start coding!
     - Refer to the
-      [Lua API](https://github.com/minetest/minetest/blob/master/doc/lua_api.txt),
+      [Lua API](https://github.com/KanuX-14/fc-engine/blob/master/doc/lua_api.txt),
       [Developer Wiki](http://dev.minetest.net/Main_Page) and other
-      [documentation](https://github.com/minetest/minetest/tree/master/doc).
+      [documentation](https://github.com/KanuX-14/fc-engine/tree/master/doc).
     - Follow the [C/C++](http://dev.minetest.net/Code_style_guidelines) and
       [Lua](http://dev.minetest.net/Lua_code_style_guidelines) code style guidelines.
     - Check your code works as expected and document any changes to the Lua API.
@@ -50,7 +50,7 @@ Contributions are welcome! Here's how you can help:
     - The following lines should describe the commit, starting a new line for each point.
 
 5. Once you are happy with your changes, submit a pull request.
-     - Open the [pull-request form](https://github.com/minetest/minetest/pull/new/master).
+     - Open the [pull-request form](https://github.com/KanuX-14/fc-engine/pull/new/master).
      - Add a description explaining what you've done (or if it's a
        work-in-progress - what you need to do).
      - Make sure to fill out the pull request template.
@@ -69,7 +69,7 @@ Contributions are welcome! Here's how you can help:
 
 ### Important note about automated GitHub checks
 
-When you submit a pull request, GitHub automatically runs checks on the Minetest
+When you submit a pull request, GitHub automatically runs checks on the FreeCraft
 Engine combined with your changes. One of these checks is called 'cpp lint /
 clang format', which checks code formatting. Because formatting for readability
 requires human judgement this check often fails and often makes unsuitable
@@ -87,14 +87,14 @@ If you experience an issue, we would like to know the details - especially when
 a stable release is on the way.
 
 1. Do a quick search on GitHub to check if the issue has already been reported.
-2. Is it an issue with the Minetest *engine*? If not, report it
+2. Is it an issue with the FreeCraft *engine*? If not, report it
    [elsewhere](http://www.minetest.net/development/#reporting-issues).
-3. [Open an issue](https://github.com/minetest/minetest/issues/new) and describe
+3. [Open an issue](https://github.com/KanuX-14/fc-engine/issues/new) and describe
    the issue you are having - you could include:
      - Error logs (check the bottom of the `debug.txt` file).
      - Screenshots.
      - Ways you have tried to solve the issue, and whether they worked or not.
-     - Your Minetest version and the content (games, mods or texture packs) you have installed.
+     - Your FreeCraft version and the content (games, mods or texture packs) you have installed.
      - Your platform (e.g. Windows 10 or Ubuntu 15.04 x64).
 
 After reporting you should aim to answer questions or clarifications as this
@@ -110,7 +110,7 @@ possible.
 
 ## Translations
 
-The core translations of Minetest are performed using Weblate. You can access
+The core translations of FreeCraft are performed using Weblate. You can access
 the project page with a list of current languages
 [here](https://hosted.weblate.org/projects/minetest/minetest/).
 
@@ -121,7 +121,7 @@ translated by editing a `.tr` text file. See
 
 ## Donations
 
-If you'd like to monetarily support Minetest development, you can find donation
+If you'd like to monetarily support FreeCraft development, you can find donation
 methods on [our website](http://www.minetest.net/development/#donate).
 
 # Maintaining
@@ -129,7 +129,7 @@ methods on [our website](http://www.minetest.net/development/#donate).
 * This is a concise version of the
   [Rules & Guidelines](http://dev.minetest.net/Category:Rules_and_Guidelines) on the developer wiki.*
 
-These notes are for those who have push access Minetest (core developers / maintainers).
+These notes are for those who have push access FreeCraft (core developers / maintainers).
 
 - See the [project organisation](http://dev.minetest.net/Organisation) for the people involved.
 
@@ -170,13 +170,13 @@ Submit a :+1: (+1) or "Looks good" comment to show you believe the pull-request 
     - The title should follow the commit guidelines (title starts with a capital letter, present tense, descriptive).
     - Don't modify history older than 10 minutes.
     - Use rebase, not merge to get linear history:
-    - `curl https://github.com/minetest/minetest/pull/1.patch | git am`
+    - `curl https://github.com/KanuX-14/fc-engine/pull/1.patch | git am`
 
 ## Reviewing issues and feature requests
 
 - If an issue does not get a response from its author within 1 month (when requiring more details), it can be closed.
 - When an issue is a duplicate, refer to the first ones and close the later ones.
-- Tag issues with the appropriate [labels](https://github.com/minetest/minetest/labels) for devices, platforms etc.
+- Tag issues with the appropriate [labels](https://github.com/KanuX-14/fc-engine/labels) for devices, platforms etc.
 
 ## Releasing a new version
 

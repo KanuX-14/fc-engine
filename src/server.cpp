@@ -267,15 +267,15 @@ Server::Server(
 	m_metrics_backend = std::make_unique<MetricsBackend>();
 #endif
 
-	m_uptime_counter = m_metrics_backend->addCounter("minetest_core_server_uptime", "Server uptime (in seconds)");
-	m_player_gauge = m_metrics_backend->addGauge("minetest_core_player_number", "Number of connected players");
+	m_uptime_counter = m_metrics_backend->addCounter("freecraft_core_server_uptime", "Server uptime (in seconds)");
+	m_player_gauge = m_metrics_backend->addGauge("freecraft_core_player_number", "Number of connected players");
 
 	m_timeofday_gauge = m_metrics_backend->addGauge(
-			"minetest_core_timeofday",
+			"freecraft_core_timeofday",
 			"Time of day value");
 
 	m_lag_gauge = m_metrics_backend->addGauge(
-			"minetest_core_latency",
+			"freecraft_core_latency",
 			"Latency value (in seconds)");
 
 
@@ -284,20 +284,20 @@ Server::Server(
 		std::string help_str("Number of active object messages generated (");
 		help_str.append(aom_types[i]).append(")");
 		m_aom_buffer_counter[i] = m_metrics_backend->addCounter(
-				"minetest_core_aom_generated_count", help_str,
+				"freecraft_core_aom_generated_count", help_str,
 				{{"type", aom_types[i]}});
 	}
 
 	m_packet_recv_counter = m_metrics_backend->addCounter(
-			"minetest_core_server_packet_recv",
+			"freecraft_core_server_packet_recv",
 			"Processable packets received");
 
 	m_packet_recv_processed_counter = m_metrics_backend->addCounter(
-			"minetest_core_server_packet_recv_processed",
+			"freecraft_core_server_packet_recv_processed",
 			"Valid received packets processed");
 
 	m_map_edit_event_counter = m_metrics_backend->addCounter(
-			"minetest_core_map_edit_events",
+			"freecraft_core_map_edit_events",
 			"Number of map edit events");
 
 	m_lag_gauge->set(g_settings->getFloat("dedicated_server_step"));

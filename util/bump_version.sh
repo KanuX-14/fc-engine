@@ -38,7 +38,7 @@ read_versions() {
 	fi
 	CURRENT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH"
 
-	echo "Current Minetest version: $CURRENT_VERSION"
+	echo "Current FreeCraft version: $CURRENT_VERSION"
 	echo "Current Android version code: $ANDROID_VERSION_CODE"
 }
 
@@ -151,10 +151,10 @@ perform_release() {
 	local release_version=$1
 	RELEASE_DATE=$(date +%Y-%m-%d)
 
-	sed -i '/\<release/s/\(version\)="[^"]*"/\1="'"$release_version"'"/' misc/net.minetest.minetest.appdata.xml
-	sed -i 's/\(<release date\)="[^"]*"/\1="'"$RELEASE_DATE"'"/' misc/net.minetest.minetest.appdata.xml
+	sed -i '/\<release/s/\(version\)="[^"]*"/\1="'"$release_version"'"/' misc/net.freecraft.freecraft.appdata.xml
+	sed -i 's/\(<release date\)="[^"]*"/\1="'"$RELEASE_DATE"'"/' misc/net.freecraft.freetype.appdata.xml
 
-	git add -f misc/net.minetest.minetest.appdata.xml
+	git add -f misc/net.freecraft.freecraft.appdata.xml
 
 	git commit -m "Bump version to $release_version"
 
@@ -175,7 +175,7 @@ back_to_devel() {
 # Start of main logic:
 #######################
 
-# Switch to top minetest directory
+# Switch to top freecraft directory
 cd ${0%/*}/..
 
 # Determine old versions

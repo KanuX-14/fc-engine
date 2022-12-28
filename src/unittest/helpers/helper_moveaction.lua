@@ -1,4 +1,4 @@
-minetest.register_allow_player_inventory_action(function(player, action, inventory, info)
+freecraft.register_allow_player_inventory_action(function(player, action, inventory, info)
 	if info.stack:get_name() == "default:water" then
 		return 0
 	end

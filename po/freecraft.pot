@@ -5071,7 +5071,7 @@ msgstr ""
 #: src/settings_translation_file.cpp
 msgid ""
 "Instrument global callback functions on registration.\n"
-"(anything you pass to a minetest.register_*() function)"
+"(anything you pass to a freecraft.register_*() function)"
 msgstr ""
 
 #: src/settings_translation_file.cpp

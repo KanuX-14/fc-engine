@@ -561,7 +561,7 @@ void ShadowRenderer::createShaders()
 		}
 
 		// HACK, TODO: investigate this better
-		// Grab the material renderer once more so minetest doesn't crash
+		// Grab the material renderer once more so freecraft doesn't crash
 		// on exit
 		m_driver->getMaterialRenderer(depth_shader)->grab();
 	}
@@ -600,7 +600,7 @@ void ShadowRenderer::createShaders()
 		}
 
 		// HACK, TODO: investigate this better
-		// Grab the material renderer once more so minetest doesn't crash
+		// Grab the material renderer once more so freecraft doesn't crash
 		// on exit
 		m_driver->getMaterialRenderer(depth_shader_entities)->grab();
 	}
@@ -640,7 +640,7 @@ void ShadowRenderer::createShaders()
 		}
 
 		// HACK, TODO: investigate this better
-		// Grab the material renderer once more so minetest doesn't crash
+		// Grab the material renderer once more so freecraft doesn't crash
 		// on exit
 		m_driver->getMaterialRenderer(mixcsm_shader)->grab();
 	}
@@ -677,7 +677,7 @@ void ShadowRenderer::createShaders()
 		}
 
 		// HACK, TODO: investigate this better
-		// Grab the material renderer once more so minetest doesn't crash
+		// Grab the material renderer once more so freecraft doesn't crash
 		// on exit
 		m_driver->getMaterialRenderer(depth_shader_trans)->grab();
 	}

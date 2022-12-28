@@ -77,7 +77,7 @@ struct GameFindPath
 
 std::string getSubgamePathEnv()
 {
-	char *subgame_path = getenv("MINETEST_SUBGAME_PATH");
+	char *subgame_path = getenv("FREECRAFT_SUBGAME_PATH");
 	return subgame_path ? std::string(subgame_path) : "";
 }
 
@@ -246,7 +246,7 @@ std::vector<SubgameSpec> getAvailableGames()
 	return specs;
 }
 
-#define LEGACY_GAMEID "minetest"
+#define LEGACY_GAMEID "freecraft"
 
 bool getWorldExists(const std::string &world_path)
 {
@@ -276,7 +276,7 @@ std::string getWorldGameId(const std::string &world_path, bool can_be_legacy)
 	bool succeeded = conf.readConfigFile(conf_path.c_str());
 	if (!succeeded) {
 		if (can_be_legacy) {
-			// If map_meta.txt exists, it is probably an old minetest world
+			// If map_meta.txt exists, it is probably an old freecraft world
 			if (fs::PathExists(world_path + DIR_DELIM + "map_meta.txt"))
 				return LEGACY_GAMEID;
 		}
@@ -292,7 +292,7 @@ std::string getWorldGameId(const std::string &world_path, bool can_be_legacy)
 
 std::string getWorldPathEnv()
 {
-	char *world_path = getenv("MINETEST_WORLD_PATH");
+	char *world_path = getenv("FREECRAFT_WORLD_PATH");
 	return world_path ? std::string(world_path) : "";
 }
 
@@ -426,7 +426,7 @@ void loadGameConfAndInitWorld(const std::string &path, const std::string &name,
 
 std::vector<std::string> getEnvModPaths()
 {
-	const char *c_mod_path = getenv("MINETEST_MOD_PATH");
+	const char *c_mod_path = getenv("FREECRAFT_MOD_PATH");
 	std::vector<std::string> paths;
 	Strfnd search_paths(c_mod_path ? c_mod_path : "");
 	while (!search_paths.at_end())

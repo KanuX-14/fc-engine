@@ -22,8 +22,8 @@ install_linux_deps() {
 
 	sudo systemctl start postgresql.service
 	sudo -u postgres psql <<<"
-		CREATE USER minetest WITH PASSWORD 'minetest';
-		CREATE DATABASE minetest;
+		CREATE USER freecraft WITH PASSWORD 'freecraft';
+		CREATE DATABASE freecraft;
 	"
 }
 

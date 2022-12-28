@@ -74,7 +74,7 @@
 	<url type="donation">https://liberapay.com/KanuX-14</url>
 	<url type="faq">https://wiki.minetest.net/FAQ</url>
 	<url type="help">https://wiki.minetest.net</url>
-	<url type="vcs-browser">https://github.com/minetest/minetest</url>
+	<url type="vcs-browser">https://github.com/KanuX-14/fc-engine</url>
 	<url type="contribute">https://www.minetest.net/get-involved/</url>
 	<provides>
 		<binary>freecraft</binary>

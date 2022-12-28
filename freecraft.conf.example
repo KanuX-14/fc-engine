@@ -1,13 +1,13 @@
-#    This file contains a list of all available settings and their default value for minetest.conf
+#    This file contains a list of all available settings and their default value for freecraft.conf
 
 #    By default, all the settings are commented and not functional.
 #    Uncomment settings by removing the preceding #.
 
-#    minetest.conf is read by default from:
-#    ../minetest.conf
-#    ../../minetest.conf
+#    freecraft.conf is read by default from:
+#    ../freecraft.conf
+#    ../../freecraft.conf
 #    Any other path can be chosen by passing the path as a parameter
-#    to the program, eg. "minetest.exe --config ../minetest.conf.example".
+#    to the program, eg. "freecraft.exe --config ../freecraft.conf.example".
 
 #    Further documentation:
 #    https://wiki.minetest.net/
@@ -656,7 +656,7 @@
 #    "nonfree" can be used to hide packages which do not qualify as 'free software',
 #    as defined by the Free Software Foundation.
 #    You can also specify content ratings.
-#    These flags are independent from Minetest versions,
+#    These flags are independent from FreeCraft versions,
 #    so see a full list at https://content.minetest.net/help/content_flags/
 #    type: string
 # contentdb_flag_blacklist = nonfree, desktop_default
@@ -685,7 +685,7 @@
 #    type: bool
 # enable_split_login_register = true
 
-#    URL to JSON file which provides information about the newest Minetest release
+#    URL to JSON file which provides information about the newest FreeCraft release
 #    type: string
 # update_information_url = https://www.minetest.net/release_info.json
 
@@ -713,7 +713,7 @@
 
 #    Name of the server, to be displayed when players join and in the serverlist.
 #    type: string
-# server_name = Minetest server
+# server_name = FreeCraft server
 
 #    Description of server, to be displayed when players join and in the serverlist.
 #    type: string
@@ -2839,7 +2839,7 @@
 ### Networking
 
 #    Prometheus listener address.
-#    If Minetest is compiled with ENABLE_PROMETHEUS option enabled,
+#    If FreeCraft is compiled with ENABLE_PROMETHEUS option enabled,
 #    enable metrics listener for Prometheus on that address.
 #    Metrics can be fetched on http://127.0.0.1:30000/metrics
 #    type: string
@@ -3089,7 +3089,7 @@
 #    type: float min: 0.5 max: 5
 # display_density_factor = 1
 
-#    Windows systems only: Start Minetest with the command line window in the background.
+#    Windows systems only: Start FreeCraft with the command line window in the background.
 #    Contains the same information as the file debug.txt (default name).
 #    type: bool
 # enable_console = false
