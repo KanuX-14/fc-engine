@@ -124,7 +124,7 @@ void initAndroid()
 	// in the start-up code
 	__android_log_print(ANDROID_LOG_ERROR, PROJECT_NAME_C,
 			"Initializing GPROF profiler");
-	monstartup("libMinetest.so");
+	monstartup("libFreeCraft.so");
 #endif
 }
 
