@@ -568,7 +568,11 @@ void script_dump_packed(const PackedValue *val)
 				printf("table(%d, %d)", i.uidata1, i.uidata2);
 				break;
 			case LUA_TFUNCTION:
+#if (__aarch64__) || (__x86_64__)		
 				printf("function(%lu byte)", i.sdata.size());
+#else
+				printf("function(%u byte)", i.sdata.size());
+#endif				
 				break;
 			case LUA_TUSERDATA:
 				printf("userdata %s %p", i.sdata.c_str(), i.ptrdata);
