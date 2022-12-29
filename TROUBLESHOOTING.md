@@ -1,9 +1,16 @@
 Troubleshooting
 ===============
 
+General
+-------
+
+- FreeCraft use it's own Modding API call type (freecraft), but Minetest uses their own call type (minetest).<br>
+Until the implementation of the automated version detection get done, it is recommended to set `modding_api` (Advanced/Temporary Settings) to anything else than `freecraft`.<br>
+The default value is set to `freecraft` because of this engine calls. It can be reset at any moment.
+
 Android
 -------
 
 - If the game is crashing after 7AM/7PM (in-game time), your device can not handle the in-game music.<br>
-It is possible to disable the music by modifying the 'music_volume' value to 0.<br>
+It is possible to disable the music by modifying the `music_volume` (Content: Games/FreeCraft) value to 0.<br>
 If the gameplay is offline only, it is recommended to go to `Android/data/net.freecraft.freecraft/files/FreeCraft/games/freecraft/mods/default/sounds` and delete the `music` folder or move it out of the `mods` folder.
