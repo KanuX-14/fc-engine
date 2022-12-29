@@ -491,3 +491,9 @@ minor/trivial features considered necessary.
 Since 5.0.0-dev and 0.4.17-dev, the dev notation refers to the next release,
 i.e.: 5.0.0-dev is the development version leading to 5.0.0.
 Prior to that we used `previous_version-dev`.
+
+Troubleshooting
+---------------
+
+If your device is misbehaving, consider posting it on [issues](https://github.com/KanuX-14/fc-engine/issues) using this [template](https://github.com/KanuX-14/fc-engine/blob/master/.github/ISSUE_TEMPLATE/bug_report.md).<br>
+Known issued can be found under the [troubleshoot page](https://github.com/KanuX-14/fc-engine/blob/master/TROUBLESHOOTING.md).
