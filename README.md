@@ -447,6 +447,10 @@ make install
 open ./build/macos/freecraft.app
 ```
 
+### Compiling for Android
+
+See the [Android compiling instructions](https://github.com/KanuX-14/fc-engine/android/README.md).
+
 Docker
 ------
 We provide FreeCraft server Docker images using the GitLab mirror registry.
