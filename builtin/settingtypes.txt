@@ -2075,6 +2075,10 @@ remote_port (Remote port) int 30000 1 65535
 #    This will be overridden when creating a world from the main menu.
 default_game (Default game) string freecraft
 
+#    Default modding API.
+#    All the core calls will use this name.
+modding_api (Modding API) string freecraft
+
 #    Enable players getting damage and dying.
 enable_damage (Damage) bool false
 

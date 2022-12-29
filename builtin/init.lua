@@ -32,7 +32,8 @@ local clientpath = scriptdir .. "client" .. DIR_DELIM
 local commonpath = scriptdir .. "common" .. DIR_DELIM
 local asyncpath = scriptdir .. "async" .. DIR_DELIM
 
-freecraft = core
+local modding_api = core.settings:get("modding_api") or "freecraft"
+if (modding_api == "freecraft") then freecraft = core else minetest = core end
 
 dofile(commonpath .. "vector.lua")
 dofile(commonpath .. "strict.lua")

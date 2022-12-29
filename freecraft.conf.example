@@ -3185,6 +3185,11 @@
 #    type: string
 # default_game = freecraft
 
+#    Default modding API.
+#    All the core calls will use this name.
+#    type: string
+# modding_api = freecraft
+
 #    Enable players getting damage and dying.
 #    type: bool
 # enable_damage = false

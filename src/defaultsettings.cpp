@@ -381,6 +381,7 @@ void set_default_settings()
 	settings->setDefault("time_send_interval", "5");
 
 	settings->setDefault("default_game", "freecraft");
+	settings->setDefault("modding_api", "freecraft");
 	settings->setDefault("motd", "");
 	settings->setDefault("max_users", "15");
 	settings->setDefault("creative_mode", "false");
