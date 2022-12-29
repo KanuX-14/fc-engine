@@ -449,7 +449,7 @@ open ./build/macos/freecraft.app
 
 ### Compiling for Android
 
-See the [Android compiling instructions](https://github.com/KanuX-14/fc-engine/android/README.md).
+See the [Android compiling instructions](https://github.com/KanuX-14/fc-engine/blob/master/android/README.md).
 
 Docker
 ------
