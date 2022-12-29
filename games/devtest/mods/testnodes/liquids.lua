@@ -7,7 +7,7 @@ for d=0, 8 do
 	else
 		tt_normal = "\n".."Swimmable, spreading, renewable liquid"
 	end
-	minetest.register_node("testnodes:rliquid_"..d, {
+	freecraft.register_node("testnodes:rliquid_"..d, {
 		description = "Test Liquid Source, Range "..d..
 			tt_normal,
 		drawtype = "liquid",
@@ -27,7 +27,7 @@ for d=0, 8 do
 		liquid_range = d,
 	})
 
-	minetest.register_node("testnodes:rliquid_flowing_"..d, {
+	freecraft.register_node("testnodes:rliquid_flowing_"..d, {
 		description = "Flowing Test Liquid, Range "..d..
 			tt_normal,
 		drawtype = "flowingliquid",
@@ -56,7 +56,7 @@ for d=0, 8 do
 	end
 
 	local mod = "^[colorize:#000000:127"
-	minetest.register_node("testnodes:vliquid_"..d, {
+	freecraft.register_node("testnodes:vliquid_"..d, {
 		description = "Test Liquid Source, Viscosity/Resistance "..d.."\n"..
 			"Swimmable, spreading, renewable liquid"..
 			tt_reduced,
@@ -77,7 +77,7 @@ for d=0, 8 do
 		liquid_viscosity = d,
 	})
 
-	minetest.register_node("testnodes:vliquid_flowing_"..d, {
+	freecraft.register_node("testnodes:vliquid_flowing_"..d, {
 		description = "Flowing Test Liquid, Viscosity/Resistance "..d.."\n"..
 			"Swimmable, spreading, renewable liquid"..
 			tt_reduced,
@@ -101,7 +101,7 @@ for d=0, 8 do
 
 	mod = "^[colorize:#000000:192"
 	local v = 4
-	minetest.register_node("testnodes:vrliquid_"..d, {
+	freecraft.register_node("testnodes:vrliquid_"..d, {
 		description = "Test Liquid Source, Viscosity "..v..", Resistance "..d.."\n"..
 			"Swimmable, spreading, renewable liquid"..
 			tt_reduced,
@@ -125,7 +125,7 @@ for d=0, 8 do
 		move_resistance = d,
 	})
 
-	minetest.register_node("testnodes:vrliquid_flowing_"..d, {
+	freecraft.register_node("testnodes:vrliquid_flowing_"..d, {
 		description = "Flowing Test Liquid, Viscosity "..v..", Resistance "..d.."\n"..
 			"Swimmable, spreading, renewable liquid"..
 			tt_reduced,

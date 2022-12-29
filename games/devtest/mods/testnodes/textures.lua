@@ -1,8 +1,8 @@
 -- Node texture tests
 
-local S = minetest.get_translator("testnodes")
+local S = freecraft.get_translator("testnodes")
 
-minetest.register_node("testnodes:6sides", {
+freecraft.register_node("testnodes:6sides", {
 	description = S("Six Textures Test Node").."\n"..
 		S("Has 1 texture per face"),
 	tiles = {
@@ -17,7 +17,7 @@ minetest.register_node("testnodes:6sides", {
 	groups = { dig_immediate = 2 },
 })
 
-minetest.register_node("testnodes:anim", {
+freecraft.register_node("testnodes:anim", {
 	description = S("Animated Test Node").."\n"..
 		S("Tiles animate from A to D in 4s cycle"),
 	tiles = {
@@ -41,7 +41,7 @@ for a=1,#alphas do
 	local alpha = alphas[a]
 
 	-- Transparency taken from texture
-	minetest.register_node("testnodes:alpha_texture_"..alpha, {
+	freecraft.register_node("testnodes:alpha_texture_"..alpha, {
 		description = S("Texture Alpha Test Node (@1)", alpha).."\n"..
 			S("Semi-transparent"),
 		drawtype = "glasslike",
@@ -55,7 +55,7 @@ for a=1,#alphas do
 	})
 
 	-- Transparency set via texture modifier
-	minetest.register_node("testnodes:alpha_"..alpha, {
+	freecraft.register_node("testnodes:alpha_"..alpha, {
 		description = S("Alpha Test Node (@1)", alpha).."\n"..
 			S("Semi-transparent"),
 		drawtype = "glasslike",
@@ -132,32 +132,32 @@ for i=1, #fractal do
 	data_ck[i] = checker[i] > 0 and "#F80" or "#000"
 end
 
-local textures_path = minetest.get_modpath( minetest.get_current_modname() ) .. "/textures/"
-minetest.safe_file_write(
+local textures_path = freecraft.get_modpath( freecraft.get_current_modname() ) .. "/textures/"
+freecraft.safe_file_write(
 	textures_path .. "testnodes_generated_mb.png",
-	minetest.encode_png(512,512,data_mb)
+	freecraft.encode_png(512,512,data_mb)
 )
-minetest.safe_file_write(
+freecraft.safe_file_write(
 	textures_path .. "testnodes_generated_ck.png",
-	minetest.encode_png(512,512,data_ck)
+	freecraft.encode_png(512,512,data_ck)
 )
 
-minetest.register_node("testnodes:generated_png_mb", {
+freecraft.register_node("testnodes:generated_png_mb", {
 	description = S("Generated Mandelbrot PNG Test Node"),
 	tiles = { "testnodes_generated_mb.png" },
 
 	groups = { dig_immediate = 2 },
 })
-minetest.register_node("testnodes:generated_png_ck", {
+freecraft.register_node("testnodes:generated_png_ck", {
 	description = S("Generated Checker PNG Test Node"),
 	tiles = { "testnodes_generated_ck.png" },
 
 	groups = { dig_immediate = 2 },
 })
 
-local png_emb = "[png:" .. minetest.encode_base64(minetest.encode_png(64,64,data_emb))
+local png_emb = "[png:" .. freecraft.encode_base64(freecraft.encode_png(64,64,data_emb))
 
-minetest.register_node("testnodes:generated_png_emb", {
+freecraft.register_node("testnodes:generated_png_emb", {
 	description = S("Generated In-Band Mandelbrot PNG Test Node"),
 	tiles = { png_emb },
 
@@ -166,7 +166,7 @@ minetest.register_node("testnodes:generated_png_emb", {
 	paramtype = "light",
 	groups = { dig_immediate = 2 },
 })
-minetest.register_node("testnodes:generated_png_src_emb", {
+freecraft.register_node("testnodes:generated_png_src_emb", {
 	description = S("Generated In-Band Source Blit Mandelbrot PNG Test Node"),
 	tiles = { png_emb .. "^testnodes_damage_neg.png" },
 
@@ -175,7 +175,7 @@ minetest.register_node("testnodes:generated_png_src_emb", {
 	paramtype = "light",
 	groups = { dig_immediate = 2 },
 })
-minetest.register_node("testnodes:generated_png_dst_emb", {
+freecraft.register_node("testnodes:generated_png_dst_emb", {
 	description = S("Generated In-Band Dest Blit Mandelbrot PNG Test Node"),
 	tiles = { "testnodes_generated_ck.png^" .. png_emb },
 
@@ -186,22 +186,22 @@ minetest.register_node("testnodes:generated_png_dst_emb", {
 
 The following nodes can be used to demonstrate the TGA format support.
 
-Minetest supports TGA types 1, 2, 3 & 10. While adding the support for
+freecraft supports TGA types 1, 2, 3 & 10. While adding the support for
 TGA type 9 (RLE-compressed, color-mapped) is easy, it is not advisable
-to do so, as it is not backwards compatible with any Minetest pre-5.5;
+to do so, as it is not backwards compatible with any freecraft pre-5.5;
 content creators should therefore either use TGA type 1 or 10, or PNG.
 
 TODO: Types 1, 2 & 10 should have two test nodes each (i.e. bottom-top
 and top-bottom) for 16bpp (A1R5G5B5), 24bpp (B8G8R8), 32bpp (B8G8R8A8)
 colors.
 
-Note: Minetest requires the optional TGA footer for a texture to load.
-If a TGA image does not load in Minetest, append eight (8) null bytes,
+Note: freecraft requires the optional TGA footer for a texture to load.
+If a TGA image does not load in freecraft, append eight (8) null bytes,
 then the string “TRUEVISION-XFILE.”, then another null byte.
 
 ]]--
 
-minetest.register_node("testnodes:tga_type1_24bpp_bt", {
+freecraft.register_node("testnodes:tga_type1_24bpp_bt", {
 	description = S("TGA Type 1 (color-mapped RGB) 24bpp bottom-top Test Node"),
 	drawtype = "glasslike",
 	paramtype = "light",
@@ -210,7 +210,7 @@ minetest.register_node("testnodes:tga_type1_24bpp_bt", {
 	groups = { dig_immediate = 2 },
 })
 
-minetest.register_node("testnodes:tga_type1_24bpp_tb", {
+freecraft.register_node("testnodes:tga_type1_24bpp_tb", {
 	description = S("TGA Type 1 (color-mapped RGB) 24bpp top-bottom Test Node"),
 	drawtype = "glasslike",
 	paramtype = "light",
@@ -219,7 +219,7 @@ minetest.register_node("testnodes:tga_type1_24bpp_tb", {
 	groups = { dig_immediate = 2 },
 })
 
-minetest.register_node("testnodes:tga_type2_16bpp_bt", {
+freecraft.register_node("testnodes:tga_type2_16bpp_bt", {
 	description = S("TGA Type 2 (uncompressed RGB) 16bpp bottom-top Test Node"),
 	drawtype = "glasslike",
 	paramtype = "light",
@@ -229,7 +229,7 @@ minetest.register_node("testnodes:tga_type2_16bpp_bt", {
 	groups = { dig_immediate = 2 },
 })
 
-minetest.register_node("testnodes:tga_type2_16bpp_tb", {
+freecraft.register_node("testnodes:tga_type2_16bpp_tb", {
 	description = S("TGA Type 2 (uncompressed RGB) 16bpp top-bottom Test Node"),
 	drawtype = "glasslike",
 	paramtype = "light",
@@ -239,7 +239,7 @@ minetest.register_node("testnodes:tga_type2_16bpp_tb", {
 	groups = { dig_immediate = 2 },
 })
 
-minetest.register_node("testnodes:tga_type2_32bpp_bt", {
+freecraft.register_node("testnodes:tga_type2_32bpp_bt", {
 	description = S("TGA Type 2 (uncompressed RGB) 32bpp bottom-top Test Node"),
 	drawtype = "glasslike",
 	paramtype = "light",
@@ -249,7 +249,7 @@ minetest.register_node("testnodes:tga_type2_32bpp_bt", {
 	groups = { dig_immediate = 2 },
 })
 
-minetest.register_node("testnodes:tga_type2_32bpp_tb", {
+freecraft.register_node("testnodes:tga_type2_32bpp_tb", {
 	description = S("TGA Type 2 (uncompressed RGB) 32bpp top-bottom Test Node"),
 	drawtype = "glasslike",
 	paramtype = "light",
@@ -259,7 +259,7 @@ minetest.register_node("testnodes:tga_type2_32bpp_tb", {
 	groups = { dig_immediate = 2 },
 })
 
-minetest.register_node("testnodes:tga_type3_16bpp_bt", {
+freecraft.register_node("testnodes:tga_type3_16bpp_bt", {
 	description = S("TGA Type 3 (uncompressed grayscale) 16bpp bottom-top Test Node"),
 	drawtype = "glasslike",
 	paramtype = "light",
@@ -269,7 +269,7 @@ minetest.register_node("testnodes:tga_type3_16bpp_bt", {
 	groups = { dig_immediate = 2 },
 })
 
-minetest.register_node("testnodes:tga_type3_16bpp_tb", {
+freecraft.register_node("testnodes:tga_type3_16bpp_tb", {
 	description = S("TGA Type 3 (uncompressed grayscale) 16bpp top-bottom Test Node"),
 	drawtype = "glasslike",
 	paramtype = "light",
@@ -279,7 +279,7 @@ minetest.register_node("testnodes:tga_type3_16bpp_tb", {
 	groups = { dig_immediate = 2 },
 })
 
-minetest.register_node("testnodes:tga_type10_32bpp_bt", {
+freecraft.register_node("testnodes:tga_type10_32bpp_bt", {
 	description = S("TGA Type 10 (RLE-compressed RGB) 32bpp bottom-top Test Node"),
 	tiles = { "testnodes_tga_type10_32bpp_bt.tga" },
 	drawtype = "glasslike",
@@ -289,7 +289,7 @@ minetest.register_node("testnodes:tga_type10_32bpp_bt", {
 	groups = { dig_immediate = 2 },
 })
 
-minetest.register_node("testnodes:tga_type10_32bpp_tb", {
+freecraft.register_node("testnodes:tga_type10_32bpp_tb", {
 	description = S("TGA Type 10 (RLE-compressed RGB) 32bpp top-bottom Test Node"),
 	drawtype = "glasslike",
 	paramtype = "light",

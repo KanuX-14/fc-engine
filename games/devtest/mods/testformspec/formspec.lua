@@ -1,4 +1,4 @@
-local color = minetest.colorize
+local color = freecraft.colorize
 
 local clip_fs = [[
 	style_type[label,button,image_button,item_image_button,
@@ -139,8 +139,8 @@ This is a test of the global tag. The parameters are:
 background=gray margin=20 valign=bottom halign=right color=pink hovercolor=purple size=12 font=mono
 <action name=global>action</action>]]
 
-local hypertext_fs = "hypertext[0,0;11,9;hypertext;"..minetest.formspec_escape(hypertext_basic).."]"..
-	"hypertext[0,9.5;11,2.5;hypertext;"..minetest.formspec_escape(hypertext_global).."]"
+local hypertext_fs = "hypertext[0,0;11,9;hypertext;"..freecraft.formspec_escape(hypertext_basic).."]"..
+	"hypertext[0,9.5;11,2.5;hypertext;"..freecraft.formspec_escape(hypertext_global).."]"
 
 local style_fs = [[
 	style[one_btn1;bgcolor=red;textcolor=yellow;bgcolor_hovered=orange;
@@ -215,11 +215,11 @@ local style_fs = [[
 
 	style[one_f3;textcolor=yellow]
 	textarea[0,7.025;2.5,0.8;one_f3;Label;]] ..
-		minetest.formspec_escape("Yellow Text\nLine two") .. [[ ]
+		freecraft.formspec_escape("Yellow Text\nLine two") .. [[ ]
 
 	style[one_f4;border=false;textcolor=cyan]
 	textarea[0,8.324999999999999;2.5,0.8;one_f4;Label;]] ..
-		minetest.formspec_escape("Borderless Cyan Text\nLine two") .. [[ ]
+		freecraft.formspec_escape("Borderless Cyan Text\nLine two") .. [[ ]
 
 	container_end[]
 ]]
@@ -474,10 +474,10 @@ local function show_test_formspec(pname)
 
 	local fs = page .. "tabheader[0,0;11,0.65;maintabs;Real Coord,Styles,Noclip,Hypertext,Tabs,Invs,Window,Anim,Model,ScrollC,Sound,Background,Unsized;" .. page_id .. ";false;false]"
 
-	minetest.show_formspec(pname, "testformspec:formspec", fs)
+	freecraft.show_formspec(pname, "testformspec:formspec", fs)
 end
 
-minetest.register_on_player_receive_fields(function(player, formname, fields)
+freecraft.register_on_player_receive_fields(function(player, formname, fields)
 	if formname ~= "testformspec:formspec" then
 		return false
 	end
@@ -489,15 +489,15 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 
 	if fields.ani_img_1 and fields.ani_btn_1 then
-		minetest.chat_send_player(player:get_player_name(), "ani_img_1 = " .. tostring(fields.ani_img_1))
+		freecraft.chat_send_player(player:get_player_name(), "ani_img_1 = " .. tostring(fields.ani_img_1))
 		return true
 	elseif fields.ani_img_2 and fields.ani_btn_2 then
-		minetest.chat_send_player(player:get_player_name(), "ani_img_2 = " .. tostring(fields.ani_img_2))
+		freecraft.chat_send_player(player:get_player_name(), "ani_img_2 = " .. tostring(fields.ani_img_2))
 		return true
 	end
 
 	if fields.hypertext then
-		minetest.chat_send_player(player:get_player_name(), "Hypertext action received: " .. tostring(fields.hypertext))
+		freecraft.chat_send_player(player:get_player_name(), "Hypertext action received: " .. tostring(fields.hypertext))
 		return true
 	end
 
@@ -522,11 +522,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 end)
 
-minetest.register_chatcommand("test_formspec", {
+freecraft.register_chatcommand("test_formspec", {
 	params = "",
 	description = "Open the test formspec",
 	func = function(name)
-		if not minetest.get_player_by_name(name) then
+		if not freecraft.get_player_by_name(name) then
 			return false, "You need to be online!"
 		end
 

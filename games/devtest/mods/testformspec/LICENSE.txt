@@ -1,6 +1,6 @@
 License of media files
 ----------------------
-Content imported from minetest_game.
+Content imported from freecraft.
 
 
 BlockMen (CC BY-SA 3.0)

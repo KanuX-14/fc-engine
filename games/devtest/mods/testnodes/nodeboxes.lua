@@ -1,9 +1,9 @@
-local S = minetest.get_translator("testnodes")
+local S = freecraft.get_translator("testnodes")
 
 -- Nodebox examples and tests.
 
 -- An simple example nodebox with one centered box
-minetest.register_node("testnodes:nodebox_fixed", {
+freecraft.register_node("testnodes:nodebox_fixed", {
 	description = S("Fixed Nodebox Test Node").."\n"..
 		S("Nodebox is always the same"),
 	tiles = {"testnodes_nodebox.png"},
@@ -18,7 +18,7 @@ minetest.register_node("testnodes:nodebox_fixed", {
 })
 
 -- 50% higher than a regular node
-minetest.register_node("testnodes:nodebox_overhigh", {
+freecraft.register_node("testnodes:nodebox_overhigh", {
 	description = S("+50% high Nodebox Test Node"),
 	tiles = {"testnodes_nodebox.png"},
 	drawtype = "nodebox",
@@ -32,7 +32,7 @@ minetest.register_node("testnodes:nodebox_overhigh", {
 })
 
 -- 95% higher than a regular node
-minetest.register_node("testnodes:nodebox_overhigh2", {
+freecraft.register_node("testnodes:nodebox_overhigh2", {
 	description = S("+95% high Nodebox Test Node"),
 	tiles = {"testnodes_nodebox.png"},
 	drawtype = "nodebox",
@@ -47,7 +47,7 @@ minetest.register_node("testnodes:nodebox_overhigh2", {
 })
 
 -- Height of nodebox changes with its param2 value
-minetest.register_node("testnodes:nodebox_leveled", {
+freecraft.register_node("testnodes:nodebox_leveled", {
 	description = S("Leveled Nodebox Test Node").."\n"..
 		S("param2 = height (0..127)"),
 	tiles = {"testnodes_nodebox.png^[colorize:#0F0:32"},
@@ -82,7 +82,7 @@ local nodebox_wall_thick = {
 }
 
 -- Wall-like nodebox that connects to neighbors
-minetest.register_node("testnodes:nodebox_connected", {
+freecraft.register_node("testnodes:nodebox_connected", {
 	description = S("Connected Nodebox Test Node").."\n"..
 		S("Connects to neighbors"),
 	tiles = {"testnodes_nodebox.png^[colorize:#F00:32"},
@@ -94,7 +94,7 @@ minetest.register_node("testnodes:nodebox_connected", {
 	node_box = nodebox_wall,
 })
 
-minetest.register_node("testnodes:nodebox_connected_facedir", {
+freecraft.register_node("testnodes:nodebox_connected_facedir", {
 	description = S("Facedir Connected Nodebox Test Node").."\n"..
 		S("Connects to neighbors").."\n"..
 		S("param2 = facedir rotation of textures (not of the nodebox!)"),
@@ -115,7 +115,7 @@ minetest.register_node("testnodes:nodebox_connected_facedir", {
 	node_box = nodebox_wall_thick,
 })
 
-minetest.register_node("testnodes:nodebox_connected_4dir", {
+freecraft.register_node("testnodes:nodebox_connected_4dir", {
 	description = S("4Dir Connected Nodebox Test Node").."\n"..
 		S("Connects to neighbors").."\n"..
 		S("param2 = 4dir rotation of textures (not of the nodebox!)"),
