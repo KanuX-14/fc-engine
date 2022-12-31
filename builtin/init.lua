@@ -38,7 +38,8 @@ if (userdir == "") then core.settings:set("user_directory", core.get_user_path()
 
 -- -- Get configuration file and apply based on the engine
 local game_name = core.settings:get("menu_last_game")
-local conf_path = userdir .. DIR_DELIM .. "games" .. DIR_DELIM .. game_name .. DIR_DELIM .. "freecraft.conf"
+local conf_path = userdir .. "games" .. DIR_DELIM .. game_name .. DIR_DELIM .. "freecraft.conf"
+print(conf_path)
 
 if (core.check_file(conf_path)) then
 	freecraft = core
