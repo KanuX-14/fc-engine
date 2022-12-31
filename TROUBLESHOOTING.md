@@ -5,8 +5,8 @@ General
 -------
 
 - FreeCraft use it's own Modding API call type (freecraft), but Minetest uses their own call type (minetest).<br>
-Until the implementation of the automated version detection get done, it is recommended to set `modding_api` (Advanced/Temporary Settings) to anything else than `freecraft`.<br>
-The default value is set to `freecraft` because of this engine calls. It can be reset at any moment.
+Currently there is no possible way to use Minetest mods on FreeCraft engine.<br>
+The default value is set to `freecraft` because of this engine calls.
 
 Android
 -------
