@@ -202,14 +202,16 @@ end
 local function dummy_func() end
 
 function core.deserialize(str, safe)
+	local engine = core.settings:get("modding_api") or "freecraft"
+
 	-- Backwards compatibility
 	if str == nil then
-		core.log("deprecated", "freecraft.deserialize called with nil (expected string).")
+		core.log("deprecated", "" .. engine .. ".deserialize called with nil (expected string).")
 		return nil, "Invalid type: Expected a string, got nil"
 	end
 	local t = type(str)
 	if t ~= "string" then
-		error(("freecraft.deserialize called with %s (expected string)."):format(t))
+		error((engine .. ".deserialize called with %s (expected string)."):format(t))
 	end
 
 	local func, err = loadstring(str)

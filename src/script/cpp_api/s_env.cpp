@@ -18,6 +18,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 
 #include "cpp_api/s_env.h"
+#include <cstring>
 #include "cpp_api/s_internal.h"
 #include "common/c_converter.h"
 #include "log.h"
@@ -63,8 +64,9 @@ void ScriptApiEnv::player_event(ServerActiveObject *player, const std::string &t
 	if (player == NULL)
 		return;
 
-	// Get freecraft.registered_playerevents
-	lua_getglobal(L, "freecraft");
+	// Get engine.registered_playerevents
+	std::string engine = g_settings->get("modding_api");
+	lua_getglobal(L, engine.c_str());
 	lua_getfield(L, -1, "registered_playerevents");
 
 	// Call callbacks

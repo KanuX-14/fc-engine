@@ -190,7 +190,8 @@ end)
 
 core.register_chatcommand("privs", {
 	func = function(param)
-		return true, core.privs_to_string(freecraft.get_privilege_list())
+		local engine = core.settings:get("modding_api") or "freecraft"
+		return true, core.privs_to_string(engine.get_privilege_list())
 	end,
 })
 

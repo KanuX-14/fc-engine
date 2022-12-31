@@ -382,6 +382,7 @@ void set_default_settings()
 
 	settings->setDefault("default_game", "freecraft");
 	settings->setDefault("modding_api", "freecraft");
+	settings->setDefault("user_directory", "");
 	settings->setDefault("motd", "");
 	settings->setDefault("max_users", "15");
 	settings->setDefault("creative_mode", "false");

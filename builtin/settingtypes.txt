@@ -2079,6 +2079,10 @@ default_game (Default game) string freecraft
 #    All the core calls will use this name.
 modding_api (Modding API) string freecraft
 
+#    User directory.
+#    Used for detecting the engine's modding API.
+user_directory (User Directory) string
+
 #    Enable players getting damage and dying.
 enable_damage (Damage) bool false
 

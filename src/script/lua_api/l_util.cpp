@@ -279,6 +279,18 @@ int ModApiUtil::l_get_user_path(lua_State *L)
 	return 1;
 }
 
+// check_file(file)
+int ModApiUtil::l_check_file(lua_State *L)
+{
+	NO_MAP_LOCK_REQUIRED;
+
+	std::string path = luaL_checkstring(L, 1);
+	bool file = g_settings->readConfigFile(path.c_str());
+	if (file) {lua_pushboolean(L, true);} else {lua_pushboolean(L, false);}
+
+	return 1;
+}
+
 enum LuaCompressMethod
 {
 	LUA_COMPRESS_METHOD_DEFLATE,
@@ -657,6 +669,7 @@ void ModApiUtil::Initialize(lua_State *L, int top)
 
 	API_FCT(get_builtin_path);
 	API_FCT(get_user_path);
+	API_FCT(check_file);
 
 	API_FCT(compress);
 	API_FCT(decompress);
@@ -726,6 +739,7 @@ void ModApiUtil::InitializeAsync(lua_State *L, int top)
 
 	API_FCT(get_builtin_path);
 	API_FCT(get_user_path);
+	API_FCT(check_file);
 
 	API_FCT(compress);
 	API_FCT(decompress);

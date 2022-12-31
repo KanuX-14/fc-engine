@@ -102,6 +102,9 @@ private:
 	// get_builtin_path()
 	static int l_get_builtin_path(lua_State *L);
 
+	// check_file(file)
+	static int l_check_file(lua_State *L);
+
 	// get_csm_restrictions()
 	static int l_get_csm_restrictions(lua_State *L);
 

@@ -243,6 +243,8 @@ Package - content which is downloadable from the content db, may or may not be i
           ["/path/to/custom/dir"] = "/path/to/custom/dir",
       }
       ```
+* `core.check_file(file)` (possible in async calls)
+    * returns a boolean if the current file exists or not.
 
 * `core.get_clientmodpath()` (possible in async calls)
     * returns path to global client-side modpath
