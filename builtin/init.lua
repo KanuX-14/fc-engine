@@ -33,20 +33,25 @@ local commonpath = scriptdir .. "common" .. DIR_DELIM
 local asyncpath = scriptdir .. "async" .. DIR_DELIM
 
 -- Check if user directory is already set
-local userdir = core.settings:get("user_directory")
-if (userdir == "") then core.settings:set("user_directory", core.get_user_path() .. DIR_DELIM) end
-
--- -- Get configuration file and apply based on the engine
-local game_name = core.settings:get("menu_last_game")
-local conf_path = userdir .. "games" .. DIR_DELIM .. game_name .. DIR_DELIM .. "freecraft.conf"
-print(conf_path)
-
-if (core.check_file(conf_path)) then
-	freecraft = core
-	core.settings:set("modding_api", "freecraft")
-else
+local mt_compatibility = core.settings:get_bool("mt_compatibility")
+if mt_compatibility then
 	minetest = core
 	core.settings:set("modding_api", "minetest")
+else
+	local userdir = core.settings:get("user_directory")
+	if (userdir == "") then core.settings:set("user_directory", core.get_user_path() .. DIR_DELIM) end
+
+	-- -- Get configuration file and apply based on the engine
+	local game_name = core.settings:get("menu_last_game")
+	local conf_path = userdir .. "games" .. DIR_DELIM .. game_name .. DIR_DELIM .. "freecraft.conf"
+
+	if (core.check_file(conf_path)) then
+		freecraft = core
+		core.settings:set("modding_api", "freecraft")
+	else
+		minetest = core
+		core.settings:set("modding_api", "minetest")
+	end
 end
 
 dofile(commonpath .. "vector.lua")

@@ -2083,6 +2083,10 @@ modding_api (Modding API) string freecraft
 #    Used for detecting the engine's modding API.
 user_directory (User Directory) string
 
+#    Force compatibility with Minetest engine.
+#    Ignores automatic detection.
+mt_compatibility (Minetest Compatibility) bool false
+
 #    Enable players getting damage and dying.
 enable_damage (Damage) bool false
 

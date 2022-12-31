@@ -145,7 +145,7 @@ end
 
 local function formspec(tabview, name, tabdata)
 	local tab_string =
-		"box[0,0;3.75,4.5;#999999]" ..
+		"box[0,0;3.75,5.0;#999999]" ..
 		"checkbox[0.25,0;cb_smooth_lighting;" .. fgettext("Smooth Lighting") .. ";"
 				.. dump(core.settings:get_bool("smooth_lighting")) .. "]" ..
 		"checkbox[0.25,0.5;cb_particles;" .. fgettext("Particles") .. ";"
@@ -156,9 +156,11 @@ local function formspec(tabview, name, tabdata)
 				.. dump(core.settings:get_bool("opaque_water")) .. "]" ..
 		"checkbox[0.25,2.0;cb_connected_glass;" .. fgettext("Connected Glass") .. ";"
 				.. dump(core.settings:get_bool("connected_glass")) .. "]" ..
-		"dropdown[0.25,2.8;3.5;dd_node_highlighting;" .. dd_options.node_highlighting[1] .. ";"
+		"checkbox[0.25,2.5;cb_mt_compatibility;" .. fgettext("Minetest Compatibility") .. ";"
+				.. dump(core.settings:get_bool("mt_compatibility")) .. "]" ..
+		"dropdown[0.25,3.2;3.5;dd_node_highlighting;" .. dd_options.node_highlighting[1] .. ";"
 				.. getSettingIndex.NodeHighlighting() .. "]" ..
-		"dropdown[0.25,3.6;3.5;dd_leaves_style;" .. dd_options.leaves[1] .. ";"
+		"dropdown[0.25,4.1;3.5;dd_leaves_style;" .. dd_options.leaves[1] .. ";"
 				.. getSettingIndex.Leaves() .. "]" ..
 		"box[4,0;3.75,4.9;#999999]" ..
 		"label[4.25,0.1;" .. fgettext("Texturing:") .. "]" ..
@@ -283,6 +285,10 @@ local function handle_settings_buttons(this, fields, tabname, tabdata)
 	end
 	if fields["cb_connected_glass"] then
 		core.settings:set("connected_glass", fields["cb_connected_glass"])
+		return true
+	end
+	if fields["cb_mt_compatibility"] then
+		core.settings:set("mt_compatibility", fields["cb_mt_compatibility"])
 		return true
 	end
 	if fields["cb_autosave_screensize"] then
