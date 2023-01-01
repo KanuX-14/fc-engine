@@ -286,7 +286,7 @@ int ModApiUtil::l_check_file(lua_State *L)
 
 	std::string path = luaL_checkstring(L, 1);
 	bool file = g_settings->readConfigFile(path.c_str());
-	if (file) {lua_pushboolean(L, true);} else {lua_pushboolean(L, false);}
+	lua_pushboolean(L, file);
 
 	return 1;
 }
