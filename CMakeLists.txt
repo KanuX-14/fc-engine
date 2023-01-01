@@ -19,7 +19,7 @@ set(CLANG_MINIMUM_VERSION "3.5")
 # You should not need to edit these manually, use util/bump_version.sh
 set(VERSION_MAJOR 0)
 set(VERSION_MINOR 1)
-set(VERSION_PATCH 3)
+set(VERSION_PATCH 4)
 set(VERSION_EXTRA "" CACHE STRING "Stuff to append to version string")
 
 # Change to false for releases
