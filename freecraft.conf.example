@@ -95,6 +95,12 @@
 #    type: bool
 # virtual_joystick_triggers_aux1 = false
 
+#    Old Minetest way to manipulate the 'use' (right-click / double tap) event.
+#
+#    FreeCraft default value use single tap detection.
+#    type: bool
+# legacy_tap_detection = false
+
 #
 # Graphics and Audio
 #

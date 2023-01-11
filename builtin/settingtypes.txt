@@ -129,6 +129,10 @@ fixed_virtual_joystick (Fixed virtual joystick) bool false
 #    If enabled, virtual joystick will also tap "Aux1" button when out of main circle.
 virtual_joystick_triggers_aux1 (Virtual joystick triggers Aux1 button) bool false
 
+#     Old Minetest way to manipulate the 'use' (right-click / double tap) event.
+#
+#     FreeCraft default value use single tap detection.
+legacy_tap_detection (Legacy tap detection) bool false
 
 [Graphics and Audio]
 

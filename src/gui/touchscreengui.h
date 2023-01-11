@@ -83,7 +83,7 @@ typedef enum
 
 #define MIN_DIG_TIME_MS 500
 #define BUTTON_REPEAT_DELAY 0.2f
-#define SETTINGS_BAR_Y_OFFSET 5
+#define SETTINGS_BAR_Y_OFFSET 7.5f
 #define RARE_CONTROLS_BAR_Y_OFFSET 5
 
 // Very slow button repeat frequency
@@ -284,8 +284,8 @@ private:
 	// handle pressed hud buttons
 	bool isHUDButton(const SEvent &event);
 
-	// handle double taps
-	bool doubleTapDetection();
+	// handle use taps
+	bool tapDetection(bool isLegacy);
 
 	// handle release event
 	void handleReleaseEvent(size_t evt_id);
