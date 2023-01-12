@@ -505,6 +505,10 @@ bool Settings::getBool(const std::string &name) const
 	return is_yes(get(name));
 }
 
+u8 Settings::getU8(const std::string &name) const
+{
+	return stoi(get(name), 0, 255);
+}
 
 u16 Settings::getU16(const std::string &name) const
 {
@@ -737,6 +741,16 @@ bool Settings::getFloatNoEx(const std::string &name, float &val) const
 {
 	try {
 		val = getFloat(name);
+		return true;
+	} catch (SettingNotFoundException &e) {
+		return false;
+	}
+}
+
+bool Settings::getU8NoEx(const std::string &name, u8 &val) const
+{
+	try {
+		val = getU8(name);
 		return true;
 	} catch (SettingNotFoundException &e) {
 		return false;

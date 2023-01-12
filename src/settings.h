@@ -158,6 +158,7 @@ public:
 	Settings *getGroup(const std::string &name) const;
 	const std::string &get(const std::string &name) const;
 	bool getBool(const std::string &name) const;
+	u8 getU8(const std::string &name) const;
 	u16 getU16(const std::string &name) const;
 	s16 getS16(const std::string &name) const;
 	u32 getU32(const std::string &name) const;
@@ -188,6 +189,7 @@ public:
 	bool getGroupNoEx(const std::string &name, Settings *&val) const;
 	bool getNoEx(const std::string &name, std::string &val) const;
 	bool getFlag(const std::string &name) const;
+	bool getU8NoEx(const std::string &name, u8 &val) const;
 	bool getU16NoEx(const std::string &name, u16 &val) const;
 	bool getS16NoEx(const std::string &name, s16 &val) const;
 	bool getU32NoEx(const std::string &name, u32 &val) const;
