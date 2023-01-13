@@ -12,7 +12,7 @@ FreeCraft Engine is a modificated version of Minetest engine, used for extra con
 
 Copyright (C):<br>
 2010-2022 Perttu Ahola <celeron55@gmail.com> (Minetest creator)<br>
-2022-2022 KanuX-14 <kanux.dev@gmail.com> (FreeCraft creator)<br>
+2022-2023 KanuX-14 <kanux.dev@gmail.com> (FreeCraft creator)<br>
 and contributors (see source file comments and the version control log)
 
 In case you downloaded the source code

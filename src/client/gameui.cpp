@@ -1,7 +1,8 @@
 /*
-Minetest
+Minetest / FreeCraft
 Copyright (C) 2010-2013 celeron55, Perttu Ahola <celeron55@gmail.com>
 Copyright (C) 2018 nerzhul, Loic Blot <loic.blot@unix-experience.fr>
+Copyright (C) 2023 KanuX-14 <kanux.dev@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
