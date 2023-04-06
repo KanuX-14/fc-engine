@@ -74,26 +74,35 @@ struct MapEditEvent
 	MapEditEventType type = MEET_OTHER;
 	v3s16 p;
 	MapNode n = CONTENT_AIR;
-	std::set<v3s16> modified_blocks;
+	std::vector<v3s16> modified_blocks; // Represents a set
 	bool is_private_change = false;
 
 	MapEditEvent() = default;
+
+	// Sets the event's position and marks the block as modified.
+	void setPositionModified(v3s16 pos)
+	{
+		assert(modified_blocks.empty()); // only meant for initialization (once)
+		p = pos;
+		modified_blocks.push_back(getNodeBlockPos(pos));
+	}
+
+	void setModifiedBlocks(const std::map<v3s16, MapBlock *> blocks)
+	{
+		assert(modified_blocks.empty()); // only meant for initialization (once)
+		modified_blocks.reserve(blocks.size());
+		for (const auto &block : blocks)
+			modified_blocks.push_back(block.first);
+	}
 
 	VoxelArea getArea() const
 	{
 		switch(type){
 		case MEET_ADDNODE:
-			return VoxelArea(p);
 		case MEET_REMOVENODE:
-			return VoxelArea(p);
 		case MEET_SWAPNODE:
-			return VoxelArea(p);
 		case MEET_BLOCK_NODE_METADATA_CHANGED:
-		{
-			v3s16 np1 = p*MAP_BLOCKSIZE;
-			v3s16 np2 = np1 + v3s16(1,1,1)*MAP_BLOCKSIZE - v3s16(1,1,1);
-			return VoxelArea(np1, np2);
-		}
+			return VoxelArea(p);
 		case MEET_OTHER:
 		{
 			VoxelArea a;
@@ -403,7 +412,14 @@ public:
 	// Database version
 	void loadBlock(std::string *blob, v3s16 p3d, MapSector *sector, bool save_after_load=false);
 
+	// Blocks are removed from the map but not deleted from memory until
+	// deleteDetachedBlocks() is called, since pointers to them may still exist
+	// when deleteBlock() is called.
 	bool deleteBlock(v3s16 blockpos) override;
+
+	void deleteDetachedBlocks();
+
+	void step();
 
 	void updateVManip(v3s16 pos);
 
@@ -447,6 +463,9 @@ private:
 	int m_map_compression_level;
 
 	std::set<v3s16> m_chunks_in_progress;
+
+	// used by deleteBlock() and deleteDetachedBlocks()
+	MapBlockVect m_detached_blocks;
 
 	// Queued transforming water nodes
 	UniqueQueue<v3s16> m_transforming_liquid;

@@ -66,11 +66,9 @@ Some can be changed in the key config dialog in the settings tab.
 | T                             | Chat                                                           |
 | /                             | Command                                                        |
 | Esc                           | Pause menu/abort/exit (pauses only singleplayer game)          |
-| R                             | Enable/disable full range view                                 |
 | +                             | Increase view range                                            |
 | -                             | Decrease view range                                            |
 | K                             | Enable/disable fly mode (needs fly privilege)                  |
-| P                             | Enable/disable pitch move mode                                 |
 | J                             | Enable/disable fast mode (needs fast privilege)                |
 | H                             | Enable/disable noclip mode (needs noclip privilege)            |
 | Ctrl                          | Aux1 (Move fast in fast mode. Games may add special features)  |
@@ -154,7 +152,7 @@ For Debian/Ubuntu users:
 
 For Fedora users:
 
-    sudo dnf install make automake gcc gcc-c++ kernel-devel cmake libcurl-devel openal-soft-devel libvorbis-devel libXi-devel libogg-devel freetype-devel mesa-libGL-devel zlib-devel jsoncpp-devel gmp-devel sqlite-devel luajit-devel leveldb-devel ncurses-devel spatialindex-devel libzstd-devel
+    sudo dnf install make automake gcc gcc-c++ kernel-devel cmake libcurl-devel openal-soft-devel libpng-devel libjpeg-devel libvorbis-devel libXi-devel libogg-devel freetype-devel mesa-libGL-devel zlib-devel jsoncpp-devel gmp-devel sqlite-devel luajit-devel leveldb-devel ncurses-devel spatialindex-devel libzstd-devel
 
 For Arch users:
 
@@ -175,6 +173,14 @@ This is an example for installing Git on Debian/Ubuntu:
 For Fedora users:
 
     sudo dnf install git
+
+For Arch users:
+
+	sudo pacman -S git
+
+For Alpine users:
+
+	sudo apk add git
 
 Download source (this is the URL to the latest of source repository, which might not work at all times) using Git:
 
@@ -270,6 +276,7 @@ General options and their default values:
     ENABLE_SYSTEM_JSONCPP=ON   - Use JsonCPP from system
     RUN_IN_PLACE=FALSE         - Create a portable install (worlds, settings etc. in current directory)
     ENABLE_UPDATE_CHECKER=TRUE - Whether to enable update checks by default
+    INSTALL_DEVTEST=FALSE      - Whether the Development Test game should be installed alongside Minetest
     USE_GPROF=FALSE            - Enable profiling using GProf
     VERSION_EXTRA=             - Text to append to version (e.g. VERSION_EXTRA=foobar -> FreeCraft 0.4.9-foobar)
     ENABLE_TOUCH=FALSE         - Enable Touchscreen support (requires support by IrrlichtMt)
@@ -301,7 +308,7 @@ Library specific options:
     REDIS_INCLUDE_DIR               - Only when building with Redis; directory that contains hiredis.h
     REDIS_LIBRARY                   - Only when building with Redis; path to libhiredis.a/libhiredis.so
     SPATIAL_INCLUDE_DIR             - Only when building with LibSpatial; directory that contains spatialindex/SpatialIndex.h
-    SPATIAL_LIBRARY                 - Only when building with LibSpatial; path to libspatialindex_c.so/spatialindex-32.lib
+    SPATIAL_LIBRARY                 - Only when building with LibSpatial; path to libspatialindex.so/spatialindex-32.lib
     LUA_INCLUDE_DIR                 - Only if you want to use LuaJIT; directory where luajit.h is located
     LUA_LIBRARY                     - Only if you want to use LuaJIT; path to libluajit.a/libluajit.so
     OGG_DLL                         - Only if building with sound on Windows; path to libogg.dll

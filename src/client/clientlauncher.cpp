@@ -548,9 +548,12 @@ void ClientLauncher::main_menu(MainMenuData *menudata)
 	}
 	infostream << "Waited for other menus" << std::endl;
 
-	// Cursor can be non-visible when coming from the game
 #ifndef ANDROID
+	// Cursor can be non-visible when coming from the game
 	m_rendering_engine->get_raw_device()->getCursorControl()->setVisible(true);
+
+	// Set absolute mouse mode
+	m_rendering_engine->get_raw_device()->getCursorControl()->setRelativeMode(false);
 #endif
 
 	/* show main menu */

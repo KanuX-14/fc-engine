@@ -95,7 +95,7 @@ always_fly_fast (Always fly fast) bool true
 
 #    The time in seconds it takes between repeated node placements when holding
 #    the place button.
-repeat_place_time (Place repetition interval) float 0.25 0.25 2
+repeat_place_time (Place repetition interval) float 0.25 0.16 2
 
 #    Automatically jump up single-node obstacles.
 autojump (Automatic jumping) bool false
@@ -212,9 +212,8 @@ enable_particles (Digging particles) bool true
 #    -    topbottom: split screen top/bottom.
 #    -    sidebyside: split screen side by side.
 #    -    crossview: Cross-eyed 3d
-#    -    pageflip: quadbuffer based 3d.
 #    Note that the interlaced mode requires shaders to be enabled.
-3d_mode (3D mode) enum none none,anaglyph,interlaced,topbottom,sidebyside,crossview,pageflip
+3d_mode (3D mode) enum none none,anaglyph,interlaced,topbottom,sidebyside,crossview
 
 #    Strength of 3D mode parallax.
 3d_paralax_strength (3D mode parallax strength) float 0.025 -0.087 0.087
@@ -370,15 +369,6 @@ enable_shaders (Shaders) bool true
 #    enhanced, highlights and shadows are gradually compressed.
 tone_mapping (Filmic tone mapping) bool false
 
-#    Adjust the saturation (or vividness) of the scene
-#    Values
-#    < 1.0 decrease saturation
-#    > 1.0 increase saturation
-#    1.0 = unchanged saturation
-#    0.0 = black and white
-#    (Tone mapping needs to be enabled.)
-saturation (Saturation) float 1.0 0.0 5.0
-
 [**Waving Nodes]
 
 #    Set to true to enable waving leaves.
@@ -457,19 +447,25 @@ shadow_update_frames (Map shadows update frames) int 8 1 16
 #    Minimum value: 1.0; maximum value: 15.0
 shadow_soft_radius (Soft shadow radius) float 5.0 1.0 15.0
 
-#    Set the tilt of Sun/Moon orbit in degrees.
+#    Set the default tilt of Sun/Moon orbit in degrees.
+#    Games may change orbit tilt via API.
 #    Value of 0 means no tilt / vertical orbit.
-#    Minimum value: 0.0; maximum value: 60.0
+#    type: float min: -60 max: 60
 shadow_sky_body_orbit_tilt (Sky Body Orbit Tilt) float 0.0 -60.0 60.0
 
 [**Post processing]
 
-#    Set the exposure compensation factor.
-#    This factor is applied to linear color value 
-#    before all other post-processing effects.
-#    Value of 1.0 (default) means no exposure compensation.
-#    Range: from 0.1 to 10.0
-exposure_factor	(Exposure Factor) float 1.0 0.1 10.0
+#    Set the exposure compensation in EV units.
+#    Value of 0.0 (default) means no exposure compensation.
+#    Range: from -1 to 1.0
+exposure_compensation	(Exposure compensation) float 0.0 -1.0 1.0
+
+#    Enable automatic exposure correction
+#    When enabled, the post-processing engine will
+#    automatically adjust to the brightness of the scene,
+#    simulating the behavior of human eye.
+enable_auto_exposure (Enable Automatic Exposure) bool false
+
 
 [**Bloom]
 
@@ -478,7 +474,7 @@ exposure_factor	(Exposure Factor) float 1.0 0.1 10.0
 enable_bloom (Enable Bloom) bool false
 
 #    Set to true to render debugging breakdown of the bloom effect.
-#    In debug mode, the screen is split into 4 quadrants: 
+#    In debug mode, the screen is split into 4 quadrants:
 #    top-left - processed base image, top-right - final image
 #    bottom-left - raw base image, bottom-right - bloom texture.
 enable_bloom_debug (Enable Bloom Debug) bool false
@@ -636,6 +632,16 @@ update_last_checked (Last update check) string
 #    Representation: MMMIIIPPP, where M=Major, I=Minor, P=Patch
 #    Ex: 5.5.0 is 005005000
 update_last_known (Last known version update) int 0
+
+#    Type of occlusion_culler
+#    "loops" is the legacy algorithm with nested loops and O(N^3) complexity
+#    "bfs" is the new algorithm based on breadth-first-search and side culling
+occlusion_culler (Occlusion Culler) enum bfs bfs,loops
+
+#    Use raytraced occlusion culling in the new culler.
+#	 This flag enables use of raytraced occlusion culling test for
+#    client mesh sizes smaller than 4x4x4 map blocks.
+enable_raytraced_culling (Enable Raytraced Culling) bool true
 
 [*Server]
 
@@ -1659,10 +1665,9 @@ ignore_world_load_errors (Ignore world errors) bool false
 shader_path (Shader path) path
 
 #    The rendering back-end.
-#    A restart is required after changing this.
-#    Note: On Android, stick with OGLES1 if unsure! App may fail to start otherwise.
-#    On other platforms, OpenGL is recommended.
-#    Shaders are supported by OpenGL (desktop only) and OGLES2 (experimental)
+#    Note: A restart is required after changing this!
+#    OpenGL is the default for desktop, and OGLES2 for Android.
+#    Shaders are supported by OpenGL and OGLES2 (experimental).
 video_driver (Video driver) enum opengl opengl,ogles1,ogles2
 
 #    Distance in nodes at which transparency depth sorting is enabled
@@ -1686,6 +1691,11 @@ enable_mesh_cache (Mesh cache) bool false
 #    Delay between mesh updates on the client in ms. Increasing this will slow
 #    down the rate of mesh updates, thus reducing jitter on slower clients.
 mesh_generation_interval (Mapblock mesh generation delay) int 0 0 50
+
+#    Number of threads to use for mesh generation.
+#    Value of 0 (default) will let FreeCraft autodetect the number of available threads.
+mesh_generation_threads (Mapblock mesh generation threads) int 0 0 8
+
 
 #    Size of the MapBlock cache of the mesh generator. Increasing this will
 #    increase the cache hit %, reducing the data being copied from the main
@@ -1712,6 +1722,13 @@ world_aligned_mode (World-aligned textures mode) enum enable disable,enable,forc
 #    See also texture_min_size.
 #    Warning: This option is EXPERIMENTAL!
 autoscale_mode (Autoscaling mode) enum disable disable,enable,force
+
+#    Side length of a cube of map blocks that the client will consider together
+#    when generating meshes.
+#    Larger values increase the utilization of the GPU by reducing the number of
+#    draw calls, benefiting especially high-end GPUs.
+#    Systems with a low-end GPU (or no GPU) would benefit from smaller values.
+client_mesh_chunk (Client Mesh Chunksize) int 1 1 16
 
 [**Font]
 
@@ -2185,7 +2202,7 @@ keymap_rangeselect (Range select key) key
 keymap_freemove (Fly key) key KEY_KEY_K
 
 #    Key for toggling pitch move mode.
-keymap_pitchmove (Pitch move key) key KEY_KEY_P
+keymap_pitchmove (Pitch move key) key
 
 #    Key for toggling fast mode.
 keymap_fastmove (Fast key) key KEY_KEY_J

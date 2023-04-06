@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Turkish (Minetest)\n"
+"Project-Id-Version: Turkish (FreeCraft)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-10 15:37+0100\n"
+"POT-Creation-Date: 2023-03-09 15:54+0100\n"
 "PO-Revision-Date: 2022-08-16 15:16+0000\n"
 "Last-Translator: ahdplayer <ahdplayer8@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/minetest/"
@@ -274,8 +274,8 @@ msgid "Base Game:"
 msgstr "Yerel oyun:"
 
 #: builtin/mainmenu/dlg_contentstore.lua
-msgid "ContentDB is not available when Minetest was compiled without cURL"
-msgstr "Minetest cURL olmadan derlendiğinde ContentDB kullanılamaz"
+msgid "ContentDB is not available when FreeCraft was compiled without cURL"
+msgstr "FreeCraft cURL olmadan derlendiğinde ContentDB kullanılamaz"
 
 #: builtin/mainmenu/dlg_contentstore.lua
 msgid "Downloading..."
@@ -1698,6 +1698,11 @@ msgid "ok"
 msgstr "tamam"
 
 #: src/client/gameui.cpp
+#, fuzzy
+msgid "Chat currently disabled by game or mod"
+msgstr "Yakınlaştırma şu anda oyun veya mod tarafından devre dışı"
+
+#: src/client/gameui.cpp
 msgid "Chat hidden"
 msgstr "Sohbet gizli"
 
@@ -2366,6 +2371,7 @@ msgid "3D noise that determines number of dungeons per mapchunk."
 msgstr "Harita yığını başına zindan sayısını belirleyen 3B gürültü."
 
 #: src/settings_translation_file.cpp
+#, fuzzy
 msgid ""
 "3D support.\n"
 "Currently supported:\n"
@@ -2375,7 +2381,6 @@ msgid ""
 "-    topbottom: split screen top/bottom.\n"
 "-    sidebyside: split screen side by side.\n"
 "-    crossview: Cross-eyed 3d\n"
-"-    pageflip: quadbuffer based 3d.\n"
 "Note that the interlaced mode requires shaders to be enabled."
 msgstr ""
 "3D desteği.\n"
@@ -2472,17 +2477,6 @@ msgid "Adjust the detected display density, used for scaling UI elements."
 msgstr ""
 "Kullanıcı arayüzü öğelerini ölçeklemek için kullanılan algılanan görüntü "
 "yoğunluğunu ayarlayın."
-
-#: src/settings_translation_file.cpp
-msgid ""
-"Adjust the saturation (or vividness) of the scene\n"
-"Values\n"
-"< 1.0 decrease saturation\n"
-"> 1.0 increase saturation\n"
-"1.0 = unchanged saturation\n"
-"0.0 = black and white\n"
-"(Tone mapping needs to be enabled.)"
-msgstr ""
 
 #: src/settings_translation_file.cpp
 #, c-format
@@ -2854,6 +2848,10 @@ msgid "Client"
 msgstr "İstemci"
 
 #: src/settings_translation_file.cpp
+msgid "Client Mesh Chunksize"
+msgstr ""
+
+#: src/settings_translation_file.cpp
 msgid "Client and Server"
 msgstr "İstemci ve Sunucu"
 
@@ -2909,14 +2907,14 @@ msgid ""
 "software',\n"
 "as defined by the Free Software Foundation.\n"
 "You can also specify content ratings.\n"
-"These flags are independent from Minetest versions,\n"
+"These flags are independent from FreeCraft versions,\n"
 "so see a full list at https://content.minetest.net/help/content_flags/"
 msgstr ""
 "İçerik deposunda gizlemek için bayrakların virgülle ayrılmış listesi.\n"
 "\"nonfree\" Özgür Yazılım Vakfının tanımına göre 'özgür yazılım' olarak\n"
 "nitelenemeyecek paketleri gizler.\n"
 "İçerik puanlarını da belirleyebilirsiniz.\n"
-"Bu bayraklar Minetest sürümlerinden bağımsızdır,\n"
+"Bu bayraklar FreeCraft sürümlerinden bağımsızdır,\n"
 "tam listeyi görmek için: https://content.minetest.net/help/content_flags/"
 
 #: src/settings_translation_file.cpp
@@ -3340,6 +3338,10 @@ msgid "Dungeon noise"
 msgstr "Zindan gürültüsü"
 
 #: src/settings_translation_file.cpp
+msgid "Enable Automatic Exposure"
+msgstr ""
+
+#: src/settings_translation_file.cpp
 #, fuzzy
 msgid "Enable Bloom"
 msgstr "Hepsini etkinleştir"
@@ -3373,6 +3375,18 @@ msgstr ""
 "Poisson disk filtrelemeyi etkinleştir.\n"
 "Doğru ise \"yumuşak gölgeler\" yapmak için Poisson diski kullanır. Değilse "
 "PCF filtreleme kullanır."
+
+#: src/settings_translation_file.cpp
+msgid "Enable Raytraced Culling"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid ""
+"Enable automatic exposure correction\n"
+"When enabled, the post-processing engine will\n"
+"automatically adjust to the brightness of the scene,\n"
+"simulating the behavior of human eye."
+msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid ""
@@ -3551,7 +3565,7 @@ msgstr ""
 "seviyesi oluşturur: katı bir yüzenkara katmanı için uygundur."
 
 #: src/settings_translation_file.cpp
-msgid "Exposure Factor"
+msgid "Exposure compensation"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -4796,6 +4810,11 @@ msgid "Mapblock mesh generation delay"
 msgstr "Harita bloğu ızgara üretim gecikmesi"
 
 #: src/settings_translation_file.cpp
+#, fuzzy
+msgid "Mapblock mesh generation threads"
+msgstr "Harita bloğu ızgara üretim gecikmesi"
+
+#: src/settings_translation_file.cpp
 msgid "Mapblock mesh generator's MapBlock cache size in MB"
 msgstr "Harita Bloğu ızgara üretecinin Harita Bloğu önbellek boyutu MB"
 
@@ -5272,6 +5291,13 @@ msgstr ""
 "arasında bir dengedir."
 
 #: src/settings_translation_file.cpp
+msgid ""
+"Number of threads to use for mesh generation.\n"
+"Value of 0 (default) will let FreeCraft autodetect the number of available "
+"threads."
+msgstr ""
+
+#: src/settings_translation_file.cpp
 msgid "Opaque liquids"
 msgstr "Opak sıvılar"
 
@@ -5444,12 +5470,12 @@ msgstr "Prometheus dinleyici adresi"
 #, fuzzy
 msgid ""
 "Prometheus listener address.\n"
-"If Minetest is compiled with ENABLE_PROMETHEUS option enabled,\n"
+"If FreeCraft is compiled with ENABLE_PROMETHEUS option enabled,\n"
 "enable metrics listener for Prometheus on that address.\n"
 "Metrics can be fetched on http://127.0.0.1:30000/metrics"
 msgstr ""
 "Prometheus dinleyici adresi.\n"
-"Minetest ENABLE_PROMETHEUS seçeneği etkin olarak derlenmişse,\n"
+"FreeCraft ENABLE_PROMETHEUS seçeneği etkin olarak derlenmişse,\n"
 "bu adreste Prometheus için metrik dinleyicisini etkinleştirin.\n"
 "Metrikler http://127.0.0.1:30000/metrics adresinden alınabilir"
 
@@ -5594,11 +5620,6 @@ msgstr "Güvenli kazma ve yerleştirme"
 #: src/settings_translation_file.cpp
 msgid "Sandy beaches occur when np_beach exceeds this value."
 msgstr "Kumlu sahiller np_beach bu değeri aştığında oluşur."
-
-#: src/settings_translation_file.cpp
-#, fuzzy
-msgid "Saturation"
-msgstr "Yinelemeler"
 
 #: src/settings_translation_file.cpp
 msgid "Save the map received by the client on disk."
@@ -5796,11 +5817,9 @@ msgstr "Sunucu liste dosyası"
 
 #: src/settings_translation_file.cpp
 msgid ""
-"Set the exposure compensation factor.\n"
-"This factor is applied to linear color value \n"
-"before all other post-processing effects.\n"
-"Value of 1.0 (default) means no exposure compensation.\n"
-"Range: from 0.1 to 10.0"
+"Set the exposure compensation in EV units.\n"
+"Value of 0.0 (default) means no exposure compensation.\n"
+"Range: from -1 to 1.0"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -5843,17 +5862,6 @@ msgstr ""
 "En düşük değer 1.0 ve en yüksek değer 10.0"
 
 #: src/settings_translation_file.cpp
-#, fuzzy
-msgid ""
-"Set the tilt of Sun/Moon orbit in degrees.\n"
-"Value of 0 means no tilt / vertical orbit.\n"
-"Minimum value: 0.0; maximum value: 60.0"
-msgstr ""
-"Güneş/Ay yörüngesinin eğimini derece olarak ayarla\n"
-"0 değeri, eğim / dikey yörünge olmadığı anlamına gelir.\n"
-"En düşük değer 0.0 ve en yüksek değer 60.0"
-
-#: src/settings_translation_file.cpp
 msgid ""
 "Set to true to enable Shadow Mapping.\n"
 "Requires shaders to be enabled."
@@ -5894,7 +5902,7 @@ msgstr ""
 #: src/settings_translation_file.cpp
 msgid ""
 "Set to true to render debugging breakdown of the bloom effect.\n"
-"In debug mode, the screen is split into 4 quadrants: \n"
+"In debug mode, the screen is split into 4 quadrants:\n"
 "top-left - processed base image, top-right - final image\n"
 "bottom-left - raw base image, bottom-right - bloom texture."
 msgstr ""
@@ -5984,6 +5992,15 @@ msgstr "Kapatma iletisi"
 
 #: src/settings_translation_file.cpp
 msgid ""
+"Side length of a cube of map blocks that the client will consider together\n"
+"when generating meshes.\n"
+"Larger values increase the utilization of the GPU by reducing the number of\n"
+"draw calls, benefiting especially high-end GPUs.\n"
+"Systems with a low-end GPU (or no GPU) would benefit from smaller values."
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid ""
 "Size of mapchunks generated by mapgen, stated in mapblocks (16 nodes).\n"
 "WARNING!: There is no benefit, and there are several dangers, in\n"
 "increasing this value above 5.\n"
@@ -6007,10 +6024,6 @@ msgstr ""
 "Izgara üretecinin Harita Bloğu önbellek boyutu. Bunu artırmak önbellek\n"
 "vuruş yüzdesini artırır, ana işlem parçasından kopyalanan veriyi azaltır,\n"
 "sonuç olarak yırtılmayı azaltır."
-
-#: src/settings_translation_file.cpp
-msgid "Sky Body Orbit Tilt"
-msgstr "Gökyüzü Gövdesi Yörünge Eğimi"
 
 #: src/settings_translation_file.cpp
 msgid "Slice w"
@@ -6346,13 +6359,12 @@ msgstr ""
 "Bu active_object_send_range_blocks ile birlikte ayarlanmalıdır."
 
 #: src/settings_translation_file.cpp
+#, fuzzy
 msgid ""
 "The rendering back-end.\n"
-"A restart is required after changing this.\n"
-"Note: On Android, stick with OGLES1 if unsure! App may fail to start "
-"otherwise.\n"
-"On other platforms, OpenGL is recommended.\n"
-"Shaders are supported by OpenGL (desktop only) and OGLES2 (experimental)"
+"Note: A restart is required after changing this!\n"
+"OpenGL is the default for desktop, and OGLES2 for Android.\n"
+"Shaders are supported by OpenGL and OGLES2 (experimental)."
 msgstr ""
 "İşleme arka ucu.\n"
 "Bunu değiştirdikten sonra yeniden başlatma gerekir.\n"
@@ -6524,7 +6536,7 @@ msgstr "Güvenilen modlar"
 
 #: src/settings_translation_file.cpp
 msgid ""
-"URL to JSON file which provides information about the newest Minetest release"
+"URL to JSON file which provides information about the newest FreeCraft release"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -6630,6 +6642,12 @@ msgstr ""
 "Gölgelendirme kapalı ise düğüm arası(nod) boşluk görülür.\n"
 "0'da ise düzgünleştirme kapalıdır.\n"
 "Ayarları değiştirdikten sonra yenileme gereklidir."
+
+#: src/settings_translation_file.cpp
+msgid ""
+"Use raytraced occlusion culling in the new culler.\n"
+"This flag enables use of raytraced occlusion culling test"
+msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Use trilinear filtering when scaling textures."
@@ -6943,11 +6961,11 @@ msgstr "Nodlar etrafındaki seçim kutusu çizgilerinin genişliği."
 
 #: src/settings_translation_file.cpp
 msgid ""
-"Windows systems only: Start Minetest with the command line window in the "
+"Windows systems only: Start FreeCraft with the command line window in the "
 "background.\n"
 "Contains the same information as the file debug.txt (default name)."
 msgstr ""
-"Yalnızca Windows sistemleri: Minetest'i komut satırı arka planda olarak "
+"Yalnızca Windows sistemleri: FreeCraft'i komut satırı arka planda olarak "
 "başlat.\n"
 "debug.txt (öntanımlı ad) dosyası ile aynı bilgileri içerir."
 
@@ -7218,8 +7236,8 @@ msgstr "cURL paralel sınırı"
 #~ msgid "Dig key"
 #~ msgstr "Kazma tuşu"
 
-#~ msgid "Download a game, such as Minetest Game, from minetest.net"
-#~ msgstr "minetest.net'den , Minetest Game gibi, bir oyun indirin"
+#~ msgid "Download a game, such as FreeCraft Game, from minetest.net"
+#~ msgstr "minetest.net'den , FreeCraft Game gibi, bir oyun indirin"
 
 #~ msgid "Download one from minetest.net"
 #~ msgstr "minetest.net adresinden indirin"
@@ -8257,6 +8275,10 @@ msgstr "cURL paralel sınırı"
 #~ msgid "Right key"
 #~ msgstr "Sağ tuş"
 
+#, fuzzy
+#~ msgid "Saturation"
+#~ msgstr "Yinelemeler"
+
 #~ msgid "Select Package File:"
 #~ msgstr "Paket Dosyası Seç:"
 
@@ -8274,6 +8296,16 @@ msgstr "cURL paralel sınırı"
 #~ "anlamına gelir, ancak daha fazla kaynak tüketir.\n"
 #~ "En düşük değer 0,001 saniye, en yüksek değer 0,2 saniyedir"
 
+#, fuzzy
+#~ msgid ""
+#~ "Set the tilt of Sun/Moon orbit in degrees.\n"
+#~ "Value of 0 means no tilt / vertical orbit.\n"
+#~ "Minimum value: 0.0; maximum value: 60.0"
+#~ msgstr ""
+#~ "Güneş/Ay yörüngesinin eğimini derece olarak ayarla\n"
+#~ "0 değeri, eğim / dikey yörünge olmadığı anlamına gelir.\n"
+#~ "En düşük değer 0.0 ve en yüksek değer 60.0"
+
 #~ msgid "Shadow limit"
 #~ msgstr "Gölge sınırı"
 
@@ -8282,6 +8314,9 @@ msgstr "cURL paralel sınırı"
 #~ "not be drawn."
 #~ msgstr ""
 #~ "Yedek yazı tipinin gölge uzaklığı (piksel olarak). 0 ise, gölge çizilmez."
+
+#~ msgid "Sky Body Orbit Tilt"
+#~ msgstr "Gökyüzü Gövdesi Yörünge Eğimi"
 
 #~ msgid "Sneak key"
 #~ msgstr "Sızma tuşu"

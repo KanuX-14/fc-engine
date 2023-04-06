@@ -11,7 +11,7 @@ local give_initial_stuff = function(player)
 	give_if_not_gotten_already(inv, "main", "basetools:shovel_steel")
 	give_if_not_gotten_already(inv, "main", "bucket:bucket")
 	give_if_not_gotten_already(inv, "main", "testnodes:light14")
-	give_if_not_gotten_already(inv, "main", "chest_of_everything:chest")
+	give_if_not_gotten_already(inv, "main", "chest_of_everything:bag")
 	freecraft.log("action", "[give_initial_stuff] Giving initial stuff to "..player:get_player_name())
 end
 
@@ -34,4 +34,3 @@ freecraft.register_chatcommand("stuff", {
 		return true
 	end,
 })
-

@@ -71,6 +71,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "version.h"
 #include "script/scripting_client.h"
 #include "hud.h"
+#include "clientdynamicinfo.h"
 
 #if USE_SOUND
 	#include "client/sound_openal.h"
@@ -414,6 +415,8 @@ class GameGlobalShaderConstantSetter : public IShaderConstantSetter
 	CachedPixelShaderSetting<float> m_fog_distance;
 	CachedVertexShaderSetting<float> m_animation_timer_vertex;
 	CachedPixelShaderSetting<float> m_animation_timer_pixel;
+	CachedVertexShaderSetting<float> m_animation_timer_delta_vertex;
+	CachedPixelShaderSetting<float> m_animation_timer_delta_pixel;
 	CachedPixelShaderSetting<float, 3> m_day_light;
 	CachedPixelShaderSetting<float, 4> m_star_color;
 	CachedPixelShaderSetting<float, 3> m_eye_position_pixel;
@@ -427,8 +430,8 @@ class GameGlobalShaderConstantSetter : public IShaderConstantSetter
 	CachedPixelShaderSetting<SamplerLayer_t> m_texture3;
 	CachedPixelShaderSetting<float, 2> m_texel_size0;
 	std::array<float, 2> m_texel_size0_values;
-	CachedPixelShaderSetting<float> m_exposure_factor_pixel;
-	float m_user_exposure_factor;
+	CachedStructPixelShaderSetting<float, 7> m_exposure_params_pixel;
+	float m_user_exposure_compensation;
 	bool m_bloom_enabled;
 	CachedPixelShaderSetting<float> m_bloom_intensity_pixel;
 	float m_bloom_intensity;
@@ -436,7 +439,6 @@ class GameGlobalShaderConstantSetter : public IShaderConstantSetter
 	float m_bloom_strength;
 	CachedPixelShaderSetting<float> m_bloom_radius_pixel;
 	float m_bloom_radius;
-	float m_saturation;
 	CachedPixelShaderSetting<float> m_saturation_pixel;
 
 public:
@@ -444,16 +446,14 @@ public:
 	{
 		if (name == "enable_fog")
 			m_fog_enabled = g_settings->getBool("enable_fog");
-		if (name == "exposure_factor")
-			m_user_exposure_factor = g_settings->getFloat("exposure_factor", 0.1f, 10.0f);
+		if (name == "exposure_compensation")
+			m_user_exposure_compensation = g_settings->getFloat("exposure_compensation", -1.0f, 1.0f);
 		if (name == "bloom_intensity")
 			m_bloom_intensity = g_settings->getFloat("bloom_intensity", 0.01f, 1.0f);
 		if (name == "bloom_strength_factor")
 			m_bloom_strength = RenderingEngine::BASE_BLOOM_STRENGTH * g_settings->getFloat("bloom_strength_factor", 0.1f, 10.0f);
 		if (name == "bloom_radius")
 			m_bloom_radius = g_settings->getFloat("bloom_radius", 0.1f, 8.0f);
-		if (name == "saturation")
-			m_saturation = g_settings->getFloat("saturation", 0.0f, 5.0f);
 	}
 
 	static void settingsCallback(const std::string &name, void *userdata)
@@ -473,6 +473,8 @@ public:
 		m_fog_distance("fogDistance"),
 		m_animation_timer_vertex("animationTimer"),
 		m_animation_timer_pixel("animationTimer"),
+		m_animation_timer_delta_vertex("animationTimerDelta"),
+		m_animation_timer_delta_pixel("animationTimerDelta"),
 		m_day_light("dayLight"),
 		m_star_color("starColor"),
 		m_eye_position_pixel("eyePosition"),
@@ -485,25 +487,28 @@ public:
 		m_texture2("texture2"),
 		m_texture3("texture3"),
 		m_texel_size0("texelSize0"),
-		m_exposure_factor_pixel("exposureFactor"),
+		m_exposure_params_pixel("exposureParams",
+				std::array<const char*, 7> {
+						"luminanceMin", "luminanceMax", "exposureCorrection",
+						"speedDarkBright", "speedBrightDark", "centerWeightPower", "compensationFactor"
+				}),
 		m_bloom_intensity_pixel("bloomIntensity"),
 		m_bloom_strength_pixel("bloomStrength"),
 		m_bloom_radius_pixel("bloomRadius"),
 		m_saturation_pixel("saturation")
 	{
 		g_settings->registerChangedCallback("enable_fog", settingsCallback, this);
-		g_settings->registerChangedCallback("exposure_factor", settingsCallback, this);
+		g_settings->registerChangedCallback("exposure_compensation", settingsCallback, this);
 		g_settings->registerChangedCallback("bloom_intensity", settingsCallback, this);
 		g_settings->registerChangedCallback("bloom_strength_factor", settingsCallback, this);
 		g_settings->registerChangedCallback("bloom_radius", settingsCallback, this);
 		g_settings->registerChangedCallback("saturation", settingsCallback, this);
 		m_fog_enabled = g_settings->getBool("enable_fog");
-		m_user_exposure_factor = g_settings->getFloat("exposure_factor", 0.1f, 10.0f);
+		m_user_exposure_compensation = g_settings->getFloat("exposure_compensation", -1.0f, 1.0f);
 		m_bloom_enabled = g_settings->getBool("enable_bloom");
 		m_bloom_intensity = g_settings->getFloat("bloom_intensity", 0.01f, 1.0f);
 		m_bloom_strength = RenderingEngine::BASE_BLOOM_STRENGTH * g_settings->getFloat("bloom_strength_factor", 0.1f, 10.0f);
 		m_bloom_radius = g_settings->getFloat("bloom_radius", 0.1f, 8.0f);
-		m_saturation = g_settings->getFloat("saturation", 0.0f, 5.0f);
 	}
 
 	~GameGlobalShaderConstantSetter()
@@ -550,6 +555,10 @@ public:
 		m_animation_timer_vertex.set(&animation_timer_f, services);
 		m_animation_timer_pixel.set(&animation_timer_f, services);
 
+		float animation_timer_delta_f = (float)m_client->getEnv().getFrameTimeDelta() / 100000.f;
+		m_animation_timer_delta_vertex.set(&animation_timer_delta_f, services);
+		m_animation_timer_delta_pixel.set(&animation_timer_delta_f, services);
+
 		float eye_position_array[3];
 		v3f epos = m_client->getEnv().getLocalPlayer()->getEyePosition();
 		epos.getAs3Values(eye_position_array);
@@ -581,17 +590,25 @@ public:
 
 		m_texel_size0.set(m_texel_size0_values.data(), services);
 
-		float exposure_factor = m_user_exposure_factor;
-		if (std::isnan(exposure_factor))
-			exposure_factor = 1.0f;
-		m_exposure_factor_pixel.set(&exposure_factor, services);
+		const AutoExposure &exposure_params = m_client->getEnv().getLocalPlayer()->getLighting().exposure;
+		std::array<float, 7> exposure_buffer = {
+			std::pow(2.0f, exposure_params.luminance_min),
+			std::pow(2.0f, exposure_params.luminance_max),
+			exposure_params.exposure_correction,
+			exposure_params.speed_dark_bright,
+			exposure_params.speed_bright_dark,
+			exposure_params.center_weight_power,
+			powf(2.f, m_user_exposure_compensation)
+		};
+		m_exposure_params_pixel.set(exposure_buffer.data(), services);
 
 		if (m_bloom_enabled) {
 			m_bloom_intensity_pixel.set(&m_bloom_intensity, services);
 			m_bloom_radius_pixel.set(&m_bloom_radius, services);
 			m_bloom_strength_pixel.set(&m_bloom_strength, services);
 		}
-		m_saturation_pixel.set(&m_saturation, services);
+		float saturation = m_client->getEnv().getLocalPlayer()->getLighting().saturation;
+		m_saturation_pixel.set(&saturation, services);
 	}
 
 	void onSetMaterial(const video::SMaterial &material)
@@ -699,6 +716,7 @@ struct GameRunData {
 
 	float damage_flash;
 	float update_draw_list_timer;
+	float touch_blocks_timer;
 
 	f32 fog_range;
 
@@ -900,11 +918,15 @@ private:
 	static const ClientEventHandler clientEventHandler[CLIENTEVENT_MAX];
 
 	f32 getSensitivityScaleFactor() const;
+	ClientDynamicInfo getCurrentDynamicInfo() const;
 
 	InputHandler *input = nullptr;
 
 	Client *client = nullptr;
 	Server *server = nullptr;
+
+	ClientDynamicInfo client_display_info{};
+	float dynamic_info_send_timer = 0;
 
 	IWritableTextureSource *texture_src = nullptr;
 	IWritableShaderSource *shader_src = nullptr;
@@ -990,10 +1012,6 @@ private:
 	// if true, (almost) the whole game is paused
 	// this happens in pause menu in singleplayer
 	bool m_is_paused = false;
-
-#if IRRLICHT_VERSION_MT_REVISION < 5
-	int m_reset_HW_buffer_counter = 0;
-#endif
 
 #ifdef HAVE_TOUCHSCREENGUI
 	bool m_cache_hold_aux1;
@@ -1095,6 +1113,8 @@ Game::~Game()
 		&settingChangedCallback, this);
 	g_settings->deregisterChangedCallback("camera_smoothing",
 		&settingChangedCallback, this);
+	if (m_rendering_engine)
+		m_rendering_engine->finalize();
 }
 
 bool Game::startup(bool *kill,
@@ -1174,30 +1194,44 @@ void Game::run()
 			&& client->checkPrivilege("fast");
 #endif
 
-	irr::core::dimension2d<u32> previous_screen_size(g_settings->getU16("screen_w"),
-		g_settings->getU16("screen_h"));
+	core::dimension2du previous_screen_size(g_settings->getU16("screen_w"),
+			g_settings->getU16("screen_h"));
 
 	while (m_rendering_engine->run()
 			&& !(*kill || g_gamecallback->shutdown_requested
 			|| (server && server->isShutdownRequested()))) {
 
-		const irr::core::dimension2d<u32> &current_screen_size =
-			m_rendering_engine->get_video_driver()->getScreenSize();
+		// Calculate dtime =
+		//    m_rendering_engine->run() from this iteration
+		//  + Sleep time until the wanted FPS are reached
+		draw_times.limit(device, &dtime);
+
+		const auto current_dynamic_info = getCurrentDynamicInfo();
+		if (!current_dynamic_info.equal(client_display_info)) {
+			client_display_info = current_dynamic_info;
+			dynamic_info_send_timer = 0.2f;
+		}
+
+		if (dynamic_info_send_timer > 0) {
+			dynamic_info_send_timer -= dtime;
+			if (dynamic_info_send_timer <= 0) {
+				client->sendUpdateClientInfo(current_dynamic_info);
+			}
+		}
+
+		const core::dimension2du &current_screen_size =
+				RenderingEngine::get_video_driver()->getScreenSize();
+
 		// Verify if window size has changed and save it if it's the case
 		// Ensure evaluating settings->getBool after verifying screensize
 		// First condition is cheaper
 		if (previous_screen_size != current_screen_size &&
-				current_screen_size != irr::core::dimension2d<u32>(0,0) &&
+				current_screen_size != core::dimension2du(0, 0) &&
 				g_settings->getBool("autosave_screensize")) {
 			g_settings->setU16("screen_w", current_screen_size.Width);
 			g_settings->setU16("screen_h", current_screen_size.Height);
 			previous_screen_size = current_screen_size;
 		}
-
-		// Calculate dtime =
-		//    m_rendering_engine->run() from this iteration
-		//  + Sleep time until the wanted FPS are reached
-		draw_times.limit(device, &dtime);
 
 		// Prepare render data for next iteration
 
@@ -1257,12 +1291,6 @@ void Game::run()
 
 void Game::shutdown()
 {
-	m_rendering_engine->finalize();
-#if IRRLICHT_VERSION_MAJOR == 1 && IRRLICHT_VERSION_MINOR <= 8
-	if (g_settings->get("3d_mode") == "pageflip") {
-		driver->setRenderTarget(irr::video::ERT_STEREO_BOTH_BUFFERS);
-	}
-#endif
 	auto formspec = m_game_ui->getFormspecGUI();
 	if (formspec)
 		formspec->quitMenu();
@@ -2076,7 +2104,7 @@ void Game::processKeyInput()
 	} else if (wasKeyDown(KeyType::MINIMAP)) {
 		toggleMinimap(isKeyDown(KeyType::SNEAK));
 	} else if (wasKeyDown(KeyType::TOGGLE_CHAT)) {
-		m_game_ui->toggleChat();
+		m_game_ui->toggleChat(client);
 	} else if (wasKeyDown(KeyType::TOGGLE_FOG)) {
 		toggleFog();
 	} else if (wasKeyDown(KeyType::TOGGLE_UPDATE_CAMERA)) {
@@ -2120,7 +2148,6 @@ void Game::processItemSelection(u16 *new_playeritem)
 	/* Item selection using mouse wheel
 	 */
 	*new_playeritem = player->getWieldIndex();
-
 	s32 wheel = input->getMouseWheel();
 	u16 max_item = MYMIN(PLAYER_INVENTORY_SIZE - 1,
 		    player->hud_hotbar_itemcount - 1);
@@ -2147,6 +2174,9 @@ void Game::processItemSelection(u16 *new_playeritem)
 			break;
 		}
 	}
+
+	// Clamp selection again in case it wasn't changed but max_item was
+	*new_playeritem = MYMIN(*new_playeritem, max_item);
 }
 
 
@@ -2520,6 +2550,13 @@ void Game::checkZoomEnabled()
 
 void Game::updateCameraDirection(CameraOrientation *cam, float dtime)
 {
+#ifndef __ANDROID__
+	if (isMenuActive())
+		device->getCursorControl()->setRelativeMode(false);
+	else
+		device->getCursorControl()->setRelativeMode(true);
+#endif
+
 	if ((device->isWindowActive() && device->isWindowFocused()
 			&& !isMenuActive()) || input->isRandom()) {
 
@@ -2563,6 +2600,19 @@ f32 Game::getSensitivityScaleFactor() const
 	// 16:9 aspect ratio to minimize disruption of existing sensitivity
 	// settings.
 	return tan(fov_y / 2.0f) * 1.3763818698f;
+}
+
+ClientDynamicInfo Game::getCurrentDynamicInfo() const
+{
+	v2u32 screen_size = RenderingEngine::getWindowSize();
+	f32 density = RenderingEngine::getDisplayDensity();
+	f32 gui_scaling = g_settings->getFloat("gui_scaling") * density;
+	f32 hud_scaling = g_settings->getFloat("hud_scaling") * density;
+
+	return {
+		screen_size, gui_scaling, hud_scaling,
+		ClientDynamicInfo::calculateMaxFSSize(screen_size)
+	};
 }
 
 void Game::updateCameraOrientation(CameraOrientation *cam, float dtime)
@@ -2958,6 +3008,9 @@ void Game::handleClientEvent_SetSky(ClientEvent *event, CameraOrientation *cam)
 			"custom"
 		);
 	}
+
+	// Orbit Tilt:
+	sky->setBodyOrbitTilt(event->set_sky->body_orbit_tilt);
 
 	delete event->set_sky;
 }
@@ -4032,6 +4085,9 @@ void Game::updateFrame(ProfilerGraph *graph, RunStats *stats, f32 dtime,
 		changed much
 	*/
 	runData.update_draw_list_timer += dtime;
+	runData.touch_blocks_timer += dtime;
+
+	bool draw_list_updated = false;
 
 	float update_draw_list_delta = 0.2f;
 
@@ -4043,6 +4099,12 @@ void Game::updateFrame(ProfilerGraph *graph, RunStats *stats, f32 dtime,
 		runData.update_draw_list_timer = 0;
 		client->getEnv().getClientMap().updateDrawList();
 		runData.update_draw_list_last_cam_dir = camera_direction;
+		draw_list_updated = true;
+	}
+
+	if (runData.touch_blocks_timer > update_draw_list_delta && !draw_list_updated) {
+		client->getEnv().getClientMap().touchMapBlocks();
+		runData.touch_blocks_timer = 0;
 	}
 
 	if (RenderingEngine::get_shadow_renderer()) {
@@ -4123,29 +4185,6 @@ void Game::updateFrame(ProfilerGraph *graph, RunStats *stats, f32 dtime,
 	/*
 		==================== End scene ====================
 	*/
-#if IRRLICHT_VERSION_MT_REVISION < 5
-	if (++m_reset_HW_buffer_counter > 500) {
-		/*
-		  Periodically remove all mesh HW buffers.
-
-		  Work around for a quirk in Irrlicht where a HW buffer is only
-		  released after 20000 iterations (triggered from endScene()).
-
-		  Without this, all loaded but unused meshes will retain their HW
-		  buffers for at least 5 minutes, at which point looking up the HW buffers
-		  becomes a bottleneck and the framerate drops (as much as 30%).
-
-		  Tests showed that numbers between 50 and 1000 are good, so picked 500.
-		  There are no other public Irrlicht APIs that allow interacting with the
-		  HW buffers without tracking the status of every individual mesh.
-
-		  The HW buffers for _visible_ meshes will be reinitialized in the next frame.
-		*/
-		infostream << "Game::updateFrame(): Removing all HW buffers." << std::endl;
-		driver->removeAllHardwareBuffers();
-		m_reset_HW_buffer_counter = 0;
-	}
-#endif
 
 	driver->endScene();
 
@@ -4261,7 +4300,7 @@ void Game::readSettings()
 	m_cache_enable_fog                   = g_settings->getBool("enable_fog");
 	m_cache_mouse_sensitivity            = g_settings->getFloat("mouse_sensitivity", 0.001f, 10.0f);
 	m_cache_joystick_frustum_sensitivity = std::max(g_settings->getFloat("joystick_frustum_sensitivity"), 0.001f);
-	m_repeat_place_time                  = g_settings->getFloat("repeat_place_time", 0.25f, 2.0);
+	m_repeat_place_time                  = g_settings->getFloat("repeat_place_time", 0.16f, 2.0);
 
 	m_cache_enable_noclip                = g_settings->getBool("noclip");
 	m_cache_enable_free_move             = g_settings->getBool("free_move");

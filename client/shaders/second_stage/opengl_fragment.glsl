@@ -1,9 +1,14 @@
 #define rendered texture0
 #define bloom texture1
 
+struct ExposureParams {
+	float compensationFactor;
+};
+
 uniform sampler2D rendered;
 uniform sampler2D bloom;
-uniform mediump float exposureFactor;
+
+uniform ExposureParams exposureParams;
 uniform lowp float bloomIntensity;
 uniform lowp float saturation;
 
@@ -11,6 +16,10 @@ uniform lowp float saturation;
 varying mediump vec2 varTexCoord;
 #else
 centroid varying vec2 varTexCoord;
+#endif
+
+#ifdef ENABLE_AUTO_EXPOSURE
+varying float exposure; // linear exposure factor, see vertex shader
 #endif
 
 #ifdef ENABLE_BLOOM
@@ -80,7 +89,10 @@ void main(void)
 	if (uv.x > 0.5 || uv.y > 0.5)
 #endif
 	{
-		color.rgb *= exposureFactor;
+		color.rgb *= exposureParams.compensationFactor;
+#ifdef ENABLE_AUTO_EXPOSURE
+		color.rgb *= exposure;
+#endif
 	}
 
 

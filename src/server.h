@@ -195,6 +195,7 @@ public:
 	void handleCommand_SrpBytesA(NetworkPacket* pkt);
 	void handleCommand_SrpBytesM(NetworkPacket* pkt);
 	void handleCommand_HaveMedia(NetworkPacket *pkt);
+	void handleCommand_UpdateClientInfo(NetworkPacket *pkt);
 
 	void ProcessData(NetworkPacket *pkt);
 
@@ -341,6 +342,7 @@ public:
 	void DisconnectPeer(session_t peer_id);
 	bool getClientConInfo(session_t peer_id, con::rtt_stat_type type, float *retval);
 	bool getClientInfo(session_t peer_id, ClientInfo &ret);
+	const ClientDynamicInfo *getClientDynamicInfo(session_t peer_id);
 
 	void printToConsoleOnly(const std::string &text);
 
@@ -438,9 +440,6 @@ private:
 	void SendItemDef(session_t peer_id, IItemDefManager *itemdef, u16 protocol_version);
 	void SendNodeDef(session_t peer_id, const NodeDefManager *nodedef,
 		u16 protocol_version);
-
-	/* mark blocks not sent for all clients */
-	void SetBlocksNotSent(std::map<v3s16, MapBlock *>& block);
 
 
 	virtual void SendChatMessage(session_t peer_id, const ChatMessage &message);

@@ -263,10 +263,13 @@ Server::Server(
 		throw ServerError("Supplied invalid gamespec");
 
 #if USE_PROMETHEUS
-	m_metrics_backend = std::unique_ptr<MetricsBackend>(createPrometheusMetricsBackend());
+	if (!simple_singleplayer_mode)
+		m_metrics_backend = std::unique_ptr<MetricsBackend>(createPrometheusMetricsBackend());
+	else
 #else
-	m_metrics_backend = std::make_unique<MetricsBackend>();
+	if (true)
 #endif
+		m_metrics_backend = std::make_unique<MetricsBackend>();
 
 	m_uptime_counter = m_metrics_backend->addCounter("freecraft_core_server_uptime", "Server uptime (in seconds)");
 	m_player_gauge = m_metrics_backend->addGauge("freecraft_core_player_number", "Number of connected players");
@@ -667,6 +670,11 @@ void Server::AsyncRunStep(bool initial_step)
 	}
 
 	/*
+		Note: Orphan MapBlock ptrs become dangling after this call.
+	*/
+	m_env->getServerMap().step();
+
+	/*
 		Listen to the admin chat, if available
 	*/
 	if (m_admin_chat) {
@@ -699,11 +707,11 @@ void Server::AsyncRunStep(bool initial_step)
 		std::map<v3s16, MapBlock*> modified_blocks;
 		m_env->getServerMap().transformLiquids(modified_blocks, m_env);
 
-		/*
-			Set the modified blocks unsent for all the clients
-		*/
 		if (!modified_blocks.empty()) {
-			SetBlocksNotSent(modified_blocks);
+			MapEditEvent event;
+			event.type = MEET_OTHER;
+			event.setModifiedBlocks(modified_blocks);
+			m_env->getMap().dispatchEvent(event);
 		}
 	}
 	m_clients.step(dtime);
@@ -1256,17 +1264,6 @@ void Server::onMapEditEvent(const MapEditEvent &event)
 	m_unsent_map_edit_queue.push(new MapEditEvent(event));
 }
 
-void Server::SetBlocksNotSent(std::map<v3s16, MapBlock *>& block)
-{
-	std::vector<session_t> clients = m_clients.getClientIDs();
-	ClientInterface::AutoLock clientlock(m_clients);
-	// Set the modified blocks unsent for all the clients
-	for (const session_t client_id : clients) {
-			if (RemoteClient *client = m_clients.lockedGetClientNoEx(client_id))
-				client->SetBlocksNotSent(block);
-	}
-}
-
 void Server::peerAdded(con::Peer *peer)
 {
 	verbosestream<<"Server::peerAdded(): peer->id="
@@ -1312,6 +1309,17 @@ bool Server::getClientInfo(session_t peer_id, ClientInfo &ret)
 	ret.lang_code = client->getLangCode();
 
 	return true;
+}
+
+const ClientDynamicInfo *Server::getClientDynamicInfo(session_t peer_id)
+{
+	ClientInterface::AutoLock clientlock(m_clients);
+	RemoteClient *client = m_clients.lockedGetClientNoEx(peer_id, CS_Invalid);
+
+	if (!client)
+		return nullptr;
+
+	return &client->getDynamicInfo();
 }
 
 void Server::handlePeerChanges()
@@ -1539,10 +1547,13 @@ void Server::SendShowFormspecMessage(session_t peer_id, const std::string &forms
 {
 	NetworkPacket pkt(TOCLIENT_SHOW_FORMSPEC, 0, peer_id);
 	if (formspec.empty()){
-		//the client should close the formspec
-		//but make sure there wasn't another one open in meantime
+		// The client should close the formspec
+		// But make sure there wasn't another one open in meantime
+		// If the formname is empty, any open formspec will be closed so the
+		// form name should always be erased from the state.
 		const auto it = m_formspec_state_data.find(peer_id);
-		if (it != m_formspec_state_data.end() && it->second == formname) {
+		if (it != m_formspec_state_data.end() &&
+				(it->second == formname || formname.empty())) {
 			m_formspec_state_data.erase(peer_id);
 		}
 		pkt.putLongString("");
@@ -1819,6 +1830,8 @@ void Server::SendSetSky(session_t peer_id, const SkyboxParams &params)
 				<< params.sky_color.night_sky << params.sky_color.night_horizon
 				<< params.sky_color.indoors;
 		}
+
+		pkt << params.body_orbit_tilt;
 	}
 
 	Send(&pkt);
@@ -1878,6 +1891,14 @@ void Server::SendSetLighting(session_t peer_id, const Lighting &lighting)
 			4, peer_id);
 
 	pkt << lighting.shadow_intensity;
+	pkt << lighting.saturation;
+
+	pkt << lighting.exposure.luminance_min
+			<< lighting.exposure.luminance_max
+			<< lighting.exposure.exposure_correction
+			<< lighting.exposure.speed_dark_bright
+			<< lighting.exposure.speed_bright_dark
+			<< lighting.exposure.center_weight_power;
 
 	Send(&pkt);
 }

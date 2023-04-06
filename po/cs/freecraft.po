@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Czech (Minetest)\n"
+"Project-Id-Version: Czech (FreeCraft)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-10 15:37+0100\n"
+"POT-Creation-Date: 2023-03-09 15:54+0100\n"
 "PO-Revision-Date: 2022-07-31 17:28+0000\n"
 "Last-Translator: Fjuro <fjuro@seznam.cz>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/minetest/minetest/"
@@ -275,9 +275,9 @@ msgid "Base Game:"
 msgstr "Základní hra:"
 
 #: builtin/mainmenu/dlg_contentstore.lua
-msgid "ContentDB is not available when Minetest was compiled without cURL"
+msgid "ContentDB is not available when FreeCraft was compiled without cURL"
 msgstr ""
-"ContentDB není přístupná pokud byl Minetest kompilován bez použití cURL"
+"ContentDB není přístupná pokud byl FreeCraft kompilován bez použití cURL"
 
 #: builtin/mainmenu/dlg_contentstore.lua
 msgid "Downloading..."
@@ -1703,6 +1703,11 @@ msgid "ok"
 msgstr "OK"
 
 #: src/client/gameui.cpp
+#, fuzzy
+msgid "Chat currently disabled by game or mod"
+msgstr "Přiblížení je aktuálně zakázáno"
+
+#: src/client/gameui.cpp
 msgid "Chat hidden"
 msgstr "Chat skryt"
 
@@ -2371,6 +2376,7 @@ msgid "3D noise that determines number of dungeons per mapchunk."
 msgstr "3D šum definující počet žalářů na kusu mapy."
 
 #: src/settings_translation_file.cpp
+#, fuzzy
 msgid ""
 "3D support.\n"
 "Currently supported:\n"
@@ -2380,7 +2386,6 @@ msgid ""
 "-    topbottom: split screen top/bottom.\n"
 "-    sidebyside: split screen side by side.\n"
 "-    crossview: Cross-eyed 3d\n"
-"-    pageflip: quadbuffer based 3d.\n"
 "Note that the interlaced mode requires shaders to be enabled."
 msgstr ""
 "Podpora 3D zobrazení.\n"
@@ -2475,17 +2480,6 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid "Adjust the detected display density, used for scaling UI elements."
-msgstr ""
-
-#: src/settings_translation_file.cpp
-msgid ""
-"Adjust the saturation (or vividness) of the scene\n"
-"Values\n"
-"< 1.0 decrease saturation\n"
-"> 1.0 increase saturation\n"
-"1.0 = unchanged saturation\n"
-"0.0 = black and white\n"
-"(Tone mapping needs to be enabled.)"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -2850,6 +2844,10 @@ msgid "Client"
 msgstr "Klient"
 
 #: src/settings_translation_file.cpp
+msgid "Client Mesh Chunksize"
+msgstr ""
+
+#: src/settings_translation_file.cpp
 msgid "Client and Server"
 msgstr "Klient a Server"
 
@@ -2905,7 +2903,7 @@ msgid ""
 "software',\n"
 "as defined by the Free Software Foundation.\n"
 "You can also specify content ratings.\n"
-"These flags are independent from Minetest versions,\n"
+"These flags are independent from FreeCraft versions,\n"
 "so see a full list at https://content.minetest.net/help/content_flags/"
 msgstr ""
 "Seznam nastavení ve formátu CSV sloužící k filtrování obsahu repozitáře.\n"
@@ -2913,7 +2911,7 @@ msgstr ""
 "Software Foundation\n"
 "neřadí do \"svobodného softwaru\".\n"
 "Můžete také zadat hodnocení obsahu.\n"
-"Tato nastavení jsou nezávislá na versi Minetestu,\n"
+"Tato nastavení jsou nezávislá na versi FreeCraftu,\n"
 "kompletní seznam na: https://content.minetest.net/help/content_flags/"
 
 #: src/settings_translation_file.cpp
@@ -3321,6 +3319,10 @@ msgid "Dungeon noise"
 msgstr "Šum žalářů"
 
 #: src/settings_translation_file.cpp
+msgid "Enable Automatic Exposure"
+msgstr ""
+
+#: src/settings_translation_file.cpp
 #, fuzzy
 msgid "Enable Bloom"
 msgstr "Zapnout vše"
@@ -3355,6 +3357,18 @@ msgstr ""
 "Zapnout filtrování Poissoným diskem.\n"
 "Pokud je zapnuto, využívá Poissonův disk pro generování \"měkkých stínů\". V "
 "opačném případě je využito filtrování PCF."
+
+#: src/settings_translation_file.cpp
+msgid "Enable Raytraced Culling"
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid ""
+"Enable automatic exposure correction\n"
+"When enabled, the post-processing engine will\n"
+"automatically adjust to the brightness of the scene,\n"
+"simulating the behavior of human eye."
+msgstr ""
 
 #: src/settings_translation_file.cpp
 #, fuzzy
@@ -3532,7 +3546,7 @@ msgstr ""
 "s rovinatějšími nížinami, vhodné pro souvislou vrstvu létajících ostrovů."
 
 #: src/settings_translation_file.cpp
-msgid "Exposure Factor"
+msgid "Exposure compensation"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -4769,6 +4783,11 @@ msgid "Mapblock mesh generation delay"
 msgstr "Prodleva generování sítě mapbloků"
 
 #: src/settings_translation_file.cpp
+#, fuzzy
+msgid "Mapblock mesh generation threads"
+msgstr "Prodleva generování sítě mapbloků"
+
+#: src/settings_translation_file.cpp
 msgid "Mapblock mesh generator's MapBlock cache size in MB"
 msgstr "Velikost cache paměti v MB Generátoru mapy pro Mapbloky"
 
@@ -5193,6 +5212,13 @@ msgid ""
 msgstr ""
 
 #: src/settings_translation_file.cpp
+msgid ""
+"Number of threads to use for mesh generation.\n"
+"Value of 0 (default) will let FreeCraft autodetect the number of available "
+"threads."
+msgstr ""
+
+#: src/settings_translation_file.cpp
 msgid "Opaque liquids"
 msgstr ""
 
@@ -5333,7 +5359,7 @@ msgstr ""
 #: src/settings_translation_file.cpp
 msgid ""
 "Prometheus listener address.\n"
-"If Minetest is compiled with ENABLE_PROMETHEUS option enabled,\n"
+"If FreeCraft is compiled with ENABLE_PROMETHEUS option enabled,\n"
 "enable metrics listener for Prometheus on that address.\n"
 "Metrics can be fetched on http://127.0.0.1:30000/metrics"
 msgstr ""
@@ -5471,11 +5497,6 @@ msgstr ""
 #: src/settings_translation_file.cpp
 msgid "Sandy beaches occur when np_beach exceeds this value."
 msgstr ""
-
-#: src/settings_translation_file.cpp
-#, fuzzy
-msgid "Saturation"
-msgstr "Iterace"
 
 #: src/settings_translation_file.cpp
 msgid "Save the map received by the client on disk."
@@ -5669,11 +5690,9 @@ msgstr "Soubor se seznamem veřejných serverů"
 
 #: src/settings_translation_file.cpp
 msgid ""
-"Set the exposure compensation factor.\n"
-"This factor is applied to linear color value \n"
-"before all other post-processing effects.\n"
-"Value of 1.0 (default) means no exposure compensation.\n"
-"Range: from 0.1 to 10.0"
+"Set the exposure compensation in EV units.\n"
+"Value of 0.0 (default) means no exposure compensation.\n"
+"Range: from -1 to 1.0"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -5699,13 +5718,6 @@ msgid ""
 "Set the soft shadow radius size.\n"
 "Lower values mean sharper shadows, bigger values mean softer shadows.\n"
 "Minimum value: 1.0; maximum value: 15.0"
-msgstr ""
-
-#: src/settings_translation_file.cpp
-msgid ""
-"Set the tilt of Sun/Moon orbit in degrees.\n"
-"Value of 0 means no tilt / vertical orbit.\n"
-"Minimum value: 0.0; maximum value: 60.0"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -5753,7 +5765,7 @@ msgstr ""
 #: src/settings_translation_file.cpp
 msgid ""
 "Set to true to render debugging breakdown of the bloom effect.\n"
-"In debug mode, the screen is split into 4 quadrants: \n"
+"In debug mode, the screen is split into 4 quadrants:\n"
 "top-left - processed base image, top-right - final image\n"
 "bottom-left - raw base image, bottom-right - bloom texture."
 msgstr ""
@@ -5835,6 +5847,15 @@ msgstr "Zpráva o vypnutí"
 
 #: src/settings_translation_file.cpp
 msgid ""
+"Side length of a cube of map blocks that the client will consider together\n"
+"when generating meshes.\n"
+"Larger values increase the utilization of the GPU by reducing the number of\n"
+"draw calls, benefiting especially high-end GPUs.\n"
+"Systems with a low-end GPU (or no GPU) would benefit from smaller values."
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid ""
 "Size of mapchunks generated by mapgen, stated in mapblocks (16 nodes).\n"
 "WARNING!: There is no benefit, and there are several dangers, in\n"
 "increasing this value above 5.\n"
@@ -5854,10 +5875,6 @@ msgid ""
 "Size of the MapBlock cache of the mesh generator. Increasing this will\n"
 "increase the cache hit %, reducing the data being copied from the main\n"
 "thread, thus reducing jitter."
-msgstr ""
-
-#: src/settings_translation_file.cpp
-msgid "Sky Body Orbit Tilt"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -6137,11 +6154,9 @@ msgstr ""
 #: src/settings_translation_file.cpp
 msgid ""
 "The rendering back-end.\n"
-"A restart is required after changing this.\n"
-"Note: On Android, stick with OGLES1 if unsure! App may fail to start "
-"otherwise.\n"
-"On other platforms, OpenGL is recommended.\n"
-"Shaders are supported by OpenGL (desktop only) and OGLES2 (experimental)"
+"Note: A restart is required after changing this!\n"
+"OpenGL is the default for desktop, and OGLES2 for Android.\n"
+"Shaders are supported by OpenGL and OGLES2 (experimental)."
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -6272,7 +6287,7 @@ msgstr "Důvěryhodné mody"
 
 #: src/settings_translation_file.cpp
 msgid ""
-"URL to JSON file which provides information about the newest Minetest release"
+"URL to JSON file which provides information about the newest FreeCraft release"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -6361,6 +6376,12 @@ msgid ""
 "Visible spaces appear between nodes when shaders are disabled.\n"
 "If set to 0, MSAA is disabled.\n"
 "A restart is required after changing this option."
+msgstr ""
+
+#: src/settings_translation_file.cpp
+msgid ""
+"Use raytraced occlusion culling in the new culler.\n"
+"This flag enables use of raytraced occlusion culling test"
 msgstr ""
 
 #: src/settings_translation_file.cpp
@@ -6634,7 +6655,7 @@ msgstr ""
 
 #: src/settings_translation_file.cpp
 msgid ""
-"Windows systems only: Start Minetest with the command line window in the "
+"Windows systems only: Start FreeCraft with the command line window in the "
 "background.\n"
 "Contains the same information as the file debug.txt (default name)."
 msgstr ""
@@ -6860,8 +6881,8 @@ msgstr "cURL limit paralelních stahování"
 #~ msgid "Dig key"
 #~ msgstr "Klávesa těžení"
 
-#~ msgid "Download a game, such as Minetest Game, from minetest.net"
-#~ msgstr "Stáhněte si z minetest.net hru, například Minetest Game"
+#~ msgid "Download a game, such as FreeCraft Game, from minetest.net"
+#~ msgstr "Stáhněte si z minetest.net hru, například FreeCraft Game"
 
 #~ msgid "Download one from minetest.net"
 #~ msgstr "Stáhněte si jednu z minetest.net"
@@ -7695,6 +7716,10 @@ msgstr "cURL limit paralelních stahování"
 
 #~ msgid "Right key"
 #~ msgstr "Klávesa doprava"
+
+#, fuzzy
+#~ msgid "Saturation"
+#~ msgstr "Iterace"
 
 #, fuzzy
 #~ msgid "Select Package File:"

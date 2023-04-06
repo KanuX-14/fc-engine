@@ -322,10 +322,9 @@ void Client::handleCommand_BlockData(NetworkPacket* pkt)
 		/*
 			Create a new block
 		*/
-		block = new MapBlock(&m_env.getMap(), p, this);
+		block = sector->createBlankBlock(p.Y);
 		block->deSerialize(istr, m_server_ser_ver, false);
 		block->deSerializeNetworkSpecific(istr);
-		sector->insertBlock(block);
 	}
 
 	if (m_localdb) {
@@ -673,7 +672,7 @@ void Client::handleCommand_AnnounceMedia(NetworkPacket* pkt)
 
 	// Mesh update thread must be stopped while
 	// updating content definitions
-	sanity_check(!m_mesh_update_thread.isRunning());
+	sanity_check(!m_mesh_update_manager.isRunning());
 
 	for (u16 i = 0; i < num_files; i++) {
 		std::string name, sha1_base64;
@@ -733,7 +732,7 @@ void Client::handleCommand_Media(NetworkPacket* pkt)
 	if (init_phase) {
 		// Mesh update thread must be stopped while
 		// updating content definitions
-		sanity_check(!m_mesh_update_thread.isRunning());
+		sanity_check(!m_mesh_update_manager.isRunning());
 	}
 
 	for (u32 i = 0; i < num_files; i++) {
@@ -770,7 +769,7 @@ void Client::handleCommand_NodeDef(NetworkPacket* pkt)
 
 	// Mesh update thread must be stopped while
 	// updating content definitions
-	sanity_check(!m_mesh_update_thread.isRunning());
+	sanity_check(!m_mesh_update_manager.isRunning());
 
 	// Decompress node definitions
 	std::istringstream tmp_is(pkt->readLongString(), std::ios::binary);
@@ -789,7 +788,7 @@ void Client::handleCommand_ItemDef(NetworkPacket* pkt)
 
 	// Mesh update thread must be stopped while
 	// updating content definitions
-	sanity_check(!m_mesh_update_thread.isRunning());
+	sanity_check(!m_mesh_update_manager.isRunning());
 
 	// Decompress item definitions
 	std::istringstream tmp_is(pkt->readLongString(), std::ios::binary);
@@ -1368,6 +1367,10 @@ void Client::handleCommand_HudSetSky(NetworkPacket* pkt)
 				>> skybox.sky_color.indoors;
 		}
 
+		try {
+			*pkt >> skybox.body_orbit_tilt;
+		} catch (PacketError &e) {}
+
 		ClientEvent *event = new ClientEvent();
 		event->type = CE_SET_SKY;
 		event->set_sky = new SkyboxParams(skybox);
@@ -1593,14 +1596,6 @@ void Client::handleCommand_MediaPush(NetworkPacket *pkt)
 		verbosestream << "with " << filedata.size() << " bytes ";
 	verbosestream << "(cached=" << cached << ")" << std::endl;
 
-	if (m_media_pushed_files.count(filename) != 0) {
-		// Ignore (but acknowledge). Previously this was for sync purposes,
-		// but even in new versions media cannot be replaced at runtime.
-		if (m_proto_ver >= 40)
-			sendHaveMedia({ token });
-		return;
-	}
-
 	if (!filedata.empty()) {
 		// LEGACY CODEPATH
 		// Compute and check checksum of data
@@ -1619,15 +1614,12 @@ void Client::handleCommand_MediaPush(NetworkPacket *pkt)
 
 		// Actually load media
 		loadMedia(filedata, filename, true);
-		m_media_pushed_files.insert(filename);
 
 		// Cache file for the next time when this client joins the same server
 		if (cached)
 			clientMediaUpdateCache(raw_hash, filedata);
 		return;
 	}
-
-	m_media_pushed_files.insert(filename);
 
 	// create a downloader for this file
 	auto downloader(std::make_shared<SingleMediaDownloader>(cached));
@@ -1764,4 +1756,14 @@ void Client::handleCommand_SetLighting(NetworkPacket *pkt)
 
 	if (pkt->getRemainingBytes() >= 4)
 		*pkt >> lighting.shadow_intensity;
+	if (pkt->getRemainingBytes() >= 4)
+		*pkt >> lighting.saturation;
+	if (pkt->getRemainingBytes() >= 24) {
+		*pkt >> lighting.exposure.luminance_min
+				>> lighting.exposure.luminance_max
+				>> lighting.exposure.exposure_correction
+				>> lighting.exposure.speed_dark_bright
+				>> lighting.exposure.speed_bright_dark
+				>> lighting.exposure.center_weight_power;
+	}
 }

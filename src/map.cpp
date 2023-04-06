@@ -262,10 +262,7 @@ bool Map::addNodeWithEvent(v3s16 p, MapNode n, bool remove_metadata)
 		std::map<v3s16, MapBlock*> modified_blocks;
 		addNodeAndUpdate(p, n, modified_blocks, remove_metadata);
 
-		// Copy modified_blocks to event
-		for (auto &modified_block : modified_blocks) {
-			event.modified_blocks.insert(modified_block.first);
-		}
+		event.setModifiedBlocks(modified_blocks);
 	}
 	catch(InvalidPositionException &e){
 		succeeded = false;
@@ -287,10 +284,7 @@ bool Map::removeNodeWithEvent(v3s16 p)
 		std::map<v3s16, MapBlock*> modified_blocks;
 		removeNodeAndUpdate(p, modified_blocks);
 
-		// Copy modified_blocks to event
-		for (auto &modified_block : modified_blocks) {
-			event.modified_blocks.insert(modified_block.first);
-		}
+		event.setModifiedBlocks(modified_blocks);
 	}
 	catch(InvalidPositionException &e){
 		succeeded = false;
@@ -331,6 +325,7 @@ void Map::timerUpdate(float dtime, float unload_timeout, s32 max_loaded_blocks,
 	u32 deleted_blocks_count = 0;
 	u32 saved_blocks_count = 0;
 	u32 block_count_all = 0;
+	u32 locked_blocks = 0;
 
 	const auto start_time = porting::getTimeUs();
 	beginSave();
@@ -402,8 +397,10 @@ void Map::timerUpdate(float dtime, float unload_timeout, s32 max_loaded_blocks,
 
 			MapBlock *block = b.block;
 
-			if (block->refGet() != 0)
+			if (block->refGet() != 0) {
+				locked_blocks++;
 				continue;
+			}
 
 			v3s16 p = block->getPos();
 
@@ -448,7 +445,7 @@ void Map::timerUpdate(float dtime, float unload_timeout, s32 max_loaded_blocks,
 				<<" blocks from memory";
 		if(save_before_unloading)
 			infostream<<", of which "<<saved_blocks_count<<" were written";
-		infostream<<", "<<block_count_all<<" blocks in memory";
+		infostream<<", "<<block_count_all<<" blocks in memory, " << locked_blocks << " locked";
 		infostream<<"."<<std::endl;
 		if(saved_blocks_count != 0){
 			PrintInfo(infostream); // ServerMap/ClientMap:
@@ -1312,6 +1309,8 @@ ServerMap::~ServerMap()
 	*/
 	delete dbase;
 	delete dbase_ro;
+
+	deleteDetachedBlocks();
 }
 
 MapgenParams *ServerMap::getMapgenParams()
@@ -1873,10 +1872,7 @@ MapBlock* ServerMap::loadBlock(v3s16 blockpos)
 			//Modified lighting, send event
 			MapEditEvent event;
 			event.type = MEET_OTHER;
-			std::map<v3s16, MapBlock *>::iterator it;
-			for (it = modified_blocks.begin();
-					it != modified_blocks.end(); ++it)
-				event.modified_blocks.insert(it->first);
+			event.setModifiedBlocks(modified_blocks);
 			dispatchEvent(event);
 		}
 	}
@@ -1894,10 +1890,29 @@ bool ServerMap::deleteBlock(v3s16 blockpos)
 		MapSector *sector = getSectorNoGenerate(p2d);
 		if (!sector)
 			return false;
-		sector->deleteBlock(block);
+		// It may not be safe to delete the block from memory at the moment
+		// (pointers to it could still be in use)
+		sector->detachBlock(block);
+		m_detached_blocks.push_back(block);
 	}
 
 	return true;
+}
+
+void ServerMap::deleteDetachedBlocks()
+{
+	for (MapBlock *block : m_detached_blocks) {
+		assert(block->isOrphan());
+		delete block;
+	}
+	m_detached_blocks.clear();
+}
+
+void ServerMap::step()
+{
+	// Delete from memory blocks removed by deleteBlocks() only when pointers
+	// to them are (probably) no longer in use
+	deleteDetachedBlocks();
 }
 
 void ServerMap::PrintInfo(std::ostream &out)
