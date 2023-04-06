@@ -138,7 +138,7 @@ private:
 	/** initialize a new TTF font */
 	gui::IGUIFont *initFont(const FontSpec &spec);
 
-	/** update current minetest skin with font changes */
+	/** update current freecraft skin with font changes */
 	void updateSkin();
 
 	/** clean cache */

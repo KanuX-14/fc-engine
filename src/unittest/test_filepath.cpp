@@ -93,16 +93,16 @@ void TestFilePath::testPathStartsWith()
 	std::string paths[numpaths] = {
 		"",
 		p("/"),
-		p("/home/user/minetest"),
-		p("/home/user/minetest/bin"),
-		p("/home/user/.minetest"),
+		p("/home/user/freecraft"),
+		p("/home/user/freecraft/bin"),
+		p("/home/user/.freecraft"),
 		p("/tmp/dir/file"),
 		p("/tmp/file/"),
 		p("/tmP/file"),
 		p("/tmp"),
 		p("/tmp/dir"),
-		p("/home/user2/minetest/worlds"),
-		p("/home/user2/minetest/world"),
+		p("/home/user2/freecraft/worlds"),
+		p("/home/user2/freecraft/world"),
 	};
 	/*
 		expected fs::PathStartsWith results
@@ -168,35 +168,35 @@ void TestFilePath::testRemoveLastPathComponent()
 	std::string path, result, removed;
 
 	UASSERT(fs::RemoveLastPathComponent("") == "");
-	path = p("/home/user/minetest/bin/..//worlds/world1");
+	path = p("/home/user/freecraft/bin/..//worlds/world1");
 	result = fs::RemoveLastPathComponent(path, &removed, 0);
 	UASSERT(result == path);
 	UASSERT(removed == "");
 	result = fs::RemoveLastPathComponent(path, &removed, 1);
-	UASSERT(result == p("/home/user/minetest/bin/..//worlds"));
+	UASSERT(result == p("/home/user/freecraft/bin/..//worlds"));
 	UASSERT(removed == p("world1"));
 	result = fs::RemoveLastPathComponent(path, &removed, 2);
-	UASSERT(result == p("/home/user/minetest/bin/.."));
+	UASSERT(result == p("/home/user/freecraft/bin/.."));
 	UASSERT(removed == p("worlds/world1"));
 	result = fs::RemoveLastPathComponent(path, &removed, 3);
-	UASSERT(result == p("/home/user/minetest/bin"));
+	UASSERT(result == p("/home/user/freecraft/bin"));
 	UASSERT(removed == p("../worlds/world1"));
 	result = fs::RemoveLastPathComponent(path, &removed, 4);
-	UASSERT(result == p("/home/user/minetest"));
+	UASSERT(result == p("/home/user/freecraft"));
 	UASSERT(removed == p("bin/../worlds/world1"));
 	result = fs::RemoveLastPathComponent(path, &removed, 5);
 	UASSERT(result == p("/home/user"));
-	UASSERT(removed == p("minetest/bin/../worlds/world1"));
+	UASSERT(removed == p("freecraft/bin/../worlds/world1"));
 	result = fs::RemoveLastPathComponent(path, &removed, 6);
 	UASSERT(result == p("/home"));
-	UASSERT(removed == p("user/minetest/bin/../worlds/world1"));
+	UASSERT(removed == p("user/freecraft/bin/../worlds/world1"));
 	result = fs::RemoveLastPathComponent(path, &removed, 7);
 #ifdef _WIN32
 	UASSERT(result == "C:");
 #else
 	UASSERT(result == "");
 #endif
-	UASSERT(removed == p("home/user/minetest/bin/../worlds/world1"));
+	UASSERT(removed == p("home/user/freecraft/bin/../worlds/world1"));
 }
 
 
@@ -204,35 +204,35 @@ void TestFilePath::testRemoveLastPathComponentWithTrailingDelimiter()
 {
 	std::string path, result, removed;
 
-	path = p("/home/user/minetest/bin/..//worlds/world1/");
+	path = p("/home/user/freecraft/bin/..//worlds/world1/");
 	result = fs::RemoveLastPathComponent(path, &removed, 0);
 	UASSERT(result == path);
 	UASSERT(removed == "");
 	result = fs::RemoveLastPathComponent(path, &removed, 1);
-	UASSERT(result == p("/home/user/minetest/bin/..//worlds"));
+	UASSERT(result == p("/home/user/freecraft/bin/..//worlds"));
 	UASSERT(removed == p("world1"));
 	result = fs::RemoveLastPathComponent(path, &removed, 2);
-	UASSERT(result == p("/home/user/minetest/bin/.."));
+	UASSERT(result == p("/home/user/freecraft/bin/.."));
 	UASSERT(removed == p("worlds/world1"));
 	result = fs::RemoveLastPathComponent(path, &removed, 3);
-	UASSERT(result == p("/home/user/minetest/bin"));
+	UASSERT(result == p("/home/user/freecraft/bin"));
 	UASSERT(removed == p("../worlds/world1"));
 	result = fs::RemoveLastPathComponent(path, &removed, 4);
-	UASSERT(result == p("/home/user/minetest"));
+	UASSERT(result == p("/home/user/freecraft"));
 	UASSERT(removed == p("bin/../worlds/world1"));
 	result = fs::RemoveLastPathComponent(path, &removed, 5);
 	UASSERT(result == p("/home/user"));
-	UASSERT(removed == p("minetest/bin/../worlds/world1"));
+	UASSERT(removed == p("freecraft/bin/../worlds/world1"));
 	result = fs::RemoveLastPathComponent(path, &removed, 6);
 	UASSERT(result == p("/home"));
-	UASSERT(removed == p("user/minetest/bin/../worlds/world1"));
+	UASSERT(removed == p("user/freecraft/bin/../worlds/world1"));
 	result = fs::RemoveLastPathComponent(path, &removed, 7);
 #ifdef _WIN32
 	UASSERT(result == "C:");
 #else
 	UASSERT(result == "");
 #endif
-	UASSERT(removed == p("home/user/minetest/bin/../worlds/world1"));
+	UASSERT(removed == p("home/user/freecraft/bin/../worlds/world1"));
 }
 
 
@@ -240,15 +240,15 @@ void TestFilePath::testRemoveRelativePathComponent()
 {
 	std::string path, result;
 
-	path = p("/home/user/minetest/bin");
+	path = p("/home/user/freecraft/bin");
 	result = fs::RemoveRelativePathComponents(path);
 	UASSERT(result == path);
-	path = p("/home/user/minetest/bin/../worlds/world1");
+	path = p("/home/user/freecraft/bin/../worlds/world1");
 	result = fs::RemoveRelativePathComponents(path);
-	UASSERT(result == p("/home/user/minetest/worlds/world1"));
-	path = p("/home/user/minetest/bin/../worlds/world1/");
+	UASSERT(result == p("/home/user/freecraft/worlds/world1"));
+	path = p("/home/user/freecraft/bin/../worlds/world1/");
 	result = fs::RemoveRelativePathComponents(path);
-	UASSERT(result == p("/home/user/minetest/worlds/world1"));
+	UASSERT(result == p("/home/user/freecraft/worlds/world1"));
 	path = p(".");
 	result = fs::RemoveRelativePathComponents(path);
 	UASSERT(result == "");

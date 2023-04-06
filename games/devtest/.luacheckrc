@@ -35,7 +35,7 @@ read_globals = {
 
 globals = {
 	"aborted",
-	"minetest",
+	"freecraft",
 	"core",
 	os = { fields = { "tempfolder" } },
 	"_",

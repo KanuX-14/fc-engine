@@ -12,21 +12,21 @@ local give_initial_stuff = function(player)
 	give_if_not_gotten_already(inv, "main", "bucket:bucket")
 	give_if_not_gotten_already(inv, "main", "testnodes:light14")
 	give_if_not_gotten_already(inv, "main", "chest_of_everything:bag")
-	minetest.log("action", "[give_initial_stuff] Giving initial stuff to "..player:get_player_name())
+	freecraft.log("action", "[give_initial_stuff] Giving initial stuff to "..player:get_player_name())
 end
 
-minetest.register_on_newplayer(function(player)
-	if minetest.settings:get_bool("give_initial_stuff", true) then
+freecraft.register_on_newplayer(function(player)
+	if freecraft.settings:get_bool("give_initial_stuff", true) then
 		give_initial_stuff(player)
 	end
 end)
 
-minetest.register_chatcommand("stuff", {
+freecraft.register_chatcommand("stuff", {
 	params = "",
 	privs = { give = true },
 	description = "Give yourself initial items",
 	func = function(name, param)
-		local player = minetest.get_player_by_name(name)
+		local player = freecraft.get_player_by_name(name)
 		if not player or not player:is_player() then
 			return false, "No player."
 		end
@@ -34,4 +34,3 @@ minetest.register_chatcommand("stuff", {
 		return true
 	end,
 })
-

@@ -3,51 +3,51 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: minetest
-  name: minetest
+    app: freecraft
+  name: freecraft
   namespace: default
 spec:
   selector:
     matchLabels:
-      app: minetest
+      app: freecraft
   template:
     metadata:
       labels:
-        app: minetest
+        app: freecraft
     spec:
       containers:
       - image: registry.gitlab.com/minetest/minetest/server:master
-        name: minetest
+        name: freecraft
         ports:
         - containerPort: 30000
           protocol: UDP
         volumeMounts:
-        - mountPath: /var/lib/minetest
-          name: minetest-data
-        - mountPath: /etc/minetest
+        - mountPath: /var/lib/freecraft
+          name: freecraft-data
+        - mountPath: /etc/freecraft
           name: config
       restartPolicy: Always
       volumes:
-      - name: minetest-data
+      - name: freecraft-data
         persistentVolumeClaim:
-          claimName: minetest-data
+          claimName: freecraft-data
       - configMap:
           defaultMode: 420
-          name: minetest
+          name: freecraft
         name: config
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: minetest
-  name: minetest
+    app: freecraft
+  name: freecraft
   namespace: default
 spec:
   ports:
-  - name: minetest
+  - name: freecraft
     port: 30000
     protocol: UDP
   selector:
-    app: minetest
+    app: freecraft
   type: NodePort

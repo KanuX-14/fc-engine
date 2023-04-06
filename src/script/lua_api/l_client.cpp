@@ -1,7 +1,8 @@
 /*
-Minetest
+Minetest / FreeCraft
 Copyright (C) 2013 celeron55, Perttu Ahola <celeron55@gmail.com>
 Copyright (C) 2017 nerzhul, Loic Blot <loic.blot@unix-experience.fr>
+Copyright (C) 2023 KanuX-14 <kanux.dev@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -403,6 +404,16 @@ int ModApiClient::l_get_builtin_path(lua_State *L)
 	return 1;
 }
 
+// check_file(file)
+int ModApiClient::l_check_file(lua_State *L)
+{
+	std::string path = luaL_checkstring(L, 1);
+	bool file = g_settings->readConfigFile(path.c_str());
+	lua_pushboolean(L, file);
+
+	return 1;
+}
+
 // get_csm_restrictions()
 int ModApiClient::l_get_csm_restrictions(lua_State *L)
 {
@@ -441,6 +452,7 @@ void ModApiClient::Initialize(lua_State *L, int top)
 	API_FCT(get_node_def);
 	API_FCT(get_privilege_list);
 	API_FCT(get_builtin_path);
+	API_FCT(check_file);
 	API_FCT(get_language);
 	API_FCT(get_csm_restrictions);
 }

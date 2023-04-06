@@ -1,5 +1,5 @@
 local function show_fullscreen_fs(name)
-	local window = minetest.get_player_window_information(name)
+	local window = freecraft.get_player_window_information(name)
 	if not window then
 		return false, "Unable to get window info"
 	end
@@ -19,11 +19,11 @@ local function show_fullscreen_fs(name)
 		("label[%f,%f;%s]"):format(size.x / 2, size.y / 2, "Fullscreen")
 	}
 
-	minetest.show_formspec(name, "testfullscreenfs:fs", table.concat(fs))
+	freecraft.show_formspec(name, "testfullscreenfs:fs", table.concat(fs))
 	return true, ("Calculated size of %f, %f"):format(size.x, size.y)
 end
 
 
-minetest.register_chatcommand("testfullscreenfs", {
+freecraft.register_chatcommand("testfullscreenfs", {
 	func = show_fullscreen_fs,
 })

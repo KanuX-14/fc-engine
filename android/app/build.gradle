@@ -5,7 +5,7 @@ android {
 	buildToolsVersion '33.0.2'
 	ndkVersion "$ndk_version"
 	defaultConfig {
-		applicationId 'net.minetest.minetest'
+		applicationId 'net.freecraft.freecraft'
 		minSdkVersion 21
 		targetSdkVersion 33
 		versionName "${versionMajor}.${versionMinor}.${versionPatch}"
@@ -54,14 +54,14 @@ android {
 task prepareAssets() {
 	def assetsFolder = "build/assets"
 	def projRoot = rootDir.parent
-	def gameToCopy = "minetest_game"
+	def gameToCopy = "freecraft"
 
 	doFirst {
 		logger.lifecycle('Preparing assets at {}', assetsFolder)
 	}
 	doLast {
 		copy {
-			from "${projRoot}/minetest.conf.example", "${projRoot}/README.md" into assetsFolder
+			from "${projRoot}/freecraft.conf.example", "${projRoot}/README.md" into assetsFolder
 		}
 		copy {
 			from "${projRoot}/doc/lgpl-2.1.txt" into assetsFolder
@@ -90,7 +90,7 @@ task prepareAssets() {
 			def moPath = "${assetsFolder}/locale/${poFile.parentFile.name}/LC_MESSAGES/"
 			file(moPath).mkdirs()
 			exec {
-				commandLine 'msgfmt', '-o', "${moPath}/minetest.mo", poFile
+				commandLine 'msgfmt', '-o', "${moPath}/freecraft.mo", poFile
 			}
 		}
 
@@ -98,7 +98,7 @@ task prepareAssets() {
 	}
 
 	task zipAssets(dependsOn: prepareAssets, type: Zip) {
-		archiveFileName = "Minetest.zip"
+		archiveFileName = "FreeCraft.zip"
 		from assetsFolder
 		destinationDirectory = file("src/main/assets")
 	}

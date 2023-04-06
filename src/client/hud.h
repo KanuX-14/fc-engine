@@ -117,7 +117,7 @@ private:
 	Inventory *inventory = nullptr;
 	ITextureSource *tsrc = nullptr;
 
-	float m_hud_scaling; // cached minetest setting
+	float m_hud_scaling; // cached freecraft setting
 	float m_scale_factor;
 	v3s16 m_camera_offset;
 	v2u32 m_screensize;

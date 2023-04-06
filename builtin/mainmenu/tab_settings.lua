@@ -145,7 +145,7 @@ end
 
 local function formspec(tabview, name, tabdata)
 	local tab_string =
-		"box[0,0;3.75,4.5;#999999]" ..
+		"box[0,0;3.75,5.0;#999999]" ..
 		"checkbox[0.25,0;cb_smooth_lighting;" .. fgettext("Smooth Lighting") .. ";"
 				.. dump(core.settings:get_bool("smooth_lighting")) .. "]" ..
 		"checkbox[0.25,0.5;cb_particles;" .. fgettext("Particles") .. ";"
@@ -156,9 +156,11 @@ local function formspec(tabview, name, tabdata)
 				.. dump(core.settings:get_bool("opaque_water")) .. "]" ..
 		"checkbox[0.25,2.0;cb_connected_glass;" .. fgettext("Connected Glass") .. ";"
 				.. dump(core.settings:get_bool("connected_glass")) .. "]" ..
-		"dropdown[0.25,2.8;3.5;dd_node_highlighting;" .. dd_options.node_highlighting[1] .. ";"
+		"checkbox[0.25,2.5;cb_mt_compatibility;" .. fgettext("Minetest Compatibility") .. ";"
+				.. dump(core.settings:get_bool("mt_compatibility")) .. "]" ..
+		"dropdown[0.25,3.2;3.5;dd_node_highlighting;" .. dd_options.node_highlighting[1] .. ";"
 				.. getSettingIndex.NodeHighlighting() .. "]" ..
-		"dropdown[0.25,3.6;3.5;dd_leaves_style;" .. dd_options.leaves[1] .. ";"
+		"dropdown[0.25,4.1;3.5;dd_leaves_style;" .. dd_options.leaves[1] .. ";"
 				.. getSettingIndex.Leaves() .. "]" ..
 		"box[4,0;3.75,4.9;#999999]" ..
 		"label[4.25,0.1;" .. fgettext("Texturing:") .. "]" ..
@@ -169,7 +171,7 @@ local function formspec(tabview, name, tabdata)
 		"label[4.25,2.15;" .. fgettext("Antialiasing:") .. "]" ..
 		"dropdown[4.25,2.6;3.5;dd_antialiasing;" .. dd_options.antialiasing[1] .. ";"
 				.. getSettingIndex.Antialiasing() .. "]" ..
-		"box[8,0;3.75,4.5;#999999]"
+		"box[8,0;3.75,5.0;#999999]"
 
 	local video_driver = core.settings:get("video_driver")
 	local shaders_enabled = core.settings:get_bool("enable_shaders")
@@ -190,11 +192,11 @@ local function formspec(tabview, name, tabdata)
 	end
 
 	tab_string = tab_string ..
-		"button[8,4.75;3.95,1;btn_change_keys;"
+		"button[8,5.25;3.95,1;btn_change_keys;"
 		.. fgettext("Change Keys") .. "]"
 
 	tab_string = tab_string ..
-		"button[0,4.75;3.95,1;btn_advanced_settings;"
+		"button[0,5.25;3.95,1;btn_advanced_settings;"
 		.. fgettext("All Settings") .. "]"
 
 
@@ -220,17 +222,19 @@ local function formspec(tabview, name, tabdata)
 			"checkbox[8.25,1.5;cb_waving_leaves;" .. fgettext("Waving Leaves") .. ";"
 					.. dump(core.settings:get_bool("enable_waving_leaves")) .. "]" ..
 			"checkbox[8.25,2;cb_waving_plants;" .. fgettext("Waving Plants") .. ";"
-					.. dump(core.settings:get_bool("enable_waving_plants")) .. "]"
+					.. dump(core.settings:get_bool("enable_waving_plants")) .. "]" ..
+			"checkbox[8.25,2.5;cb_enable_bloom;" .. fgettext("Bloom") .. ";"
+					.. dump(core.settings:get_bool("enable_bloom")) .. "]"
 
 		if video_driver == "opengl" then
 			tab_string = tab_string ..
-				"label[8.25,2.8;" .. fgettext("Dynamic shadows:") .. "]" ..
-				"label[8.25,3.2;" .. fgettext("(game support required)") .. "]" ..
-					"dropdown[8.25,3.7;3.5;dd_shadows;" .. dd_options.shadow_levels[1] .. ";"
+				"label[8.25,3.3;" .. fgettext("Dynamic shadows:") .. "]" ..
+				"label[8.25,3.7;" .. fgettext("(game support required)") .. "]" ..
+					"dropdown[8.25,4.2;3.5;dd_shadows;" .. dd_options.shadow_levels[1] .. ";"
 					.. getSettingIndex.ShadowMapping() .. "]"
 		else
 			tab_string = tab_string ..
-				"label[8.38,2.7;" .. core.colorize("#888888",
+				"label[8.38,3.2;" .. core.colorize("#888888",
 					fgettext("Dynamic shadows")) .. "]"
 		end
 	else
@@ -244,6 +248,8 @@ local function formspec(tabview, name, tabdata)
 			"label[8.38,2.2;" .. core.colorize("#888888",
 					fgettext("Waving Plants")) .. "]"..
 			"label[8.38,2.7;" .. core.colorize("#888888",
+					fgettext("Bloom")) .. "]" ..
+			"label[8.38,3.2;" .. core.colorize("#888888",
 					fgettext("Dynamic shadows")) .. "]"
 	end
 
@@ -281,6 +287,10 @@ local function handle_settings_buttons(this, fields, tabname, tabdata)
 		core.settings:set("connected_glass", fields["cb_connected_glass"])
 		return true
 	end
+	if fields["cb_mt_compatibility"] then
+		core.settings:set("mt_compatibility", fields["cb_mt_compatibility"])
+		return true
+	end
 	if fields["cb_autosave_screensize"] then
 		core.settings:set("autosave_screensize", fields["cb_autosave_screensize"])
 		return true
@@ -302,6 +312,10 @@ local function handle_settings_buttons(this, fields, tabname, tabdata)
 	end
 	if fields["cb_waving_plants"] then
 		core.settings:set("enable_waving_plants", fields["cb_waving_plants"])
+		return true
+	end
+	if fields["cb_enable_bloom"] then
+		core.settings:set("enable_bloom", fields["cb_enable_bloom"])
 		return true
 	end
 	if fields["btn_change_keys"] then

@@ -43,7 +43,7 @@ SQLite format specification:
 #define BUSY_INFO_TRESHOLD	100	// Print first informational message after 100ms.
 #define BUSY_WARNING_TRESHOLD	250	// Print warning message after 250ms. Lag is increased.
 #define BUSY_ERROR_TRESHOLD	1000	// Print error message after 1000ms. Significant lag.
-#define BUSY_FATAL_TRESHOLD	3000	// Allow SQLITE_BUSY to be returned, which will cause a minetest crash.
+#define BUSY_FATAL_TRESHOLD	3000	// Allow SQLITE_BUSY to be returned, which will cause a freecraft crash.
 #define BUSY_ERROR_INTERVAL	10000	// Safety net: report again every 10 seconds
 
 

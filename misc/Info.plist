@@ -5,15 +5,15 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>minetest</string>
+	<string>freecraft</string>
 	<key>CFBundleIconFile</key>
-	<string>minetest-icon.icns</string>
+	<string>freecraft-icon.icns</string>
 	<key>CFBundleName</key>
-	<string>Minetest</string>
+	<string>FreeCraft</string>
 	<key>CFBundleDisplayName</key>
-	<string>Minetest</string>
+	<string>FreeCraft</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.minetest.minetest</string>
+	<string>net.freecraft.freecraft</string>
 	<key>NSHighResolutionCapable</key>
 	<false/>
 </dict>

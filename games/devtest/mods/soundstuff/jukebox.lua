@@ -1,4 +1,4 @@
-local F = minetest.formspec_escape
+local F = freecraft.formspec_escape
 
 -- hashed node pos -> sound handle
 local played_sounds = {}
@@ -55,8 +55,8 @@ local function get_all_metadata(meta)
 end
 
 local function log_msg(msg)
-	minetest.log("action", msg)
-	minetest.chat_send_all(msg)
+	freecraft.log("action", msg)
+	freecraft.chat_send_all(msg)
 end
 
 local function try_call(f, ...)
@@ -72,11 +72,11 @@ local function try_call(f, ...)
 end
 
 local function show_formspec(pos, player)
-	local meta = minetest.get_meta(pos)
+	local meta = freecraft.get_meta(pos)
 
 	local md = get_all_metadata(meta)
 
-	local pos_hash = minetest.hash_node_position(pos)
+	local pos_hash = freecraft.hash_node_position(pos)
 	local sound_handle = played_sounds[pos_hash]
 
 	local fs = {}
@@ -190,17 +190,17 @@ local function show_formspec(pos, player)
 		button_exit[10.75,10;3,0.75;btn_save_quit;Save & Quit]
 	]])
 
-	minetest.show_formspec(player:get_player_name(), "soundstuff:jukebox@"..pos:to_string(),
+	freecraft.show_formspec(player:get_player_name(), "soundstuff:jukebox@"..pos:to_string(),
 			table.concat(fs))
 end
 
-minetest.register_node("soundstuff:jukebox", {
+freecraft.register_node("soundstuff:jukebox", {
 	description = "Jukebox\nAllows to play arbitrary sounds.",
 	tiles = {"soundstuff_jukebox.png"},
 	groups = {dig_immediate = 2},
 
 	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
+		local meta = freecraft.get_meta(pos)
 		-- SimpleSoundSpec
 		meta:set_string("sss.name", "")
 		meta:set_string("sss.gain", "")
@@ -230,18 +230,18 @@ minetest.register_node("soundstuff:jukebox", {
 	end,
 })
 
-minetest.register_on_player_receive_fields(function(player, formname, fields)
+freecraft.register_on_player_receive_fields(function(player, formname, fields)
 	if formname:sub(1, 19) ~= "soundstuff:jukebox@" then
 		return false
 	end
 
 	local pos = vector.from_string(formname, 20)
 	if not pos or pos ~= pos:round() then
-		minetest.log("error", "[soundstuff:jukebox] Invalid formname.")
+		freecraft.log("error", "[soundstuff:jukebox] Invalid formname.")
 		return true
 	end
 
-	local meta = minetest.get_meta(pos)
+	local meta = freecraft.get_meta(pos)
 
 	for _, k in ipairs(meta_keys) do
 		if fields[k] then
@@ -250,7 +250,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 	meta:mark_as_private(meta_keys)
 
-	local pos_hash = minetest.hash_node_position(pos)
+	local pos_hash = freecraft.hash_node_position(pos)
 	local sound_handle = played_sounds[pos_hash]
 
 	if not sound_handle then
@@ -267,17 +267,17 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				gain  = tonumber(md.sparam.gain),
 				pitch = tonumber(md.sparam.pitch),
 				fade  = tonumber(md.sparam.fade),
-				loop = minetest.is_yes(md.sparam.loop),
+				loop = freecraft.is_yes(md.sparam.loop),
 				pos = vector.from_string(md.sparam.pos),
 				object = testtools.get_branded_object(md.sparam.object),
 				to_player = md.sparam.to_player,
 				exclude_player = md.sparam.exclude_player,
 				max_hear_distance = tonumber(md.sparam.max_hear_distance),
 			}
-			local ephemeral = minetest.is_yes(md.ephemeral)
+			local ephemeral = freecraft.is_yes(md.ephemeral)
 
 			log_msg(string.format(
-					"[soundstuff:jukebox] Playing sound: minetest.sound_play(%s, %s, %s)",
+					"[soundstuff:jukebox] Playing sound: freecraft.sound_play(%s, %s, %s)",
 					string.format("{name=\"%s\", gain=%s, pitch=%s, fade=%s}",
 							sss.name, sss.gain, sss.pitch, sss.fade),
 					string.format("{gain=%s, pitch=%s, fade=%s, loop=%s, pos=%s, "
@@ -287,7 +287,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 							sparam.max_hear_distance),
 					tostring(ephemeral)))
 
-			sound_handle = try_call(minetest.sound_play, sss, sparam, ephemeral)
+			sound_handle = try_call(freecraft.sound_play, sss, sparam, ephemeral)
 
 			played_sounds[pos_hash] = sound_handle
 			show_formspec(pos, player)
@@ -295,9 +295,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 	else
 		if fields.btn_stop then
-			log_msg("[soundstuff:jukebox] Stopping sound: minetest.sound_stop(<handle>)")
+			log_msg("[soundstuff:jukebox] Stopping sound: freecraft.sound_stop(<handle>)")
 
-			try_call(minetest.sound_stop, sound_handle)
+			try_call(freecraft.sound_stop, sound_handle)
 
 		elseif fields.btn_release then
 			log_msg("[soundstuff:jukebox] Releasing handle.")
@@ -312,10 +312,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			local gain = tonumber(md.fade.gain)
 
 			log_msg(string.format(
-					"[soundstuff:jukebox] Fading sound: minetest.sound_fade(<handle>, %s, %s)",
+					"[soundstuff:jukebox] Fading sound: freecraft.sound_fade(<handle>, %s, %s)",
 					step, gain))
 
-			try_call(minetest.sound_fade, sound_handle, step, gain)
+			try_call(freecraft.sound_fade, sound_handle, step, gain)
 		end
 	end
 

@@ -1370,6 +1370,8 @@ int ObjectRef::l_get_player_control(lua_State *L)
 	lua_setfield(L, -2, "jump");
 	lua_pushboolean(L, control.aux1);
 	lua_setfield(L, -2, "aux1");
+	lua_pushboolean(L, control.aux2);
+	lua_setfield(L, -2, "aux2");
 	lua_pushboolean(L, control.sneak);
 	lua_setfield(L, -2, "sneak");
 	lua_pushboolean(L, control.dig);
@@ -1405,10 +1407,11 @@ int ObjectRef::l_get_player_control_bits(lua_State *L)
 		c.direction_keys |
 		( (u32)(c.jump  & 1) << 4) |
 		( (u32)(c.aux1  & 1) << 5) |
-		( (u32)(c.sneak & 1) << 6) |
-		( (u32)(c.dig   & 1) << 7) |
-		( (u32)(c.place & 1) << 8) |
-		( (u32)(c.zoom  & 1) << 9)
+		( (u32)(c.aux2  & 1) << 6) |
+		( (u32)(c.sneak & 1) << 7) |
+		( (u32)(c.dig   & 1) << 8) |
+		( (u32)(c.place & 1) << 9) |
+		( (u32)(c.zoom  & 1) << 10)
 	;
 
 	lua_pushinteger(L, keypress_bits);

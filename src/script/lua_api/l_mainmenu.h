@@ -1,6 +1,7 @@
 /*
-Minetest
+Minetest / FreeCraft
 Copyright (C) 2013 sapier
+Copyright (C) 2023 KanuX-14 <kanux.dev@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -113,6 +114,8 @@ private:
 	static int l_get_mainmenu_path(lua_State *L);
 
 	static int l_get_user_path(lua_State *L);
+
+	static int l_check_file(lua_State *L);
 
 	static int l_get_modpath(lua_State *L);
 

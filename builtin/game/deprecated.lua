@@ -1,4 +1,4 @@
--- Minetest: builtin/deprecated.lua
+-- FreeCraft: builtin/deprecated.lua
 
 --
 -- EnvRef
@@ -34,10 +34,12 @@ end
 local settings = core.settings
 
 local function setting_proxy(name)
+	local engine = core.settings:get("modding_api") or "freecraft"
+
 	return function(...)
-		core.log("deprecated", "WARNING: minetest.setting_* "..
+		core.log("deprecated", "WARNING: " .. engine .. ".setting_* "..
 			"functions are deprecated.  "..
-			"Use methods on the minetest.settings object.")
+			"Use methods on the " .. engine .. ".settings object.")
 		return settings[name](settings, ...)
 	end
 end

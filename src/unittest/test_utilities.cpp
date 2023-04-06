@@ -180,7 +180,7 @@ void TestUtilities::testLowercase()
 {
 	UASSERT(lowercase("Foo bAR") == "foo bar");
 	UASSERT(lowercase("eeeeeeaaaaaaaaaaaààààà") == "eeeeeeaaaaaaaaaaaààààà");
-	UASSERT(lowercase("MINETEST-powa") == "minetest-powa");
+	UASSERT(lowercase("FREECRAFT-powa") == "freecraft-powa");
 }
 
 

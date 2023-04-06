@@ -28,8 +28,10 @@ core.register_globalstep(function(dtime)
 end)
 
 function core.after(after, func, ...)
+	local engine = core.settings:get("modding_api") or "freecraft"
+
 	assert(tonumber(after) and type(func) == "function",
-		"Invalid minetest.after invocation")
+		"Invalid " .. engine .. ".after invocation")
 	local expire = time + after
 	local new_job = {
 		func = func,

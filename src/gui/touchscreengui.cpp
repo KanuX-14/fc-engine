@@ -1,7 +1,8 @@
 /*
+Minetest / FreeCraft
 Copyright (C) 2014 sapier
-Copyright (C) 2018 srifqi, Muhammad Rifqi Priyo Susanto
-		<muhammadrifqipriyosusanto@gmail.com>
+Copyright (C) 2018 srifqi, Muhammad Rifqi Priyo Susanto <muhammadrifqipriyosusanto@gmail.com>
+Copyright (C) 2023 KanuX-14 <kanux.dev@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -39,7 +40,8 @@ const char **button_imagenames = (const char *[]) {
 	"jump_btn.png",
 	"down.png",
 	"zoom.png",
-	"aux1_btn.png"
+	"aux1_btn.png",
+	"aux2_btn.png"
 };
 
 const char **joystick_imagenames = (const char *[]) {
@@ -81,6 +83,9 @@ static irr::EKEY_CODE id2keycode(touch_gui_button_id id)
 			break;
 		case aux1_id:
 			key = "aux1";
+			break;
+		case aux2_id:
+			key = "aux2";
 			break;
 		case fly_id:
 			key = "freemove";
@@ -498,67 +503,61 @@ void TouchScreenGUI::init(ISimpleTextureSource *tsrc)
 
 	// init jump button
 	initButton(jump_id,
-			rect<s32>(m_screensize.X - (1.75 * button_size),
-					m_screensize.Y - button_size,
-					m_screensize.X - (0.25 * button_size),
-					m_screensize.Y),
+			rect<s32>(m_screensize.X - (2.4375 * button_size),
+					m_screensize.Y - (3.25 * button_size),
+					m_screensize.X - (0.9375 * button_size),
+					m_screensize.Y - (1.75 * button_size)),
 			L"x", false);
 
 	// init crunch button
 	initButton(crunch_id,
 			rect<s32>(m_screensize.X - (3.25 * button_size),
-					m_screensize.Y - button_size,
+					m_screensize.Y - (1.65 * button_size),
 					m_screensize.X - (1.75 * button_size),
-					m_screensize.Y),
+					m_screensize.Y - (0.15 * button_size)),
 			L"H", false);
 
-	// init zoom button
-	initButton(zoom_id,
-			rect<s32>(m_screensize.X - (1.25 * button_size),
-					m_screensize.Y - (4 * button_size),
-					m_screensize.X - (0.25 * button_size),
-					m_screensize.Y - (3 * button_size)),
+	// init aux2 button
+	initButton(aux2_id,
+			rect<s32>(m_screensize.X - (1.65 * button_size),
+					m_screensize.Y - (1.65 * button_size),
+					m_screensize.X - (0.15 * button_size),
+					m_screensize.Y - (0.15 * button_size)),
 			L"z", false);
 
 	// init aux1 button
 	if (!m_joystick_triggers_aux1)
 		initButton(aux1_id,
-				rect<s32>(m_screensize.X - (1.25 * button_size),
-						m_screensize.Y - (2.5 * button_size),
-						m_screensize.X - (0.25 * button_size),
-						m_screensize.Y - (1.5 * button_size)),
+				rect<s32>(m_screensize.X - (1.65 * button_size),
+						m_screensize.Y - (5 * button_size),
+						m_screensize.X - (0.15 * button_size),
+						m_screensize.Y - (3.5 * button_size)),
 				L"spc1", false);
 
 	m_settingsbar.init(m_texturesource, "gear_icon.png", settings_starter_id,
-		v2s32(m_screensize.X - (1.25 * button_size),
-			m_screensize.Y - ((SETTINGS_BAR_Y_OFFSET + 1.0) * button_size)
-				+ (0.5 * button_size)),
-		v2s32(m_screensize.X - (0.25 * button_size),
-			m_screensize.Y - (SETTINGS_BAR_Y_OFFSET * button_size)
-				+ (0.5 * button_size)),
-		AHBB_Dir_Right_Left, 3.0);
+					   v2s32(m_screensize.X - (1.25 * button_size), m_screensize.Y - ((SETTINGS_BAR_Y_OFFSET + 1.0) * button_size) + (0.5 * button_size)),
+					   v2s32(m_screensize.X - (0.25 * button_size), m_screensize.Y - (SETTINGS_BAR_Y_OFFSET * button_size) + (0.5 * button_size)),
+					   AHBB_Dir_Right_Left, 3.0);
 
+	m_settingsbar.addButton(minimap_id, L"minimap",   "minimap_btn.png");
+	m_settingsbar.addButton(range_id,   L"rangeview", "rangeview_btn.png");
+	m_settingsbar.addButton(zoom_id, 	L"zoom",   	  "zoom.png");
 	m_settingsbar.addButton(fly_id,     L"fly",       "fly_btn.png");
 	m_settingsbar.addButton(noclip_id,  L"noclip",    "noclip_btn.png");
 	m_settingsbar.addButton(fast_id,    L"fast",      "fast_btn.png");
-	m_settingsbar.addButton(debug_id,   L"debug",     "debug_btn.png");
-	m_settingsbar.addButton(camera_id,  L"camera",    "camera_btn.png");
-	m_settingsbar.addButton(range_id,   L"rangeview", "rangeview_btn.png");
-	m_settingsbar.addButton(minimap_id, L"minimap",   "minimap_btn.png");
-
 	// Chat is shown by default, so chat_hide_btn.png is shown first.
-	m_settingsbar.addToggleButton(toggle_chat_id, L"togglechat",
-			"chat_hide_btn.png", "chat_show_btn.png");
+	m_settingsbar.addToggleButton(toggle_chat_id,
+								  L"togglechat",
+								  "chat_hide_btn.png",
+								  "chat_show_btn.png");
+	m_settingsbar.addButton(camera_id,  L"camera",    "camera_btn.png");
+	m_settingsbar.addButton(debug_id,   L"debug",     "debug_btn.png");
 
 	m_rarecontrolsbar.init(m_texturesource, "rare_controls.png",
-		rare_controls_starter_id,
-		v2s32(0.25 * button_size,
-			m_screensize.Y - ((RARE_CONTROLS_BAR_Y_OFFSET + 1.0) * button_size)
-				+ (0.5 * button_size)),
-		v2s32(0.75 * button_size,
-			m_screensize.Y - (RARE_CONTROLS_BAR_Y_OFFSET * button_size)
-				+ (0.5 * button_size)),
-		AHBB_Dir_Left_Right, 2.0);
+						   rare_controls_starter_id,
+						   v2s32(0.25 * button_size, m_screensize.Y - ((RARE_CONTROLS_BAR_Y_OFFSET + 1.0) * button_size) + (0.5 * button_size)),
+						   v2s32(0.75 * button_size, m_screensize.Y - (RARE_CONTROLS_BAR_Y_OFFSET * button_size) + (0.5 * button_size)),
+						   AHBB_Dir_Left_Right, 2.0);
 
 	m_rarecontrolsbar.addButton(chat_id,      L"Chat", "chat_btn.png");
 	m_rarecontrolsbar.addButton(inventory_id, L"inv",  "inventory_btn.png");
@@ -691,8 +690,8 @@ void TouchScreenGUI::handleReleaseEvent(size_t evt_id)
 			m_receiver->OnEvent(*translated);
 			delete translated;
 		} else {
-			// do double tap detection
-			doubleTapDetection();
+			bool m_tap_detection = g_settings->getBool("legacy_tap_detection");
+			tapDetection(m_tap_detection);
 		}
 	}
 
@@ -995,26 +994,34 @@ void TouchScreenGUI::handleChangedButton(const SEvent &event)
 				event.TouchInput.ID, true);
 }
 
-bool TouchScreenGUI::doubleTapDetection()
+/* FreeCraft way to handle the 'use' event. */
+bool TouchScreenGUI::tapDetection(bool isLegacy)
 {
-	m_key_events[0].down_time = m_key_events[1].down_time;
-	m_key_events[0].x         = m_key_events[1].x;
-	m_key_events[0].y         = m_key_events[1].y;
-	m_key_events[1].down_time = m_move_downtime;
-	m_key_events[1].x         = m_move_downlocation.X;
-	m_key_events[1].y         = m_move_downlocation.Y;
+	if (isLegacy)
+	{
+		m_key_events[0].down_time = m_key_events[1].down_time;
+		m_key_events[0].x         = m_key_events[1].x;
+		m_key_events[0].y         = m_key_events[1].y;
+		m_key_events[1].down_time = m_move_downtime;
+		m_key_events[1].x         = m_move_downlocation.X;
+		m_key_events[1].y         = m_move_downlocation.Y;
+		double distance			  = sqrt((m_key_events[0].x - m_key_events[1].x) *
+							   			 (m_key_events[0].x - m_key_events[1].x) +
+							   			 (m_key_events[0].y - m_key_events[1].y) *
+							   			 (m_key_events[0].y - m_key_events[1].y));
+		if (distance > (20 + m_touchscreen_threshold))
+			return false;
+	}
+	else
+	{
+		m_key_events[0].down_time = m_move_downtime;
+		m_key_events[0].x		  = m_move_downlocation.X;
+		m_key_events[0].y		  = m_move_downlocation.Y;
+	}
+	u16 max_delta = (isLegacy) ? 400 : 100;
 
 	u64 delta = porting::getDeltaMs(m_key_events[0].down_time, porting::getTimeMs());
-	if (delta > 400)
-		return false;
-
-	double distance = sqrt(
-			(m_key_events[0].x - m_key_events[1].x) *
-			(m_key_events[0].x - m_key_events[1].x) +
-			(m_key_events[0].y - m_key_events[1].y) *
-			(m_key_events[0].y - m_key_events[1].y));
-
-	if (distance > (20 + m_touchscreen_threshold))
+	if (delta > max_delta)
 		return false;
 
 	v2s32 mPos = v2s32(m_key_events[0].x, m_key_events[0].y);
@@ -1047,6 +1054,7 @@ bool TouchScreenGUI::doubleTapDetection()
 	verbosestream << "TouchScreenGUI::translateEvent right click release" << std::endl;
 	m_receiver->OnEvent(*translated);
 	delete translated;
+
 	return true;
 }
 

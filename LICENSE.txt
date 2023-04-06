@@ -1,8 +1,8 @@
 
-License of Minetest textures and sounds
+License of Minetest / FreeCraft textures and sounds
 ---------------------------------------
 
-This applies to textures and sounds contained in the main Minetest
+This applies to textures and sounds contained in the main FreeCraft
 distribution.
 
 Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
@@ -23,7 +23,9 @@ https://creativecommons.org/licenses/by/4.0/
 Authors of media files
 -----------------------
 Everything not listed in here:
-Copyright (C) 2010-2012 celeron55, Perttu Ahola <celeron55@gmail.com>
+Copyright (C):
+2010-2022 celeron55, Perttu Ahola <celeron55@gmail.com>
+2022-2023 KanuX-14 <kanux.dev@gmail.com>
 
 ShadowNinja:
   textures/base/pack/smoke_puff.png
@@ -40,9 +42,9 @@ rubenwardy, paramat:
   textures/base/pack/end_icon.png
 
 erlehmann:
-  misc/minetest-icon-24x24.png
-  misc/minetest-icon.ico
-  misc/minetest.svg
+  misc/freecraft-icon-24x24.png
+  misc/freecraft-icon.ico
+  misc/freecraft.svg
   textures/base/pack/logo.png
 
 JRottm:
@@ -80,11 +82,14 @@ DS:
   games/devtest/mods/soundstuff/textures/soundstuff_jukebox.png
   games/devtest/mods/testtools/textures/testtools_branding_iron.png
 
-License of Minetest source code
+License of FreeCraft source code
 -------------------------------
 
-Minetest
-Copyright (C) 2010-2018 celeron55, Perttu Ahola <celeron55@gmail.com>
+Minetest (Original)
+Copyright (C) 2011 celeron55, Perttu Ahola <celeron55@gmail.com>
+
+FreeCraft (Modified)
+Copyright (C) 2023 KanuX-14 <kanux.dev@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by

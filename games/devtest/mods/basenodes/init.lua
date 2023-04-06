@@ -8,19 +8,19 @@ local LAVA_VISC = 7
 
 -- Register nodes
 
-minetest.register_node("basenodes:stone", {
+freecraft.register_node("basenodes:stone", {
 	description = "Stone",
 	tiles = {"default_stone.png"},
 	groups = {cracky=3},
 })
 
-minetest.register_node("basenodes:desert_stone", {
+freecraft.register_node("basenodes:desert_stone", {
 	description = "Desert Stone",
 	tiles = {"default_desert_stone.png"},
 	groups = {cracky=3},
 })
 
-minetest.register_node("basenodes:dirt_with_grass", {
+freecraft.register_node("basenodes:dirt_with_grass", {
 	description = "Dirt with Grass",
 	tiles ={"default_grass.png",
 		-- a little dot on the bottom to distinguish it from dirt
@@ -30,7 +30,7 @@ minetest.register_node("basenodes:dirt_with_grass", {
 	groups = {crumbly=3, soil=1},
 })
 
-minetest.register_node("basenodes:dirt_with_snow", {
+freecraft.register_node("basenodes:dirt_with_snow", {
 	description = "Dirt with Snow",
 	tiles ={"basenodes_dirt_with_snow.png",
 		-- a little dot on the bottom to distinguish it from dirt
@@ -40,31 +40,31 @@ minetest.register_node("basenodes:dirt_with_snow", {
 	groups = {crumbly=3, soil=1},
 })
 
-minetest.register_node("basenodes:dirt", {
+freecraft.register_node("basenodes:dirt", {
 	description = "Dirt",
 	tiles ={"default_dirt.png"},
 	groups = {crumbly=3, soil=1},
 })
 
-minetest.register_node("basenodes:sand", {
+freecraft.register_node("basenodes:sand", {
 	description = "Sand",
 	tiles ={"default_sand.png"},
 	groups = {crumbly=3},
 })
 
-minetest.register_node("basenodes:desert_sand", {
+freecraft.register_node("basenodes:desert_sand", {
 	description = "Desert Sand",
 	tiles ={"default_desert_sand.png"},
 	groups = {crumbly=3},
 })
 
-minetest.register_node("basenodes:gravel", {
+freecraft.register_node("basenodes:gravel", {
 	description = "Gravel",
 	tiles ={"default_gravel.png"},
 	groups = {crumbly=2},
 })
 
-minetest.register_node("basenodes:junglegrass", {
+freecraft.register_node("basenodes:junglegrass", {
 	description = "Jungle Grass",
 	drawtype = "plantlike",
 	tiles ={"default_junglegrass.png"},
@@ -75,14 +75,14 @@ minetest.register_node("basenodes:junglegrass", {
 	groups = {snappy=3},
 })
 
-minetest.register_node("basenodes:tree", {
+freecraft.register_node("basenodes:tree", {
 	description = "Normal Tree Trunk",
 	tiles = {"default_tree_top.png", "default_tree_top.png", "default_tree.png"},
 	is_ground_content = false,
 	groups = {choppy=2,oddly_breakable_by_hand=1},
 })
 
-minetest.register_node("basenodes:leaves", {
+freecraft.register_node("basenodes:leaves", {
 	description = "Normal Leaves",
 	drawtype = "allfaces_optional",
 	tiles = {"default_leaves.png"},
@@ -91,14 +91,14 @@ minetest.register_node("basenodes:leaves", {
 	groups = {snappy=3},
 })
 
-minetest.register_node("basenodes:jungletree", {
+freecraft.register_node("basenodes:jungletree", {
 	description = "Jungle Tree Trunk",
 	tiles = {"default_jungletree_top.png", "default_jungletree_top.png", "default_jungletree.png"},
 	is_ground_content = false,
 	groups = {choppy=2,oddly_breakable_by_hand=1},
 })
 
-minetest.register_node("basenodes:jungleleaves", {
+freecraft.register_node("basenodes:jungleleaves", {
 	description = "Jungle Leaves",
 	drawtype = "allfaces_optional",
 	tiles = {"default_jungleleaves.png"},
@@ -107,14 +107,14 @@ minetest.register_node("basenodes:jungleleaves", {
 	groups = {snappy=3},
 })
 
-minetest.register_node("basenodes:pine_tree", {
+freecraft.register_node("basenodes:pine_tree", {
 	description = "Pine Tree Trunk",
 	tiles = {"default_pine_tree_top.png", "default_pine_tree_top.png", "default_pine_tree.png"},
 	is_ground_content = false,
 	groups = {choppy=2,oddly_breakable_by_hand=1},
 })
 
-minetest.register_node("basenodes:pine_needles", {
+freecraft.register_node("basenodes:pine_needles", {
 	description = "Pine Needles",
 	drawtype = "allfaces_optional",
 	tiles = {"default_pine_needles.png"},
@@ -123,7 +123,7 @@ minetest.register_node("basenodes:pine_needles", {
 	groups = {snappy=3},
 })
 
-minetest.register_node("basenodes:water_source", {
+freecraft.register_node("basenodes:water_source", {
 	description = "Water Source".."\n"..
 		"Swimmable, spreading, renewable liquid".."\n"..
 		"Drowning damage: 1",
@@ -150,7 +150,7 @@ minetest.register_node("basenodes:water_source", {
 	groups = {water = 3, liquid = 3},
 })
 
-minetest.register_node("basenodes:water_flowing", {
+freecraft.register_node("basenodes:water_flowing", {
 	description = "Flowing Water".."\n"..
 		"Swimmable, spreading, renewable liquid".."\n"..
 		"Drowning damage: 1",
@@ -180,7 +180,7 @@ minetest.register_node("basenodes:water_flowing", {
 	groups = {water = 3, liquid = 3},
 })
 
-minetest.register_node("basenodes:river_water_source", {
+freecraft.register_node("basenodes:river_water_source", {
 	description = "River Water Source".."\n"..
 		"Swimmable, spreading, non-renewable liquid".."\n"..
 		"Drowning damage: 1",
@@ -209,7 +209,7 @@ minetest.register_node("basenodes:river_water_source", {
 	groups = {water = 3, liquid = 3, },
 })
 
-minetest.register_node("basenodes:river_water_flowing", {
+freecraft.register_node("basenodes:river_water_flowing", {
 	description = "Flowing River Water".."\n"..
 		"Swimmable, spreading, non-renewable liquid".."\n"..
 		"Drowning damage: 1",
@@ -241,7 +241,7 @@ minetest.register_node("basenodes:river_water_flowing", {
 	groups = {water = 3, liquid = 3, },
 })
 
-minetest.register_node("basenodes:lava_flowing", {
+freecraft.register_node("basenodes:lava_flowing", {
 	description = "Flowing Lava".."\n"..
 		"Swimmable, spreading, renewable liquid".."\n"..
 		"4 damage per second".."\n"..
@@ -253,7 +253,7 @@ minetest.register_node("basenodes:lava_flowing", {
 		{name="default_lava_flowing.png", backface_culling = false},
 	},
 	paramtype = "light",
-	light_source = minetest.LIGHT_MAX,
+	light_source = freecraft.LIGHT_MAX,
 	walkable = false,
 	pointable = false,
 	diggable = false,
@@ -269,7 +269,7 @@ minetest.register_node("basenodes:lava_flowing", {
 	groups = {lava=3, liquid=1},
 })
 
-minetest.register_node("basenodes:lava_source", {
+freecraft.register_node("basenodes:lava_source", {
 	description = "Lava Source".."\n"..
 		"Swimmable, spreading, renewable liquid".."\n"..
 		"4 damage per second".."\n"..
@@ -281,7 +281,7 @@ minetest.register_node("basenodes:lava_source", {
 		{name = "default_lava.png", backface_culling = true},
 	},
 	paramtype = "light",
-	light_source = minetest.LIGHT_MAX,
+	light_source = freecraft.LIGHT_MAX,
 	walkable = false,
 	pointable = false,
 	diggable = false,
@@ -297,21 +297,21 @@ minetest.register_node("basenodes:lava_source", {
 	groups = {lava=3, liquid=1},
 })
 
-minetest.register_node("basenodes:cobble", {
+freecraft.register_node("basenodes:cobble", {
 	description = "Cobblestone",
 	tiles ={"default_cobble.png"},
 	is_ground_content = false,
 	groups = {cracky=3},
 })
 
-minetest.register_node("basenodes:mossycobble", {
+freecraft.register_node("basenodes:mossycobble", {
 	description = "Mossy Cobblestone",
 	tiles ={"default_mossycobble.png"},
 	is_ground_content = false,
 	groups = {cracky=3},
 })
 
-minetest.register_node("basenodes:apple", {
+freecraft.register_node("basenodes:apple", {
 	description = "Apple".."\n"..
 		"Punch: Eat (+2)",
 	drawtype = "plantlike",
@@ -324,10 +324,10 @@ minetest.register_node("basenodes:apple", {
 	groups = {dig_immediate=3},
 
 	-- Make eatable because why not?
-	on_use = minetest.item_eat(2),
+	on_use = freecraft.item_eat(2),
 })
 
-minetest.register_node("basenodes:ice", {
+freecraft.register_node("basenodes:ice", {
 	description = "Ice",
 	tiles ={"default_ice.png"},
 	groups = {cracky=3},
@@ -335,7 +335,7 @@ minetest.register_node("basenodes:ice", {
 
 -- The snow nodes intentionally have different tints to make them more
 -- distinguishable
-minetest.register_node("basenodes:snow", {
+freecraft.register_node("basenodes:snow", {
 	description = "Snow Sheet",
 	tiles = {"basenodes_snow_sheet.png"},
 	groups = {crumbly=3},
@@ -348,7 +348,7 @@ minetest.register_node("basenodes:snow", {
 	},
 })
 
-minetest.register_node("basenodes:snowblock", {
+freecraft.register_node("basenodes:snowblock", {
 	description = "Snow Block",
 	tiles ={"default_snow.png"},
 	groups = {crumbly=3},

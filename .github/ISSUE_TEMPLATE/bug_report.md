@@ -6,11 +6,11 @@ labels: Unconfirmed bug
 assignees: ''
 ---
 
-##### Minetest version
+##### FreeCraft version
 <!--
-Paste Minetest version between quotes below.
+Paste FreeCraft version between quotes below.
 If you are on a devel version, please add git commit hash.
-You can use `minetest --version` to find it.
+You can use `freecraft --version` to find it.
 -->
 ```
 

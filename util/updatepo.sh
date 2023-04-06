@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Update/create minetest po files
+# Update/create freecraft po files
 
 # an auxiliary function to abort processing with an optional error
 # message
@@ -47,9 +47,9 @@ cd ..
 # First thing first, update the .pot template. We place it in the po/
 # directory at the top level. You a recent enough xgettext that supports
 # --package-name
-potfile=po/minetest.pot
+potfile=po/freecraft.pot
 echo "updating pot"
-xgettext --package-name=minetest \
+xgettext --package-name=freecraft \
 	--add-comments='~' \
 	--sort-by-file \
 	--add-location=file \
@@ -70,12 +70,12 @@ xgettext --package-name=minetest \
 
 # Gettext collects a bunch of bogus comments for the "Available commands: " string
 # I couldn't figure out how to avoid that so get rid of them afterwards
-sed '/^#\. ~<number>.*relative_to/,/^#: /{ /^#: /!d; }' -i $potfile 
+sed '/^#\. ~<number>.*relative_to/,/^#: /{ /^#: /!d; }' -i $potfile
 
 # Now iterate on all languages and create the po file if missing, or update it
 # if it exists already
 for lang in $langs ; do # note the missing quotes around $langs
-	pofile=po/$lang/minetest.po
+	pofile=po/$lang/freecraft.po
 	if test -e $pofile; then
 		echo "[$lang]: updating strings"
 		msgmerge --update --sort-by-file $pofile $potfile

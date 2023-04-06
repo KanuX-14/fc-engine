@@ -1,6 +1,7 @@
 /*
-Minetest
+Minetest / FreeCraft
 Copyright (C) 2014 celeron55, Perttu Ahola <celeron55@gmail.com>
+Copyright (C) 2023 KanuX-14 <kanux.dev@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -70,11 +71,11 @@ void android_main(android_app *app)
  * ToDo: this doesn't work as expected, there's a workaround for it right now
  */
 extern "C" {
-	JNIEXPORT void JNICALL Java_net_minetest_minetest_GameActivity_putMessageBoxResult(
+	JNIEXPORT void JNICALL Java_net_freecraft_freecraft_GameActivity_putMessageBoxResult(
 			JNIEnv *env, jclass thiz, jstring text)
 	{
 		errorstream <<
-			"Java_net_minetest_minetest_GameActivity_putMessageBoxResult got: " <<
+			"Java_net_freecraft_freecraft_GameActivity_putMessageBoxResult got: " <<
 			std::string((const char*) env->GetStringChars(text, nullptr)) << std::endl;
 	}
 }
@@ -115,7 +116,7 @@ void initAndroid()
 		exit(-1);
 	}
 
-	nativeActivity = findClass("net/minetest/minetest/GameActivity");
+	nativeActivity = findClass("net/freecraft/freecraft/GameActivity");
 	if (nativeActivity == nullptr)
 		errorstream <<
 			"porting::initAndroid unable to find java native activity class" <<
@@ -125,7 +126,7 @@ void initAndroid()
 	// in the start-up code
 	__android_log_print(ANDROID_LOG_ERROR, PROJECT_NAME_C,
 			"Initializing GPROF profiler");
-	monstartup("libMinetest.so");
+	monstartup("libFreeCraft.so");
 #endif
 }
 

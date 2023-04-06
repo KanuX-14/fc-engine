@@ -49,11 +49,11 @@ local function dump_lighting(lighting)
 	return result
 end
 
-minetest.register_chatcommand("set_lighting", {
+freecraft.register_chatcommand("set_lighting", {
 	params = "",
 	description = "Tune lighting parameters",
 	func = function(player_name, param)
-		local player = minetest.get_player_by_name(player_name);
+		local player = freecraft.get_player_by_name(player_name);
 		if not player then return end
 
 		local lighting = player:get_lighting()
@@ -91,14 +91,14 @@ minetest.register_chatcommand("set_lighting", {
 			line = line + 1
 		end
 
-		minetest.show_formspec(player_name, "lighting", table.concat(form))
+		freecraft.show_formspec(player_name, "lighting", table.concat(form))
 		local debug_value = dump_lighting(lighting)
 		local debug_ui = player:hud_add({type="text", position={x=0.1, y=0.3}, scale={x=1,y=1}, alignment = {x=1, y=1}, text=debug_value, number=0xFFFFFF})
 		player:get_meta():set_int("lighting_hud", debug_ui)
 	end
 })
 
-minetest.register_on_player_receive_fields(function(player, formname, fields)
+freecraft.register_on_player_receive_fields(function(player, formname, fields)
 	if formname ~= "lighting" then return end
 
 	if not player then return end
@@ -119,9 +119,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		lighting[section.n] = state
 
 		for _,v in ipairs(parameters) do
-			
+
 			if fields[section.n.."."..v.n] then
-				local event = minetest.explode_scrollbar_event(fields[section.n.."."..v.n])
+				local event = freecraft.explode_scrollbar_event(fields[section.n.."."..v.n])
 				if event.type == "CHG" then
 					local value = v.min + (v.max - v.min) * (event.value / 1000);
 					if v.type == "log2" then

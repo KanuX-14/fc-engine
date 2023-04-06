@@ -1,7 +1,8 @@
 /*
-Minetest
+Minetest / FreeCraft
 Copyright (C) 2010-2013 celeron55, Perttu Ahola <celeron55@gmail.com>
 Copyright (C) 2018 nerzhul, Loic Blot <loic.blot@unix-experience.fr>
+Copyright (C) 2023 KanuX-14 <kanux.dev@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -35,7 +36,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 inline static const char *yawToDirectionString(int yaw)
 {
 	static const char *direction[4] =
-		{"North +Z", "West -X", "South -Z", "East +X"};
+		{"North | +Z", "West | -X", "South | -Z", "East | +X"};
 
 	yaw = wrapDegrees_0_360(yaw);
 	yaw = (yaw + 45) % 360 / 90;
@@ -115,17 +116,17 @@ void GameUI::update(const RunStats &stats, Client *client, MapDrawControl *draw_
 		std::ostringstream os(std::ios_base::binary);
 		os << std::fixed
 			<< PROJECT_NAME_C " " << g_version_hash
-			<< " | FPS: " << fps
+			<< "\nFPS: " << fps
 			<< std::setprecision(0)
-			<< " | drawtime: " << m_drawtime_avg << "ms"
+			<< "\nDraw time: " << m_drawtime_avg << "ms"
 			<< std::setprecision(1)
-			<< " | dtime jitter: "
+			<< "\nDraw time jitter: "
 			<< (stats.dtime_jitter.max_fraction * 100.0) << "%"
 			<< std::setprecision(1)
-			<< " | view range: "
+			<< "\nView range: "
 			<< (draw_control->range_all ? "All" : itos(draw_control->wanted_range))
 			<< std::setprecision(2)
-			<< " | RTT: " << (client->getRTT() * 1000.0f) << "ms";
+			<< "\nRTT: " << (client->getRTT() * 1000.0f) << "ms";
 
 		m_guitext->setRelativePosition(core::rect<s32>(5, 5, screensize.X, screensize.Y));
 
@@ -143,13 +144,13 @@ void GameUI::update(const RunStats &stats, Client *client, MapDrawControl *draw_
 
 		std::ostringstream os(std::ios_base::binary);
 		os << std::setprecision(1) << std::fixed
-			<< "pos: (" << (player_position.X / BS)
+			<< "Position: (" << (player_position.X / BS)
 			<< ", " << (player_position.Y / BS)
 			<< ", " << (player_position.Z / BS)
-			<< ") | yaw: " << (wrapDegrees_0_360(cam.camera_yaw)) << "° "
+			<< ")\nYaw: " << (wrapDegrees_0_360(cam.camera_yaw)) << "° | "
 			<< yawToDirectionString(cam.camera_yaw)
-			<< " | pitch: " << (-wrapDegrees_180(cam.camera_pitch)) << "°"
-			<< " | seed: " << ((u64)client->getMapSeed());
+			<< "\nPitch: " << (-wrapDegrees_180(cam.camera_pitch)) << "°"
+			<< "\nSeed: " << ((u64)client->getMapSeed());
 
 		if (pointed_old.type == POINTEDTHING_NODE) {
 			ClientMap &map = client->getEnv().getClientMap();
@@ -158,11 +159,11 @@ void GameUI::update(const RunStats &stats, Client *client, MapDrawControl *draw_
 
 			if (n.getContent() != CONTENT_IGNORE) {
 				if (nodedef->get(n).name == "unknown") {
-					os << ", pointed: <unknown node>";
+					os << "\nPointed: <what is this?>";
 				} else {
-					os << ", pointed: " << nodedef->get(n).name;
+					os << "\nPointed: " << nodedef->get(n).name;
 				}
-				os << ", param2: " << (u64) n.getParam2();
+				os << ":" << (u64) n.getParam2();
 			}
 		}
 

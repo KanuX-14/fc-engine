@@ -79,7 +79,7 @@ function singleplayer_refresh_gamebar()
 
 	local btnbar = buttonbar_create("game_button_bar",
 		game_buttonbar_button_handler,
-		{x=-0.3,y=5.9}, "horizontal", {x=12.4,y=1.15})
+		{x=-1.8,y=-0.3}, "vertical", {x=1.5,y=6.55})
 
 	for _, game in ipairs(pkgmgr.games) do
 		local btn_name = "game_btnbar_" .. game.id

@@ -1,6 +1,7 @@
 /*
-Minetest
+Minetest / FreeCraft
 Copyright (C) 2013 celeron55, Perttu Ahola <celeron55@gmail.com>
+Copyright (C) 2023 KanuX-14 <kanux.dev@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -18,6 +19,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 
 #include "cpp_api/s_env.h"
+#include <cstring>
 #include "cpp_api/s_internal.h"
 #include "common/c_converter.h"
 #include "log.h"
@@ -63,8 +65,9 @@ void ScriptApiEnv::player_event(ServerActiveObject *player, const std::string &t
 	if (player == NULL)
 		return;
 
-	// Get minetest.registered_playerevents
-	lua_getglobal(L, "minetest");
+	// Get engine.registered_playerevents
+	std::string engine = g_settings->get("modding_api");
+	lua_getglobal(L, engine.c_str());
 	lua_getfield(L, -1, "registered_playerevents");
 
 	// Call callbacks

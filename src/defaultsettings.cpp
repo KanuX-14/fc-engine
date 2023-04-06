@@ -1,6 +1,7 @@
 /*
-Minetest
+Minetest / FreeCraft
 Copyright (C) 2013 celeron55, Perttu Ahola <celeron55@gmail.com>
+Copyright (C) 2023 KanuX-14 <kanux.dev@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -81,13 +82,14 @@ void set_default_settings()
 	settings->setDefault("keymap_dig", "KEY_LBUTTON");
 	settings->setDefault("keymap_place", "KEY_RBUTTON");
 	settings->setDefault("keymap_drop", "KEY_KEY_Q");
-	settings->setDefault("keymap_zoom", "KEY_KEY_Z");
-	settings->setDefault("keymap_inventory", "KEY_KEY_I");
-	settings->setDefault("keymap_aux1", "KEY_KEY_E");
+	settings->setDefault("keymap_zoom", "KEY_KEY_C");
+	settings->setDefault("keymap_inventory", "KEY_KEY_E");
+	settings->setDefault("keymap_aux1", "KEY_LCONTROL");
+	settings->setDefault("keymap_aux2", "KEY_KEY_Z");
 	settings->setDefault("keymap_chat", "KEY_KEY_T");
 	settings->setDefault("keymap_cmd", "/");
 	settings->setDefault("keymap_cmd_local", ".");
-	settings->setDefault("keymap_minimap", "KEY_KEY_V");
+	settings->setDefault("keymap_minimap", "KEY_KEY_M");
 	settings->setDefault("keymap_console", "KEY_F10");
 #if HAVE_TOUCHSCREENGUI
 	// See https://github.com/minetest/minetest/issues/12792
@@ -99,25 +101,25 @@ void set_default_settings()
 	settings->setDefault("keymap_pitchmove", "");
 	settings->setDefault("keymap_fastmove", "KEY_KEY_J");
 	settings->setDefault("keymap_noclip", "KEY_KEY_H");
-	settings->setDefault("keymap_hotbar_next", "KEY_KEY_N");
-	settings->setDefault("keymap_hotbar_previous", "KEY_KEY_B");
-	settings->setDefault("keymap_mute", "KEY_KEY_M");
+	settings->setDefault("keymap_hotbar_next", "KEY_KEY_I");
+	settings->setDefault("keymap_hotbar_previous", "KEY_KEY_U");
+	settings->setDefault("keymap_mute", "KEY_KEY_N");
 	settings->setDefault("keymap_increase_volume", "");
 	settings->setDefault("keymap_decrease_volume", "");
 	settings->setDefault("keymap_cinematic", "");
 	settings->setDefault("keymap_toggle_block_bounds", "");
 	settings->setDefault("keymap_toggle_hud", "KEY_F1");
-	settings->setDefault("keymap_toggle_chat", "KEY_F2");
-	settings->setDefault("keymap_toggle_fog", "KEY_F3");
+	settings->setDefault("keymap_toggle_chat", "KEY_F12");
+	settings->setDefault("keymap_toggle_fog", "KEY_F7");
 #if DEBUG
 	settings->setDefault("keymap_toggle_update_camera", "KEY_F4");
 #else
 	settings->setDefault("keymap_toggle_update_camera", "");
 #endif
-	settings->setDefault("keymap_toggle_debug", "KEY_F5");
+	settings->setDefault("keymap_toggle_debug", "KEY_F3");
 	settings->setDefault("keymap_toggle_profiler", "KEY_F6");
-	settings->setDefault("keymap_camera_mode", "KEY_KEY_C");
-	settings->setDefault("keymap_screenshot", "KEY_F12");
+	settings->setDefault("keymap_camera_mode", "KEY_F5");
+	settings->setDefault("keymap_screenshot", "KEY_F2");
 	settings->setDefault("keymap_increase_viewing_range_min", "+");
 	settings->setDefault("keymap_decrease_viewing_range_min", "-");
 	settings->setDefault("keymap_slot1", "KEY_KEY_1");
@@ -205,6 +207,7 @@ void set_default_settings()
 	settings->setDefault("lighting_boost", "0.2");
 	settings->setDefault("lighting_boost_center", "0.5");
 	settings->setDefault("lighting_boost_spread", "0.2");
+	settings->setDefault("lighting_gamma", "15");
 	settings->setDefault("texture_path", "");
 	settings->setDefault("shader_path", "");
 #if ENABLE_GLES
@@ -213,7 +216,7 @@ void set_default_settings()
 	settings->setDefault("video_driver", "opengl");
 #endif
 	settings->setDefault("cinematic", "false");
-	settings->setDefault("camera_smoothing", "0");
+	settings->setDefault("camera_smoothing", "0.35");
 	settings->setDefault("cinematic_camera_smoothing", "0.7");
 	settings->setDefault("enable_clouds", "true");
 	settings->setDefault("view_bobbing_amount", "1.0");
@@ -234,9 +237,9 @@ void set_default_settings()
 	settings->setDefault("node_highlighting", "box");
 	settings->setDefault("crosshair_color", "(255,255,255)");
 	settings->setDefault("crosshair_alpha", "255");
-	settings->setDefault("recent_chat_messages", "6");
-	settings->setDefault("hud_scaling", "1.0");
-	settings->setDefault("gui_scaling", "1.0");
+	settings->setDefault("recent_chat_messages", "5");
+	settings->setDefault("hud_scaling", "0.8");
+	settings->setDefault("gui_scaling", "0.8");
 	settings->setDefault("gui_scaling_filter", "false");
 	settings->setDefault("gui_scaling_filter_txr2img", "true");
 	settings->setDefault("desynchronize_mapblock_texture_animation", "true");
@@ -270,17 +273,19 @@ void set_default_settings()
 	settings->setDefault("water_wave_speed", "5.0");
 	settings->setDefault("enable_waving_leaves", "false");
 	settings->setDefault("enable_waving_plants", "false");
+	settings->setDefault("exposure_factor", "1.5");
 	settings->setDefault("exposure_compensation", "0.0");
 	settings->setDefault("enable_auto_exposure", "false");
 	settings->setDefault("enable_bloom", "false");
 	settings->setDefault("enable_bloom_debug", "false");
-	settings->setDefault("bloom_strength_factor", "1.0");
+	settings->setDefault("bloom_strength_factor", "1.5");
 	settings->setDefault("bloom_intensity", "0.05");
-	settings->setDefault("bloom_radius", "1");
+	settings->setDefault("bloom_radius", "3.5");
+	settings->setDefault("saturation", "1.2");
 
 	// Effects Shadows
 	settings->setDefault("enable_dynamic_shadows", "false");
-	settings->setDefault("shadow_strength_gamma", "1.0");
+	settings->setDefault("shadow_strength_gamma", "1.5");
 	settings->setDefault("shadow_map_max_distance", "200.0");
 	settings->setDefault("shadow_map_texture_size", "2048");
 	settings->setDefault("shadow_map_texture_32bit", "true");
@@ -373,7 +378,10 @@ void set_default_settings()
 	settings->setDefault("max_simultaneous_block_sends_per_client", "40");
 	settings->setDefault("time_send_interval", "5");
 
-	settings->setDefault("default_game", "minetest");
+	settings->setDefault("default_game", "freecraft");
+	settings->setDefault("modding_api", "freecraft");
+	settings->setDefault("user_directory", "");
+	settings->setDefault("mt_compatibility", "false");
 	settings->setDefault("motd", "");
 	settings->setDefault("max_users", "15");
 	settings->setDefault("creative_mode", "false");
@@ -484,6 +492,7 @@ void set_default_settings()
 	settings->setDefault("fixed_virtual_joystick", "false");
 	settings->setDefault("virtual_joystick_triggers_aux1", "false");
 	settings->setDefault("clickable_chat_weblinks", "false");
+	settings->setDefault("legacy_tap_detection", "false");
 #else
 	settings->setDefault("clickable_chat_weblinks", "true");
 #endif

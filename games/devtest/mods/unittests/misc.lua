@@ -43,8 +43,8 @@ end
 unittests.register("test_v3f_metatable", test_v3f_metatable, {player=true})
 
 local function test_v3s16_metatable(player, pos)
-	local node = minetest.get_node(pos)
-	local found_pos = minetest.find_node_near(pos, 0, node.name, true)
+	local node = freecraft.get_node(pos)
+	local found_pos = freecraft.find_node_near(pos, 0, node.name, true)
 	assert(vector.check(found_pos))
 end
 unittests.register("test_v3s16_metatable", test_v3s16_metatable, {map=true})
@@ -70,14 +70,14 @@ end
 unittests.register("test_clear_meta", test_clear_meta, {map=true})
 
 local on_punch_called
-minetest.register_on_punchnode(function()
+freecraft.register_on_punchnode(function()
 	on_punch_called = true
 end)
 unittests.register("test_punch_node", function(_, pos)
-	minetest.place_node(pos, {name="basenodes:dirt"})
+	freecraft.place_node(pos, {name="basenodes:dirt"})
 	on_punch_called = false
-	minetest.punch_node(pos)
-	minetest.remove_node(pos)
+	freecraft.punch_node(pos)
+	freecraft.remove_node(pos)
 	-- currently failing: assert(on_punch_called)
 end, {map=true})
 
@@ -104,7 +104,7 @@ end
 unittests.register("test_compress", test_compress)
 
 local function test_game_info()
-	local info = minetest.get_game_info()
+	local info = freecraft.get_game_info()
 	local game_conf = Settings(info.path .. "/game.conf")
 	assert(info.id == "devtest")
 	assert(info.title == game_conf:get("title"))
@@ -113,27 +113,27 @@ unittests.register("test_game_info", test_game_info)
 
 local function test_mapgen_edges(cb)
 	-- Test that the map can extend to the expected edges and no further.
-	local min_edge, max_edge = minetest.get_mapgen_edges()
+	local min_edge, max_edge = freecraft.get_mapgen_edges()
 	local min_finished = {}
 	local max_finished = {}
 	local function finish()
 		if #min_finished ~= 1 then
 			return cb("Expected 1 block to emerge around mapgen minimum edge")
 		end
-		if min_finished[1] ~= (min_edge / minetest.MAP_BLOCKSIZE):floor() then
+		if min_finished[1] ~= (min_edge / freecraft.MAP_BLOCKSIZE):floor() then
 			return cb("Expected block within minimum edge to emerge")
 		end
 		if #max_finished ~= 1 then
 			return cb("Expected 1 block to emerge around mapgen maximum edge")
 		end
-		if max_finished[1] ~= (max_edge / minetest.MAP_BLOCKSIZE):floor() then
+		if max_finished[1] ~= (max_edge / freecraft.MAP_BLOCKSIZE):floor() then
 			return cb("Expected block within maximum edge to emerge")
 		end
 		return cb()
 	end
 	local emerges_left = 2
 	local function emerge_block(blockpos, action, blocks_left, finished)
-		if action ~= minetest.EMERGE_CANCELLED then
+		if action ~= freecraft.EMERGE_CANCELLED then
 			table.insert(finished, blockpos)
 		end
 		if blocks_left == 0 then
@@ -143,34 +143,34 @@ local function test_mapgen_edges(cb)
 			end
 		end
 	end
-	minetest.emerge_area(min_edge:subtract(1), min_edge, emerge_block, min_finished)
-	minetest.emerge_area(max_edge, max_edge:add(1), emerge_block, max_finished)
+	freecraft.emerge_area(min_edge:subtract(1), min_edge, emerge_block, min_finished)
+	freecraft.emerge_area(max_edge, max_edge:add(1), emerge_block, max_finished)
 end
 unittests.register("test_mapgen_edges", test_mapgen_edges, {map=true, async=true})
 
 local finish_test_on_mapblocks_changed
-minetest.register_on_mapblocks_changed(function(modified_blocks, modified_block_count)
+freecraft.register_on_mapblocks_changed(function(modified_blocks, modified_block_count)
 	if finish_test_on_mapblocks_changed then
 		finish_test_on_mapblocks_changed(modified_blocks, modified_block_count)
 		finish_test_on_mapblocks_changed = nil
 	end
 end)
 local function test_on_mapblocks_changed(cb, player, pos)
-	local bp1 = (pos / minetest.MAP_BLOCKSIZE):floor()
+	local bp1 = (pos / freecraft.MAP_BLOCKSIZE):floor()
 	local bp2 = bp1:add(1)
 	for _, bp in ipairs({bp1, bp2}) do
 		-- Make a modification in the block.
-		local p = bp * minetest.MAP_BLOCKSIZE
-		minetest.load_area(p)
-		local meta = minetest.get_meta(p)
+		local p = bp * freecraft.MAP_BLOCKSIZE
+		freecraft.load_area(p)
+		local meta = freecraft.get_meta(p)
 		meta:set_int("test_on_mapblocks_changed", meta:get_int("test_on_mapblocks_changed") + 1)
 	end
 	finish_test_on_mapblocks_changed = function(modified_blocks, modified_block_count)
 		if modified_block_count < 2 then
 			return cb("Expected at least two mapblocks to be recorded as modified")
 		end
-		if not modified_blocks[minetest.hash_node_position(bp1)] or
-				not modified_blocks[minetest.hash_node_position(bp2)] then
+		if not modified_blocks[freecraft.hash_node_position(bp1)] or
+				not modified_blocks[freecraft.hash_node_position(bp2)] then
 			return cb("The expected mapblocks were not recorded as modified")
 		end
 		cb()

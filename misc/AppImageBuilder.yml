@@ -4,11 +4,11 @@ AppDir:
   path: ./AppDir
 
   app_info:
-    id: net.minetest.minetest
-    name: Minetest
-    icon: minetest
+    id: net.freecraft.freecraft
+    name: FreeCraft
+    icon: freecraft
     version: !ENV ${VERSION}
-    exec: usr/bin/minetest
+    exec: usr/bin/freecraft
     exec_args: $@
   runtime:
     env:

@@ -1,6 +1,7 @@
 /*
-Minetest
+Minetest / FreeCraft
 Copyright (C) 2013 sapier
+Copyright (C) 2023 KanuX-14 <kanux.dev@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -638,6 +639,16 @@ int ModApiMainMenu::l_get_user_path(lua_State *L)
 }
 
 /******************************************************************************/
+int ModApiMainMenu::l_check_file(lua_State *L)
+{
+	std::string path = luaL_checkstring(L, 1);
+	bool file = g_settings->readConfigFile(path.c_str());
+	lua_pushboolean(L, file);
+	
+	return 1;
+}
+
+/******************************************************************************/
 int ModApiMainMenu::l_get_modpath(lua_State *L)
 {
 	std::string modpath = fs::RemoveRelativePathComponents(
@@ -1082,6 +1093,7 @@ void ModApiMainMenu::Initialize(lua_State *L, int top)
 	API_FCT(set_topleft_text);
 	API_FCT(get_mapgen_names);
 	API_FCT(get_user_path);
+	API_FCT(check_file);
 	API_FCT(get_modpath);
 	API_FCT(get_modpaths);
 	API_FCT(get_clientmodpath);
@@ -1120,6 +1132,7 @@ void ModApiMainMenu::InitializeAsync(lua_State *L, int top)
 	API_FCT(get_games);
 	API_FCT(get_mapgen_names);
 	API_FCT(get_user_path);
+	API_FCT(check_file);
 	API_FCT(get_modpath);
 	API_FCT(get_modpaths);
 	API_FCT(get_clientmodpath);

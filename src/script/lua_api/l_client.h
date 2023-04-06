@@ -1,7 +1,8 @@
 /*
-Minetest
+Minetest / FreeCraft
 Copyright (C) 2013 celeron55, Perttu Ahola <celeron55@gmail.com>
 Copyright (C) 2017 nerzhul, Loic Blot <loic.blot@unix-experience.fr>
+Copyright (C) 2023 KanuX-14 <kanux.dev@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -101,6 +102,9 @@ private:
 
 	// get_builtin_path()
 	static int l_get_builtin_path(lua_State *L);
+
+	// check_file(file)
+	static int l_check_file(lua_State *L);
 
 	// get_csm_restrictions()
 	static int l_get_csm_restrictions(lua_State *L);

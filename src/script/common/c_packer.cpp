@@ -1,6 +1,7 @@
 /*
-Minetest
+Minetest / FreeCraft
 Copyright (C) 2022 sfan5 <sfan5@live.de>
+Copyright (C) 2023 KanuX-14 <kanux.dev@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -568,7 +569,11 @@ void script_dump_packed(const PackedValue *val)
 				printf("table(%d, %d)", i.uidata1, i.uidata2);
 				break;
 			case LUA_TFUNCTION:
+#if (__aarch64__) || (__x86_64__)		
 				printf("function(%lu byte)", i.sdata.size());
+#else
+				printf("function(%u byte)", i.sdata.size());
+#endif				
 				break;
 			case LUA_TUSERDATA:
 				printf("userdata %s %p", i.sdata.c_str(), i.ptrdata);

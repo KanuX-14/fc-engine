@@ -8,7 +8,7 @@ patch -N -r - $MARKDOWN_FILE lua_highlight.patch || true
 cat ../lua_api.txt | csplit -sz -f docs/section - '/^=/-1' '{*}'
 
 cat > mkdocs.yml << EOF
-site_name: Minetest API Documentation
+site_name: FreeCraft API Documentation
 theme:
     name: readthedocs
     highlightjs: False

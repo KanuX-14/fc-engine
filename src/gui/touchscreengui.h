@@ -1,5 +1,7 @@
 /*
+Minetest / FreeCraft
 Copyright (C) 2014 sapier
+Copyright (C) 2023 KanuX-14 <kanux.dev@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -40,6 +42,7 @@ typedef enum
 	crunch_id,
 	zoom_id,
 	aux1_id,
+	aux2_id,
 	after_last_element_id,
 	settings_starter_id,
 	rare_controls_starter_id,
@@ -82,7 +85,7 @@ typedef enum
 
 #define MIN_DIG_TIME_MS 500
 #define BUTTON_REPEAT_DELAY 0.2f
-#define SETTINGS_BAR_Y_OFFSET 5
+#define SETTINGS_BAR_Y_OFFSET 7.5f
 #define RARE_CONTROLS_BAR_Y_OFFSET 5
 
 // Very slow button repeat frequency
@@ -283,8 +286,8 @@ private:
 	// handle pressed hud buttons
 	bool isHUDButton(const SEvent &event);
 
-	// handle double taps
-	bool doubleTapDetection();
+	// handle use taps
+	bool tapDetection(bool isLegacy);
 
 	// handle release event
 	void handleReleaseEvent(size_t evt_id);

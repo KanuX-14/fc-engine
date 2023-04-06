@@ -1,6 +1,7 @@
 /*
-Minetest
+Minetest / FreeCraft
 Copyright (C) 2010-2013 celeron55, Perttu Ahola <celeron55@gmail.com>
+Copyright (C) 2023 KanuX-14 <kanux.dev@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -270,15 +271,15 @@ Server::Server(
 #endif
 		m_metrics_backend = std::make_unique<MetricsBackend>();
 
-	m_uptime_counter = m_metrics_backend->addCounter("minetest_core_server_uptime", "Server uptime (in seconds)");
-	m_player_gauge = m_metrics_backend->addGauge("minetest_core_player_number", "Number of connected players");
+	m_uptime_counter = m_metrics_backend->addCounter("freecraft_core_server_uptime", "Server uptime (in seconds)");
+	m_player_gauge = m_metrics_backend->addGauge("freecraft_core_player_number", "Number of connected players");
 
 	m_timeofday_gauge = m_metrics_backend->addGauge(
-			"minetest_core_timeofday",
+			"freecraft_core_timeofday",
 			"Time of day value");
 
 	m_lag_gauge = m_metrics_backend->addGauge(
-			"minetest_core_latency",
+			"freecraft_core_latency",
 			"Latency value (in seconds)");
 
 
@@ -287,20 +288,20 @@ Server::Server(
 		std::string help_str("Number of active object messages generated (");
 		help_str.append(aom_types[i]).append(")");
 		m_aom_buffer_counter[i] = m_metrics_backend->addCounter(
-				"minetest_core_aom_generated_count", help_str,
+				"freecraft_core_aom_generated_count", help_str,
 				{{"type", aom_types[i]}});
 	}
 
 	m_packet_recv_counter = m_metrics_backend->addCounter(
-			"minetest_core_server_packet_recv",
+			"freecraft_core_server_packet_recv",
 			"Processable packets received");
 
 	m_packet_recv_processed_counter = m_metrics_backend->addCounter(
-			"minetest_core_server_packet_recv_processed",
+			"freecraft_core_server_packet_recv_processed",
 			"Valid received packets processed");
 
 	m_map_edit_event_counter = m_metrics_backend->addCounter(
-			"minetest_core_map_edit_events",
+			"freecraft_core_map_edit_events",
 			"Number of map edit events");
 
 	m_lag_gauge->set(g_settings->getFloat("dedicated_server_step"));
@@ -543,12 +544,14 @@ void Server::start()
 
 	// ASCII art for the win!
 	std::cerr
-		<< "         __.               __.                 __.  " << std::endl
-		<< "  _____ |__| ____   _____ /  |_  _____  _____ /  |_ " << std::endl
-		<< " /     \\|  |/    \\ /  __ \\    _\\/  __ \\/   __>    _\\" << std::endl
-		<< "|  Y Y  \\  |   |  \\   ___/|  | |   ___/\\___  \\|  |  " << std::endl
-		<< "|__|_|  /  |___|  /\\______>  |  \\______>_____/|  |  " << std::endl
-		<< "      \\/ \\/     \\/         \\/                  \\/   " << std::endl;
+		<< " _____________________________"		<< std::endl
+		<< "< FreeCraft is the best game. >"	<< std::endl
+		<< " -----------------------------"		<< std::endl
+		<< "         \\   ^__^"					<< std::endl
+		<< "          \\  (oo)\\_______"		<< std::endl
+		<< "             (__)\\       )\\/\\"	<< std::endl
+		<< "                ||----w |"			<< std::endl
+		<< "                ||     ||"			<< std::endl;
 	actionstream << "World at [" << m_path_world << "]" << std::endl;
 	actionstream << "Server for gameid=\"" << m_gamespec.id
 			<< "\" listening on ";

@@ -9,8 +9,10 @@ function core.async_event_handler(jobid, retval)
 end
 
 function core.handle_async(func, callback, ...)
+	local engine = core.settings:get("modding_api") or "freecraft"
+
 	assert(type(func) == "function" and type(callback) == "function",
-		"Invalid minetest.handle_async invocation")
+		"Invalid " .. engine .. ".handle_async invocation")
 	local args = {n = select("#", ...), ...}
 	local mod_origin = core.get_last_run_mod()
 

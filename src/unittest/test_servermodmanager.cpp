@@ -48,21 +48,21 @@ static TestServerModManager g_test_instance;
 
 void TestServerModManager::runTests(IGameDef *gamedef)
 {
-	const char *saved_env_mt_subgame_path = getenv("MINETEST_SUBGAME_PATH");
-	const char *saved_env_mt_mod_path = getenv("MINETEST_MOD_PATH");
+	const char *saved_env_mt_subgame_path = getenv("FREECRAFT_SUBGAME_PATH");
+	const char *saved_env_mt_mod_path = getenv("FREECRAFT_MOD_PATH");
 #ifdef WIN32
 	{
-		std::string subgame_path("MINETEST_SUBGAME_PATH=");
+		std::string subgame_path("FREECRAFT_SUBGAME_PATH=");
 		subgame_path.append(TEST_SUBGAME_PATH);
 		_putenv(subgame_path.c_str());
 
-		std::string mod_path("MINETEST_MOD_PATH=");
+		std::string mod_path("FREECRAFT_MOD_PATH=");
 		mod_path.append(TEST_MOD_PATH);
 		_putenv(mod_path.c_str());
 	}
 #else
-	setenv("MINETEST_SUBGAME_PATH", TEST_SUBGAME_PATH, 1);
-	setenv("MINETEST_MOD_PATH", TEST_MOD_PATH, 1);
+	setenv("FREECRAFT_SUBGAME_PATH", TEST_SUBGAME_PATH, 1);
+	setenv("FREECRAFT_MOD_PATH", TEST_MOD_PATH, 1);
 #endif
 
 	TEST(testCreation);
@@ -78,25 +78,25 @@ void TestServerModManager::runTests(IGameDef *gamedef)
 
 #ifdef WIN32
 	{
-		std::string subgame_path("MINETEST_SUBGAME_PATH=");
+		std::string subgame_path("FREECRAFT_SUBGAME_PATH=");
 		if (saved_env_mt_subgame_path)
 			subgame_path.append(saved_env_mt_subgame_path);
 		_putenv(subgame_path.c_str());
 
-		std::string mod_path("MINETEST_MOD_PATH=");
+		std::string mod_path("FREECRAFT_MOD_PATH=");
 		if (saved_env_mt_mod_path)
 			mod_path.append(saved_env_mt_mod_path);
 		_putenv(mod_path.c_str());
 	}
 #else
 	if (saved_env_mt_subgame_path)
-		setenv("MINETEST_SUBGAME_PATH", saved_env_mt_subgame_path, 1);
+		setenv("FREECRAFT_SUBGAME_PATH", saved_env_mt_subgame_path, 1);
 	else
-		unsetenv("MINETEST_SUBGAME_PATH");
+		unsetenv("FREECRAFT_SUBGAME_PATH");
 	if (saved_env_mt_mod_path)
-		setenv("MINETEST_MOD_PATH", saved_env_mt_mod_path, 1);
+		setenv("FREECRAFT_MOD_PATH", saved_env_mt_mod_path, 1);
 	else
-		unsetenv("MINETEST_MOD_PATH");
+		unsetenv("FREECRAFT_MOD_PATH");
 #endif
 }
 
@@ -136,7 +136,7 @@ void TestServerModManager::testGetMods()
 	UASSERTEQ(bool, mods.empty(), false);
 
 	// Ensure we found basenodes mod (part of devtest)
-	// and test_mod (for testing MINETEST_MOD_PATH).
+	// and test_mod (for testing FREECRAFT_MOD_PATH).
 	bool default_found = false;
 	bool test_mod_found = false;
 	for (const auto &m : mods) {

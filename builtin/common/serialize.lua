@@ -202,20 +202,22 @@ end
 local function dummy_func() end
 
 function core.deserialize(str, safe)
+	local engine = core.settings:get("modding_api") or "freecraft"
+
 	-- Backwards compatibility
 	if str == nil then
-		core.log("deprecated", "minetest.deserialize called with nil (expected string).")
+		core.log("deprecated", "" .. engine .. ".deserialize called with nil (expected string).")
 		return nil, "Invalid type: Expected a string, got nil"
 	end
 	local t = type(str)
 	if t ~= "string" then
-		error(("minetest.deserialize called with %s (expected string)."):format(t))
+		error((engine .. ".deserialize called with %s (expected string)."):format(t))
 	end
 
 	local func, err = loadstring(str)
 	if not func then return nil, err end
 
-	-- math.huge was serialized to inf and NaNs to nan by Lua in Minetest 5.6, so we have to support this here
+	-- math.huge was serialized to inf and NaNs to nan by Lua in FreeCraft 0.1, so we have to support this here
 	local env = {inf = math_huge, nan = 0/0}
 	if safe then
 		env.loadstring = dummy_func

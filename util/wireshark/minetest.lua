@@ -1,11 +1,13 @@
--- minetest.lua
--- Packet dissector for the UDP-based Minetest protocol
+-- freecraft.lua
+-- Packet dissector for the UDP-based FreeCraft protocol
 -- Copy this to $HOME/.wireshark/plugins/
 
 
 --
--- Minetest
+-- Minetest (Original)
 -- Copyright (C) 2011 celeron55, Perttu Ahola <celeron55@gmail.com>
+-- FreeCraft (Modified)
+-- Copyright (C) 2022 KanuX-14 <kanux.dev@gmail.com>
 --
 -- This program is free software; you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -1069,7 +1071,7 @@ minetest_server_commands[0x61] = {"FORMSPEC_PREPEND", 2}
 -- minetest.control dissector
 
 do
-	local p_control = Proto("minetest.control", "Minetest Control")
+	local p_control = Proto("minetest.control", "FreeCraft Control")
 
 	local vs_control_type = {
 		[0] = "Ack",
@@ -1143,7 +1145,7 @@ function minetest_define_client_or_server_proto(is_client)
 	end
 
 	-- Create the protocol object.
-	local proto = Proto(proto_name, "Minetest " .. this_peer .. " to " .. other_peer)
+	local proto = Proto(proto_name, "FreeCraft " .. this_peer .. " to " .. other_peer)
 
 	-- Create a table vs_command that maps command codes to command names.
 	local vs_command = {}
@@ -1215,7 +1217,7 @@ minetest_define_client_or_server_proto(false) -- minetest.server
 -- minetest.split dissector
 
 do
-	local p_split = Proto("minetest.split", "Minetest Split Message")
+	local p_split = Proto("minetest.split", "FreeCraft Split Message")
 
 	local f_split_seq = ProtoField.uint16("minetest.split.seq", "Sequence number", base.DEC)
 	local f_split_chunkcount = ProtoField.uint16("minetest.split.chunkcount", "Chunk count", base.DEC)
@@ -1244,7 +1246,7 @@ end
 -- minetest dissector
 
 do
-	local p_minetest = Proto("minetest", "Minetest")
+	local p_minetest = Proto("minetest", "FreeCraft")
 
 	local minetest_id = 0x4f457403
 	local vs_id = {
@@ -1280,23 +1282,23 @@ do
 
 	function p_minetest.dissector(buffer, pinfo, tree)
 
-		-- Add Minetest tree item and verify the ID
+		-- Add FreeCraft tree item and verify the ID
 		local t = tree:add(p_minetest, buffer(0,8))
 		t:add(f_id, buffer(0,4))
 		if buffer(0,4):uint() ~= minetest_id then
-			t:add_expert_info(PI_UNDECODED, PI_WARN, "Invalid ID, this is not a Minetest packet")
+			t:add_expert_info(PI_UNDECODED, PI_WARN, "Invalid ID, this is not a FreeCraft packet")
 			return
 		end
 
 		-- ID is valid, so replace packet's shown protocol
-		pinfo.cols.protocol = "Minetest"
-		pinfo.cols.info = "Minetest"
+		pinfo.cols.protocol = "FreeCraft"
+		pinfo.cols.info = "FreeCraft"
 
 		-- Set the other header fields
 		t:add(f_peer, buffer(4,2))
 		t:add(f_channel, buffer(6,1))
 		t:add(f_type, buffer(7,1))
-		t:set_text("Minetest, Peer: " .. buffer(4,2):uint() .. ", Channel: " .. buffer(6,1):uint())
+		t:set_text("FreeCraft, Peer: " .. buffer(4,2):uint() .. ", Channel: " .. buffer(6,1):uint())
 
 		local reliability_info
 		if buffer(7,1):uint() == 3 then

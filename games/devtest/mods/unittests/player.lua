@@ -2,7 +2,7 @@
 -- HP Change Reasons
 --
 local expect = nil
-minetest.register_on_player_hpchange(function(player, hp, reason)
+freecraft.register_on_player_hpchange(function(player, hp, reason)
 	if expect == nil then
 		return
 	end

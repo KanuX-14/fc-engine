@@ -1,2 +1,2 @@
-dofile(minetest.get_modpath("chest").."/chest.lua")
-dofile(minetest.get_modpath("chest").."/detached.lua")
+dofile(freecraft.get_modpath("chest").."/chest.lua")
+dofile(freecraft.get_modpath("chest").."/detached.lua")

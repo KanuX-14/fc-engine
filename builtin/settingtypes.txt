@@ -129,6 +129,10 @@ fixed_virtual_joystick (Fixed virtual joystick) bool false
 #    If enabled, virtual joystick will also tap "Aux1" button when out of main circle.
 virtual_joystick_triggers_aux1 (Virtual joystick triggers Aux1 button) bool false
 
+#     Old Minetest way to manipulate the 'use' (right-click / double tap) event.
+#
+#     FreeCraft default value use single tap detection.
+legacy_tap_detection (Legacy tap detection) bool false
 
 [Graphics and Audio]
 
@@ -593,7 +597,7 @@ contentdb_url (ContentDB URL) string https://content.minetest.net
 #    "nonfree" can be used to hide packages which do not qualify as 'free software',
 #    as defined by the Free Software Foundation.
 #    You can also specify content ratings.
-#    These flags are independent from Minetest versions,
+#    These flags are independent from FreeCraft versions,
 #    so see a full list at https://content.minetest.net/help/content_flags/
 contentdb_flag_blacklist (ContentDB Flag Blacklist) string nonfree, desktop_default
 
@@ -616,7 +620,7 @@ serverlist_url (Serverlist URL) string servers.minetest.net
 #    If disabled, new accounts will be registered automatically when logging in.
 enable_split_login_register (Enable split login/register) bool true
 
-#    URL to JSON file which provides information about the newest Minetest release
+#    URL to JSON file which provides information about the newest FreeCraft release
 update_information_url (Update information URL) string https://www.minetest.net/release_info.json
 
 #    Unix timestamp (integer) of when the client last checked for an update
@@ -649,7 +653,7 @@ name (Admin name) string
 [**Serverlist and MOTD]
 
 #    Name of the server, to be displayed when players join and in the serverlist.
-server_name (Server name) string Minetest server
+server_name (Server name) string FreeCraft server
 
 #    Description of server, to be displayed when players join and in the serverlist.
 server_description (Server description) string mine here
@@ -1625,7 +1629,7 @@ instrument.lbm (Loading Block Modifiers) bool true
 instrument.chatcommand (Chat commands) bool true
 
 #    Instrument global callback functions on registration.
-#    (anything you pass to a minetest.register_*() function)
+#    (anything you pass to a freecraft.register_*() function)
 instrument.global_callback (Global callbacks) bool true
 
 #    Instrument builtin.
@@ -1689,7 +1693,7 @@ enable_mesh_cache (Mesh cache) bool false
 mesh_generation_interval (Mapblock mesh generation delay) int 0 0 50
 
 #    Number of threads to use for mesh generation.
-#    Value of 0 (default) will let Minetest autodetect the number of available threads.
+#    Value of 0 (default) will let FreeCraft autodetect the number of available threads.
 mesh_generation_threads (Mapblock mesh generation threads) int 0 0 8
 
 
@@ -1800,10 +1804,15 @@ lighting_boost_center (Light curve boost center) float 0.5 0.0 1.0
 #    Standard deviation of the light curve boost Gaussian.
 lighting_boost_spread (Light curve boost spread) float 0.2 0.0 0.4
 
+#    General brightness of dark nodes.
+#    Ranges from 0 to 100.
+#    Defaults to 15.
+lighting_gamma (General gamma) int 15 0 100
+
 [**Networking]
 
 #    Prometheus listener address.
-#    If Minetest is compiled with ENABLE_PROMETHEUS option enabled,
+#    If FreeCraft is compiled with ENABLE_PROMETHEUS option enabled,
 #    enable metrics listener for Prometheus on that address.
 #    Metrics can be fetched on http://127.0.0.1:30000/metrics
 prometheus_listener_address (Prometheus listener address) string 127.0.0.1:30000
@@ -2008,7 +2017,7 @@ screen_dpi (DPI) int 72 1
 #    Adjust the detected display density, used for scaling UI elements.
 display_density_factor (Display Density Scaling Factor) float 1 0.5 5.0
 
-#    Windows systems only: Start Minetest with the command line window in the background.
+#    Windows systems only: Start FreeCraft with the command line window in the background.
 #    Contains the same information as the file debug.txt (default name).
 enable_console (Enable console window) bool false
 
@@ -2085,7 +2094,19 @@ remote_port (Remote port) int 30000 1 65535
 
 #    Default game when creating a new world.
 #    This will be overridden when creating a world from the main menu.
-default_game (Default game) string minetest
+default_game (Default game) string freecraft
+
+#    Default modding API.
+#    All the core calls will use this name.
+modding_api (Modding API) string freecraft
+
+#    User directory.
+#    Used for detecting the engine's modding API.
+user_directory (User Directory) string
+
+#    Force compatibility with Minetest engine.
+#    Ignores automatic detection.
+mt_compatibility (Minetest Compatibility) bool false
 
 #    Enable players getting damage and dying.
 enable_damage (Damage) bool false

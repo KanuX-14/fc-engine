@@ -3,7 +3,7 @@ unittests = {}
 core.log("info", "Hello World")
 
 local function do_tests()
-	assert(core == minetest)
+	assert(core == freecraft)
 	-- stuff that should not be here
 	assert(not core.get_player_by_name)
 	assert(not core.set_node)
