@@ -2,7 +2,7 @@
 <img src="./.media/page_images/header.png" alt="FreeCraft logo" width="50%"/>
 </p>
 
-![Build Status](https://github.com/KanuX-14/fc-engine/workflows/build/badge.svg)
+![Build Status](https://gitlab.com/KanuX/freecraft/workflows/build/badge.svg)
 [![Translation status](https://hosted.weblate.org/widgets/minetest/-/svg-badge.svg)](https://hosted.weblate.org/engage/minetest/?utm_source=widget)
 [![License](https://img.shields.io/badge/license-LGPLv2.1%2B-blue.svg)](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html)
 
@@ -23,7 +23,6 @@ project too. See its README.txt for more information.
 
 Table of Contents
 ------------------
-
 1. [Further Documentation](#further-documentation)
 2. [Default Controls](#default-controls)
 3. [Paths](#paths)
@@ -40,7 +39,7 @@ Further documentation
 - Wiki: https://wiki.minetest.net/
 - Developer wiki: https://dev.minetest.net/
 - Forum: https://forum.minetest.net/
-- GitHub: https://github.com/KanuX-14/fc-engine/
+- GitLab: https://gitlab.com/KanuX/freecraft/ ([GitHub](https://github.com/KanuX-14/fc-engine))
 - [doc/](doc/) directory of source distribution
 
 Default controls
@@ -116,13 +115,11 @@ Worlds can be found as separate folders in: `user/worlds/`
 
 Configuration file
 ------------------
-- Default location:
-    `user/freecraft.conf`
+- Default location: `user/freecraft.conf`
 - This file is created by closing FreeCraft for the first time.
-- A specific file can be specified on the command line:
-    `--config <path-to-file>`
+- A specific file can be specified on the command line: `--config <path-to-file>`
 - A run-in-place build will look for the configuration file in
-    `location_of_exe/../freecraft.conf` and also `location_of_exe/../../freecraft.conf`
+  `location_of_exe/../freecraft.conf` and also `location_of_exe/../../freecraft.conf`
 
 Command-line options
 --------------------
@@ -130,105 +127,85 @@ Command-line options
 
 Compiling
 ---------
-### Compiling on GNU/Linux
+### Compiling on Linux
+
+Musl may be possible, generally. Compatibility is being taken care.
 
 #### Dependencies
 
-| Dependency | Version | Commentary |
-|------------|---------|------------|
-| GCC        | 5.1+    | or Clang 3.5+ |
-| CMake      | 3.5+    |            |
-| IrrlichtMt | -       | Custom version of Irrlicht, see https://github.com/minetest/irrlicht |
-| Freetype   | 2.0+    |            |
-| SQLite3    | 3+      |            |
-| Zstd       | 1.0+    |            |
-| LuaJIT     | 2.0+    | Bundled Lua 5.1 is used if not present |
-| GMP        | 5.0.0+  | Bundled mini-GMP is used if not present |
-| JsonCPP    | 1.0.0+  | Bundled JsonCPP is used if not present |
+| Dependency | Version | Commentary                                                             |
+|------------|---------|------------------------------------------------------------------------|
+| CMake      | 3.5+    |                                                                        |
+| Freetype   | 2.0+    |                                                                        |
+| GMP        | 5.0.0+  | Bundled mini-GMP is used if not present.                               |
+| GCC        | 5.1+    | or Clang 3.5+.                                                         |
+| IrrlichtMt | -       | Custom version of [Irrlicht](https://github.com/minetest/irrlicht).    |
+| JsonCPP    | 1.0.0+  | Bundled JsonCPP is used if not present.                                |
+| LuaJIT     | 2.0+    | Bundled Lua 5.1 is used if not present.                                |
+| SQLite3    | 3+      |                                                                        |
+| Zstd       | 1.0+    |                                                                        |
 
-For Debian/Ubuntu users:
+As <b>root</b>:
 
-    sudo apt install g++ make libc6-dev cmake libpng-dev libjpeg-dev libxi-dev libgl1-mesa-dev libsqlite3-dev libogg-dev libvorbis-dev libopenal-dev libcurl4-gnutls-dev libfreetype6-dev zlib1g-dev libgmp-dev libjsoncpp-dev libzstd-dev libluajit-5.1-dev
+- Debian/Ubuntu:
+```sh
+apt install g++ make libc6-dev cmake libpng-dev libjpeg-dev libxi-dev libgl1-mesa-dev libsqlite3-dev libogg-dev libvorbis-dev libopenal-dev libcurl4-gnutls-dev libfreetype6-dev zlib1g-dev libgmp-dev libjsoncpp-dev libzstd-dev libluajit-5.1-dev
+```
+- Fedora:
+```sh
+dnf install make automake gcc gcc-c++ kernel-devel cmake libcurl-devel openal-soft-devel libpng-devel libjpeg-devel libvorbis-devel libXi-devel libogg-devel freetype-devel mesa-libGL-devel zlib-devel jsoncpp-devel gmp-devel sqlite-devel luajit-devel leveldb-devel ncurses-devel spatialindex-devel libzstd-devel
+```
+- Arch:
+```sh
+pacman -S base-devel libcurl-gnutls cmake libxi libpng sqlite libogg libvorbis openal freetype2 jsoncpp gmp luajit leveldb ncurses zstd
+```
+- Alpine:
+```sh
+sudo apk add build-base cmake libpng-dev jpeg-dev libxi-dev mesa-dev sqlite-dev libogg-dev libvorbis-dev openal-soft-dev curl-dev freetype-dev zlib-dev gmp-dev jsoncpp-dev luajit-dev zstd-dev
+```
 
-For Fedora users:
+| Optional | Version | Commentary             |
+|----------|---------|------------------------|
+| Git      | any     | Keep game up to date.  |
 
-    sudo dnf install make automake gcc gcc-c++ kernel-devel cmake libcurl-devel openal-soft-devel libpng-devel libjpeg-devel libvorbis-devel libXi-devel libogg-devel freetype-devel mesa-libGL-devel zlib-devel jsoncpp-devel gmp-devel sqlite-devel luajit-devel leveldb-devel ncurses-devel spatialindex-devel libzstd-devel
-
-For Arch users:
-
-    sudo pacman -S base-devel libcurl-gnutls cmake libxi libpng sqlite libogg libvorbis openal freetype2 jsoncpp gmp luajit leveldb ncurses zstd
-
-For Alpine users:
-
-    sudo apk add build-base cmake libpng-dev jpeg-dev libxi-dev mesa-dev sqlite-dev libogg-dev libvorbis-dev openal-soft-dev curl-dev freetype-dev zlib-dev gmp-dev jsoncpp-dev luajit-dev zstd-dev
+Git can be widely installed by pointing the `git` package name.<br>
+It is also recommended if you want a rolling-release update style.
 
 #### Download
 
-You can install Git for easily keeping your copy up to date.
-If you don’t want Git, read below on how to get the source without Git.
-This is an example for installing Git on Debian/Ubuntu:
+- Using git:
+```sh
+git clone --depth 1 https://gitlab.com/KanuX/freecraft.git
+cd freecraft/
+git clone --depth 1 https://gitlab.com/KanuX/freecraft_game.git ./games/freecraft/
+git clone --depth 1 https://github.com/minetest/irrlicht.git ./lib/irrlichtmt/
+```
 
-    sudo apt install git
-
-For Fedora users:
-
-    sudo dnf install git
-
-For Arch users:
-
-	sudo pacman -S git
-
-For Alpine users:
-
-	sudo apk add git
-
-Download source (this is the URL to the latest of source repository, which might not work at all times) using Git:
-
-    git clone --depth 1 https://github.com/KanuX-14/fc-engine.git
-    cd fc-engine
-
-Download FreeCraft game using Git:
-
-    git clone --depth 1 https://github.com/KanuX-14/freecraft.git games/freecraft
-
-Download IrrlichtMt to `lib/irrlichtmt`, it will be used to satisfy the IrrlichtMt dependency that way:
-
-    git clone --depth 1 https://github.com/minetest/irrlicht.git lib/irrlichtmt
-
-Download source, without using Git:
-
-    wget https://github.com/KanuX-14/fc-engine/archive/master.tar.gz
-    tar xf master.tar.gz
-    cd fc-engine-master
-
-Download FreeCraft game, without using Git:
-
-    cd games/
-    wget https://github.com/KanuX-14/freecraft/archive/master.tar.gz
-    tar xf master.tar.gz
-    mv freecraft-master freecraft
-    cd ..
-
-Download IrrlichtMt, without using Git:
-
-    cd lib/
-    wget https://github.com/minetest/irrlicht/archive/master.tar.gz
-    tar xf master.tar.gz
-    mv irrlicht-master irrlichtmt
-    cd ..
+- Without using git:
+```sh
+curl -L https://gitlab.com/KanuX/freecraft/-/archive/master/freecraft-master.tar.gz --output freecraft-master.tar.gz
+tar -xvf freecraft-master.tar.gz
+mv freecraft-master/ freecraft/
+curl -L https://gitlab.com/KanuX/freecraft_game/-/archive/master/freecraft-master.tar.gz --output freecraft_game-master.tar.gz
+tar -xvf freecraft_game-master.tar.gz
+mv freecraft_game-master/ games/freecraft/
+curl -L https://github.com/minetest/irrlicht/archive/master.tar.gz --output irrlicht-master.tar.gz
+tar -xvf irrlicht-master.tar.gz
+mv irrlicht-master/ lib/irrlichtmt/
+```
 
 #### Build
 
 Build a version that runs directly from the source directory:
-
-    mkdir build
-    cd build
-    cmake .. -DRUN_IN_PLACE=TRUE
-    make -j$(nproc)
+```sh
+cmake -S . -B build -DRUN_IN_PLACE=TRUE
+cmake --build build -j$(nproc)
+```
 
 Run it:
-
-    ../bin/freecraft
+```sh
+../bin/freecraft
+```
 
 - Use `cmake . -LH` to see all CMake options and their current state.
 - If you want to install it system-wide (or are making a distribution package),
@@ -250,154 +227,95 @@ Run it:
 ### CMake options
 
 General options and their default values:
-
-    BUILD_CLIENT=TRUE          - Build FreeCraft client
-    BUILD_SERVER=FALSE         - Build FreeCraft server
-    BUILD_UNITTESTS=TRUE       - Build unittest sources
-    BUILD_BENCHMARKS=FALSE     - Build benchmark sources
-    CMAKE_BUILD_TYPE=Release   - Type of build (Release vs. Debug)
-        Release                - Release build
-        Debug                  - Debug build
-        SemiDebug              - Partially optimized debug build
-        RelWithDebInfo         - Release build with debug information
-        MinSizeRel             - Release build with -Os passed to compiler to make executable as small as possible
-    ENABLE_CURL=ON             - Build with cURL; Enables use of online mod repo, public serverlist and remote media fetching via http
-    ENABLE_CURSES=ON           - Build with (n)curses; Enables a server side terminal (command line option: --terminal)
-    ENABLE_GETTEXT=ON          - Build with Gettext; Allows using translations
-    ENABLE_GLES=OFF            - Enable extra support code for OpenGL ES (requires support by IrrlichtMt)
-    ENABLE_LEVELDB=ON          - Build with LevelDB; Enables use of LevelDB map backend
-    ENABLE_POSTGRESQL=ON       - Build with libpq; Enables use of PostgreSQL map backend (PostgreSQL 9.5 or greater recommended)
-    ENABLE_REDIS=ON            - Build with libhiredis; Enables use of Redis map backend
-    ENABLE_SPATIAL=ON          - Build with LibSpatial; Speeds up AreaStores
-    ENABLE_SOUND=ON            - Build with OpenAL, libogg & libvorbis; in-game sounds
-    ENABLE_LUAJIT=ON           - Build with LuaJIT (much faster than non-JIT Lua)
-    ENABLE_PROMETHEUS=OFF      - Build with Prometheus metrics exporter (listens on tcp/30000 by default)
-    ENABLE_SYSTEM_GMP=ON       - Use GMP from system (much faster than bundled mini-gmp)
-    ENABLE_SYSTEM_JSONCPP=ON   - Use JsonCPP from system
-    RUN_IN_PLACE=FALSE         - Create a portable install (worlds, settings etc. in current directory)
-    ENABLE_UPDATE_CHECKER=TRUE - Whether to enable update checks by default
-    INSTALL_DEVTEST=FALSE      - Whether the Development Test game should be installed alongside Minetest
-    USE_GPROF=FALSE            - Enable profiling using GProf
-    VERSION_EXTRA=             - Text to append to version (e.g. VERSION_EXTRA=foobar -> FreeCraft 0.4.9-foobar)
-    ENABLE_TOUCH=FALSE         - Enable Touchscreen support (requires support by IrrlichtMt)
+```
+BUILD_CLIENT=TRUE          - Build FreeCraft client
+BUILD_SERVER=FALSE         - Build FreeCraft server
+BUILD_UNITTESTS=TRUE       - Build unittest sources
+BUILD_BENCHMARKS=FALSE     - Build benchmark sources
+CMAKE_BUILD_TYPE=Release   - Type of build (Release vs. Debug)
+    Release                - Release build
+    Debug                  - Debug build
+    SemiDebug              - Partially optimized debug build
+    RelWithDebInfo         - Release build with debug information
+    MinSizeRel             - Release build with -Os passed to compiler to make executable as small as possible
+ENABLE_CURL=ON             - Build with cURL; Enables use of online mod repo, public serverlist and remote media fetching via http
+ENABLE_CURSES=ON           - Build with (n)curses; Enables a server side terminal (command line option: --terminal)
+ENABLE_GETTEXT=ON          - Build with Gettext; Allows using translations
+ENABLE_GLES=OFF            - Enable extra support code for OpenGL ES (requires support by IrrlichtMt)
+ENABLE_LEVELDB=ON          - Build with LevelDB; Enables use of LevelDB map backend
+ENABLE_POSTGRESQL=ON       - Build with libpq; Enables use of PostgreSQL map backend (PostgreSQL 9.5 or greater recommended)
+ENABLE_REDIS=ON            - Build with libhiredis; Enables use of Redis map backend
+ENABLE_SPATIAL=ON          - Build with LibSpatial; Speeds up AreaStores
+ENABLE_SOUND=ON            - Build with OpenAL, libogg & libvorbis; in-game sounds
+ENABLE_LUAJIT=ON           - Build with LuaJIT (much faster than non-JIT Lua)
+ENABLE_PROMETHEUS=OFF      - Build with Prometheus metrics exporter (listens on tcp/30000 by default)
+ENABLE_SYSTEM_GMP=ON       - Use GMP from system (much faster than bundled mini-gmp)
+ENABLE_SYSTEM_JSONCPP=ON   - Use JsonCPP from system
+RUN_IN_PLACE=FALSE         - Create a portable install (worlds, settings etc. in current directory)
+ENABLE_UPDATE_CHECKER=TRUE - Whether to enable update checks by default
+INSTALL_DEVTEST=FALSE      - Whether the Development Test game should be installed alongside Minetest
+USE_GPROF=FALSE            - Enable profiling using GProf
+VERSION_EXTRA=             - Text to append to version (e.g. VERSION_EXTRA=foobar -> FreeCraft 0.4.9-foobar)
+ENABLE_TOUCH=FALSE         - Enable Touchscreen support (requires support by IrrlichtMt)
+```
 
 Library specific options:
-
-    CURL_DLL                        - Only if building with cURL on Windows; path to libcurl.dll
-    CURL_INCLUDE_DIR                - Only if building with cURL; directory where curl.h is located
-    CURL_LIBRARY                    - Only if building with cURL; path to libcurl.a/libcurl.so/libcurl.lib
-    EGL_INCLUDE_DIR                 - Only if building with GLES; directory that contains egl.h
-    EGL_LIBRARY                     - Only if building with GLES; path to libEGL.a/libEGL.so
-    EXTRA_DLL                       - Only on Windows; optional paths to additional DLLs that should be packaged
-    FREETYPE_INCLUDE_DIR_freetype2  - Directory that contains files such as ftimage.h
-    FREETYPE_INCLUDE_DIR_ft2build   - Directory that contains ft2build.h
-    FREETYPE_LIBRARY                - Path to libfreetype.a/libfreetype.so/freetype.lib
-    FREETYPE_DLL                    - Only on Windows; path to libfreetype-6.dll
-    GETTEXT_DLL                     - Only when building with gettext on Windows; paths to libintl + libiconv DLLs
-    GETTEXT_INCLUDE_DIR             - Only when building with gettext; directory that contains libintl.h
-    GETTEXT_LIBRARY                 - Optional/platform-dependent with gettext; path to libintl.so/libintl.dll.a
-    GETTEXT_MSGFMT                  - Only when building with gettext; path to msgfmt/msgfmt.exe
-    ICONV_LIBRARY                   - Optional/platform-dependent; path to libiconv.so/libiconv.dylib
-    IRRLICHT_DLL                    - Only on Windows; path to IrrlichtMt.dll
-    IRRLICHT_INCLUDE_DIR            - Directory that contains IrrCompileConfig.h (usable for server build only)
-    LEVELDB_INCLUDE_DIR             - Only when building with LevelDB; directory that contains db.h
-    LEVELDB_LIBRARY                 - Only when building with LevelDB; path to libleveldb.a/libleveldb.so/libleveldb.dll.a
-    LEVELDB_DLL                     - Only when building with LevelDB on Windows; path to libleveldb.dll
-    PostgreSQL_INCLUDE_DIR          - Only when building with PostgreSQL; directory that contains libpq-fe.h
-    PostgreSQL_LIBRARY              - Only when building with PostgreSQL; path to libpq.a/libpq.so/libpq.lib
-    REDIS_INCLUDE_DIR               - Only when building with Redis; directory that contains hiredis.h
-    REDIS_LIBRARY                   - Only when building with Redis; path to libhiredis.a/libhiredis.so
-    SPATIAL_INCLUDE_DIR             - Only when building with LibSpatial; directory that contains spatialindex/SpatialIndex.h
-    SPATIAL_LIBRARY                 - Only when building with LibSpatial; path to libspatialindex.so/spatialindex-32.lib
-    LUA_INCLUDE_DIR                 - Only if you want to use LuaJIT; directory where luajit.h is located
-    LUA_LIBRARY                     - Only if you want to use LuaJIT; path to libluajit.a/libluajit.so
-    OGG_DLL                         - Only if building with sound on Windows; path to libogg.dll
-    OGG_INCLUDE_DIR                 - Only if building with sound; directory that contains an ogg directory which contains ogg.h
-    OGG_LIBRARY                     - Only if building with sound; path to libogg.a/libogg.so/libogg.dll.a
-    OPENAL_DLL                      - Only if building with sound on Windows; path to OpenAL32.dll
-    OPENAL_INCLUDE_DIR              - Only if building with sound; directory where al.h is located
-    OPENAL_LIBRARY                  - Only if building with sound; path to libopenal.a/libopenal.so/OpenAL32.lib
-    SQLITE3_INCLUDE_DIR             - Directory that contains sqlite3.h
-    SQLITE3_LIBRARY                 - Path to libsqlite3.a/libsqlite3.so/sqlite3.lib
-    VORBISFILE_LIBRARY              - Only if building with sound; path to libvorbisfile.a/libvorbisfile.so/libvorbisfile.dll.a
-    VORBIS_DLL                      - Only if building with sound on Windows; paths to vorbis DLLs
-    VORBIS_INCLUDE_DIR              - Only if building with sound; directory that contains a directory vorbis with vorbisenc.h inside
-    VORBIS_LIBRARY                  - Only if building with sound; path to libvorbis.a/libvorbis.so/libvorbis.dll.a
-    ZLIB_DLL                        - Only on Windows; path to zlib1.dll
-    ZLIB_INCLUDE_DIR                - Directory that contains zlib.h
-    ZLIB_LIBRARY                    - Path to libz.a/libz.so/zlib.lib
-    ZSTD_DLL                        - Only on Windows; path to libzstd.dll
-    ZSTD_INCLUDE_DIR                - Directory that contains zstd.h
-    ZSTD_LIBRARY                    - Path to libzstd.a/libzstd.so/ztd.lib
-
-### Compiling on Windows using MSVC
-
-### Requirements
-
-- [Visual Studio 2015 or newer](https://visualstudio.microsoft.com)
-- [CMake](https://cmake.org/download/)
-- [vcpkg](https://github.com/Microsoft/vcpkg)
-- [Git](https://git-scm.com/downloads)
-
-### Compiling and installing the dependencies
-
-It is highly recommended to use vcpkg as package manager.
-
-After you successfully built vcpkg you can easily install the required libraries:
-```powershell
-vcpkg install zlib zstd curl[winssl] openal-soft libvorbis libogg libjpeg-turbo sqlite3 freetype luajit gmp jsoncpp opengl-registry --triplet x64-windows
+```
+CURL_DLL                        - Only if building with cURL on Windows; path to libcurl.dll
+CURL_INCLUDE_DIR                - Only if building with cURL; directory where curl.h is located
+CURL_LIBRARY                    - Only if building with cURL; path to libcurl.a/libcurl.so/libcurl.lib
+EGL_INCLUDE_DIR                 - Only if building with GLES; directory that contains egl.h
+EGL_LIBRARY                     - Only if building with GLES; path to libEGL.a/libEGL.so
+EXTRA_DLL                       - Only on Windows; optional paths to additional DLLs that should be packaged
+FREETYPE_INCLUDE_DIR_freetype2  - Directory that contains files such as ftimage.h
+FREETYPE_INCLUDE_DIR_ft2build   - Directory that contains ft2build.h
+FREETYPE_LIBRARY                - Path to libfreetype.a/libfreetype.so/freetype.lib
+FREETYPE_DLL                    - Only on Windows; path to libfreetype-6.dll
+GETTEXT_DLL                     - Only when building with gettext on Windows; paths to libintl + libiconv DLLs
+GETTEXT_INCLUDE_DIR             - Only when building with gettext; directory that contains libintl.h
+GETTEXT_LIBRARY                 - Optional/platform-dependent with gettext; path to libintl.so/libintl.dll.a
+GETTEXT_MSGFMT                  - Only when building with gettext; path to msgfmt/msgfmt.exe
+ICONV_LIBRARY                   - Optional/platform-dependent; path to libiconv.so/libiconv.dylib
+IRRLICHT_DLL                    - Only on Windows; path to IrrlichtMt.dll
+IRRLICHT_INCLUDE_DIR            - Directory that contains IrrCompileConfig.h (usable for server build only)
+LEVELDB_INCLUDE_DIR             - Only when building with LevelDB; directory that contains db.h
+LEVELDB_LIBRARY                 - Only when building with LevelDB; path to libleveldb.a/libleveldb.so/libleveldb.dll.a
+LEVELDB_DLL                     - Only when building with LevelDB on Windows; path to libleveldb.dll
+PostgreSQL_INCLUDE_DIR          - Only when building with PostgreSQL; directory that contains libpq-fe.h
+PostgreSQL_LIBRARY              - Only when building with PostgreSQL; path to libpq.a/libpq.so/libpq.lib
+REDIS_INCLUDE_DIR               - Only when building with Redis; directory that contains hiredis.h
+REDIS_LIBRARY                   - Only when building with Redis; path to libhiredis.a/libhiredis.so
+SPATIAL_INCLUDE_DIR             - Only when building with LibSpatial; directory that contains spatialindex/SpatialIndex.h
+SPATIAL_LIBRARY                 - Only when building with LibSpatial; path to libspatialindex.so/spatialindex-32.lib
+LUA_INCLUDE_DIR                 - Only if you want to use LuaJIT; directory where luajit.h is located
+LUA_LIBRARY                     - Only if you want to use LuaJIT; path to libluajit.a/libluajit.so
+OGG_DLL                         - Only if building with sound on Windows; path to libogg.dll
+OGG_INCLUDE_DIR                 - Only if building with sound; directory that contains an ogg directory which contains ogg.h
+OGG_LIBRARY                     - Only if building with sound; path to libogg.a/libogg.so/libogg.dll.a
+OPENAL_DLL                      - Only if building with sound on Windows; path to OpenAL32.dll
+OPENAL_INCLUDE_DIR              - Only if building with sound; directory where al.h is located
+OPENAL_LIBRARY                  - Only if building with sound; path to libopenal.a/libopenal.so/OpenAL32.lib
+SQLITE3_INCLUDE_DIR             - Directory that contains sqlite3.h
+SQLITE3_LIBRARY                 - Path to libsqlite3.a/libsqlite3.so/sqlite3.lib
+VORBISFILE_LIBRARY              - Only if building with sound; path to libvorbisfile.a/libvorbisfile.so/libvorbisfile.dll.a
+VORBIS_DLL                      - Only if building with sound on Windows; paths to vorbis DLLs
+VORBIS_INCLUDE_DIR              - Only if building with sound; directory that contains a directory vorbis with vorbisenc.h inside
+VORBIS_LIBRARY                  - Only if building with sound; path to libvorbis.a/libvorbis.so/libvorbis.dll.a
+ZLIB_DLL                        - Only on Windows; path to zlib1.dll
+ZLIB_INCLUDE_DIR                - Directory that contains zlib.h
+ZLIB_LIBRARY                    - Path to libz.a/libz.so/zlib.lib
+ZSTD_DLL                        - Only on Windows; path to libzstd.dll
+ZSTD_INCLUDE_DIR                - Directory that contains zstd.h
+ZSTD_LIBRARY                    - Path to libzstd.a/libzstd.so/ztd.lib
 ```
 
-- **Don't forget about IrrlichtMt.** The easiest way is to clone it to `lib/irrlichtmt` as described in the Linux section.
-- `curl` is optional, but required to read the serverlist, `curl[winssl]` is required to use the content store.
-- `openal-soft`, `libvorbis` and `libogg` are optional, but required to use sound.
-- `luajit` is optional, it replaces the integrated Lua interpreter with a faster just-in-time interpreter.
-- `gmp` and `jsoncpp` are optional, otherwise the bundled versions will be compiled
+### Compiling on Windows
 
-There are other optional libraries, but they are not tested if they can build and link correctly.
+Instructions were shown using MSVC.<br>
+Since FreeCraft does not agree with MSVC bloat and inconsistency,
+better instructions using MinGW(Clang) will be tested and documented.
 
-Use `--triplet` to specify the target triplet, e.g. `x64-windows` or `x86-windows`.
-
-### Compile FreeCraft
-
-#### a) Using the vcpkg toolchain and CMake GUI
-1. Start up the CMake GUI
-2. Select **Browse Source...** and select DIR/fc-engine
-3. Select **Browse Build...** and select DIR/fc-engine-build
-4. Select **Configure**
-5. Choose the right visual Studio version and target platform. It has to match the version of the installed dependencies
-6. Choose **Specify toolchain file for cross-compiling**
-7. Click **Next**
-8. Select the vcpkg toolchain file e.g. `D:/vcpkg/scripts/buildsystems/vcpkg.cmake`
-9. Click Finish
-10. Wait until cmake have generated the cash file
-11. If there are any errors, solve them and hit **Configure**
-12. Click **Generate**
-13. Click **Open Project**
-14. Compile FreeCraft inside Visual studio.
-
-#### b) Using the vcpkg toolchain and the commandline
-
-Run the following script in PowerShell:
-
-```powershell
-cmake . -G"Visual Studio 15 2017 Win64" -DCMAKE_TOOLCHAIN_FILE=D:/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_GETTEXT=OFF -DENABLE_CURSES=OFF
-cmake --build . --config Release
-```
-Make sure that the right compiler is selected and the path to the vcpkg toolchain is correct.
-
-### Windows Installer using WiX Toolset
-
-Requirements:
-* [Visual Studio 2017](https://visualstudio.microsoft.com/)
-* [WiX Toolset](https://wixtoolset.org/)
-
-In the Visual Studio 2017 Installer select **Optional Features -> WiX Toolset**.
-
-Build the binaries as described above, but make sure you unselect `RUN_IN_PLACE`.
-
-Open the generated project file with Visual Studio. Right-click **Package** and choose **Generate**.
-It may take some minutes to generate the installer.
+If you want to follow MSVC instructions, head to [Minetest](https://github.com/minetest/minetest/blob/master/doc/compiling/windows.md) section.
 
 ### Compiling on MacOS
 
@@ -406,46 +324,31 @@ It may take some minutes to generate the installer.
 - [Git](https://git-scm.com/downloads)
 
 Install dependencies with homebrew:
-
 ```
 brew install cmake freetype gettext gmp hiredis jpeg jsoncpp leveldb libogg libpng libvorbis luajit zstd
 ```
 
 #### Download
 
-Download source (this is the URL to the latest of source repository, which might not work at all times) using Git:
-
-```bash
-git clone --depth 1 https://github.com/KanuX-14/fc-engine.git
-cd fc-engine
-```
-
-Download FreeCraft game using Git:
-
-```
-git clone --depth 1 https://github.com/KanuX-14/freecraft.git games/freecraft
-```
-
-Download Minetest's fork of Irrlicht:
-
-```
-git clone --depth 1 https://github.com/minetest/irrlicht.git lib/irrlichtmt
+- Using git:
+```sh
+git clone --depth 1 https://gitlab.com/KanuX/freecraft.git
+cd freecraft/
+git clone --depth 1 https://gitlab.com/KanuX/freecraft_game.git ./games/freecraft/
+git clone --depth 1 https://github.com/minetest/irrlicht.git ./lib/irrlichtmt/
 ```
 
 #### Build
 
-```bash
-mkdir build
-cd build
-
-cmake .. \
-    -DCMAKE_OSX_DEPLOYMENT_TARGET=10.14 \
-    -DCMAKE_FIND_FRAMEWORK=LAST \
-    -DCMAKE_INSTALL_PREFIX=../build/macos/ \
-    -DRUN_IN_PLACE=FALSE -DENABLE_GETTEXT=TRUE
-
-make -j$(sysctl -n hw.logicalcpu)
-make install
+- Using cmake:
+```sh
+cmake -S . -B build -DCMAKE_OSX_DEPLOYMENT_TARGET=10.14 \
+  -DCMAKE_FIND_FRAMEWORK=LAST \
+  -DCMAKE_INSTALL_PREFIX=../build/macos/ \
+  -DRUN_IN_PLACE=FALSE \
+  -DENABLE_GETTEXT=TRUE
+cmake --build build -j$(sysctl -n hw.logicalcpu)
+cmake --install build
 ```
 
 #### Run
@@ -456,7 +359,7 @@ open ./build/macos/freecraft.app
 
 ### Compiling for Android
 
-See the [Android compiling instructions](https://github.com/KanuX-14/fc-engine/blob/master/android/README.md).
+See the [Android compiling instructions](android/README.md).
 
 Docker
 ------
@@ -464,18 +367,22 @@ We provide FreeCraft server Docker images using the GitLab mirror registry.
 
 Images are built on each commit and available using the following tag scheme:
 
-* `registry.gitlab.com/minetest/minetest/server:latest` (latest build)
-* `registry.gitlab.com/minetest/minetest/server:<branch/tag>` (current branch or current tag)
-* `registry.gitlab.com/minetest/minetest/server:<commit-id>` (current commit id)
+* `registry.gitlab.com/KanuX/freecraft/server:latest` (latest build)
+* `registry.gitlab.com/KanuX/freecraft/server:<branch/tag>` (current branch or current tag)
+* `registry.gitlab.com/KanuX/freecraft/server:<commit-id>` (current commit id)
+
+As <b>root</b>:
 
 If you want to test it on a Docker server you can easily run:
-
-	sudo docker run registry.gitlab.com/minetest/minetest/server:<docker tag>
+```sh
+docker run registry.gitlab.com/KanuX/freecraft/server:<docker tag>
+```
 
 If you want to use it in a production environment you should use volumes bound to the Docker host
 to persist data and modify the configuration:
-
-	sudo docker create -v /home/freecraft/data/:/var/lib/freecraft/ -v /home/freecraft/conf/:/etc/freecraft/ registry.gitlab.com/minetest/minetest/server:master
+```sh
+docker create -v /home/freecraft/data/:/var/lib/freecraft/ -v /home/freecraft/conf/:/etc/freecraft/ registry.gitlab.com/KanuX/freecraft/server:master
+```
 
 Data will be written to `/home/freecraft/data` on the host, and configuration will be read from `/home/freecraft/conf/freecraft.conf`.
 
@@ -483,24 +390,22 @@ Data will be written to `/home/freecraft/data` on the host, and configuration wi
 
 You can also host your FreeCraft server inside a Kubernetes cluster. See our example implementation in [`misc/kubernetes.yml`](misc/kubernetes.yml).
 
-
 Version scheme
 --------------
-We use `major.minor.patch` since 5.0.0-dev. Prior to that we used `0.major.minor`.
+We use `major.minor.patch`.
 
 - Major is incremented when the release contains breaking changes, all other
 numbers are set to 0.
 - Minor is incremented when the release contains new non-breaking features,
 patch is set to 0.
-- Patch is incremented when the release only contains bugfixes and very
+- Patch is incremented when the release only contains bug-fixes and very
 minor/trivial features considered necessary.
 
-Since 5.0.0-dev and 0.4.17-dev, the dev notation refers to the next release,
-i.e.: 5.0.0-dev is the development version leading to 5.0.0.
-Prior to that we used `previous_version-dev`.
+The `dev` notation refers to the unstable release.<br>
+i.e.: `0.1.4-dev` is the development version and `0.1.4` is the official stable version.
 
 Troubleshooting
 ---------------
 
-If your device is misbehaving, consider posting it on [issues](https://github.com/KanuX-14/fc-engine/issues) using this [template](https://github.com/KanuX-14/fc-engine/blob/master/.github/ISSUE_TEMPLATE/bug_report.md).<br>
-Known issued can be found under the [troubleshoot page](https://github.com/KanuX-14/fc-engine/blob/master/TROUBLESHOOTING.md).
+If your device is misbehaving, consider posting it on [issues](-/issues) using this [template](.github/ISSUE_TEMPLATE/bug_report.md).<br>
+Known issued can be found under the [troubleshoot page](TROUBLESHOOTING.md).
