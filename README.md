@@ -360,7 +360,7 @@ Then remove the recently added line from `pacman.conf` and uncomment the `SigLev
 
 Open Clang variant of MSYS2 and install all necessary packages:
 ```sh
-ARCH="x86_64"; pacman -Sy --noconfirm base-devel mingw-w64-clang-${ARCH}-clang mingw-w64-clang-${ARCH}-cmake mingw-w64-clang-${ARCH}-extra-cmake-modules mingw-w64-clang-${ARCH}-freetype git mingw-w64-clang-${ARCH}-gmp mingw-w64-clang-${ARCH}-jsoncpp mingw-w64-clang-${ARCH}-libvorbis mingw-w64-clang-${ARCH}-luajit mingw-w64-clang-${ARCH}-mesa mingw-w64-clang-${ARCH}-openjpeg2 mingw-w64-clang-${ARCH}-openal mingw-w64-clang-${ARCH}-sqlite3 mingw-w64-clang-${ARCH}-zstd
+ARCH="x86_64"; pacman -Sy --noconfirm base-devel mingw-w64-${ARCH}-clang mingw-w64-${ARCH}-cmake mingw-w64-${ARCH}-extra-cmake-modules mingw-w64-${ARCH}-freetype git mingw-w64-${ARCH}-gmp mingw-w64-${ARCH}-jsoncpp mingw-w64-${ARCH}-libvorbis mingw-w64-${ARCH}-luajit mingw-w64-${ARCH}-mesa mingw-w64-${ARCH}-openjpeg2 mingw-w64-${ARCH}-openal mingw-w64-${ARCH}-sqlite3 mingw-w64-${ARCH}-zstd
 ```
 
 For 32-bit, change `ARCH` to `i686`.
