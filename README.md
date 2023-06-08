@@ -127,11 +127,6 @@ Command-line options
 
 Compiling
 ---------
-### Compiling on Linux
-
-Musl may be possible, generally. Compatibility is being taken care.
-
-#### Dependencies
 
 | Dependency | Version | Commentary                                                             |
 |------------|---------|------------------------------------------------------------------------|
@@ -140,10 +135,27 @@ Musl may be possible, generally. Compatibility is being taken care.
 | GMP        | 5.0.0+  | Bundled mini-GMP is used if not present.                               |
 | GCC        | 5.1+    | or Clang 3.5+.                                                         |
 | IrrlichtMt | -       | Custom version of [Irrlicht](https://github.com/minetest/irrlicht).    |
+| JPEG       | -       |                                                                        |
 | JsonCPP    | 1.0.0+  | Bundled JsonCPP is used if not present.                                |
 | LuaJIT     | 2.0+    | Bundled Lua 5.1 is used if not present.                                |
+| Mesa       | -       |                                                                        |
+| OpenAL     | -       |                                                                        |
 | SQLite3    | 3+      |                                                                        |
+| Vorbis     | -       |                                                                        |
 | Zstd       | 1.0+    |                                                                        |
+
+| Optional | Version | Commentary             |
+|----------|---------|------------------------|
+| Git      | any     | Keep game up to date.  |
+
+Git can be widely installed by pointing the `git` package name.<br>
+It is also recommended if you want a rolling-release update style.
+
+### Compiling on Linux
+
+Musl may be possible, generally. Compatibility is being taken care.
+
+#### Dependencies
 
 As <b>root</b>:
 
@@ -163,13 +175,6 @@ pacman -S base-devel libcurl-gnutls cmake libxi libpng sqlite libogg libvorbis o
 ```sh
 sudo apk add build-base cmake libpng-dev jpeg-dev libxi-dev mesa-dev sqlite-dev libogg-dev libvorbis-dev openal-soft-dev curl-dev freetype-dev zlib-dev gmp-dev jsoncpp-dev luajit-dev zstd-dev
 ```
-
-| Optional | Version | Commentary             |
-|----------|---------|------------------------|
-| Git      | any     | Keep game up to date.  |
-
-Git can be widely installed by pointing the `git` package name.<br>
-It is also recommended if you want a rolling-release update style.
 
 #### Download
 
@@ -311,11 +316,110 @@ ZSTD_LIBRARY                    - Path to libzstd.a/libzstd.so/ztd.lib
 
 ### Compiling on Windows
 
-Instructions were shown using MSVC.<br>
-Since FreeCraft does not agree with MSVC bloat and inconsistency,
-better instructions using MinGW(Clang) will be tested and documented.
+#### Requirements
 
-If you want to follow MSVC instructions, head to [Minetest](https://github.com/minetest/minetest/blob/master/doc/compiling/windows.md) section.
+[MSYS2](https://www.msys2.org/) is needed. The program is available for 64-bits for the updated version.<br>
+For 32-bits, use this [old release](https://github.com/msys2/msys2-installer/releases/tag/nightly-i686).
+
+#### Update MSYS2
+
+MSYS2 uses `pacman`. A copy of Arch's package manager, but for Windows.
+
+First update the MSYS2 system:
+```sh
+pacman -Syu --noconfirm
+```
+It will restart.
+
+Re-open and update the packages:
+```sh
+pacman -Syu --noconfirm
+```
+Now MSYS2 can be used. Remind to update it regularly.
+
+#### Dependencies
+
+Open Clang variant of MSYS2 and install all necessary packages:
+```sh
+ARCH="x86_64"; pacman -Sy --noconfirm base-devel mingw-w64-clang-${ARCH}-clang mingw-w64-clang-${ARCH}-cmake mingw-w64-clang-${ARCH}-extra-cmake-modules mingw-w64-clang-${ARCH}-freetype git mingw-w64-clang-${ARCH}-gmp mingw-w64-clang-${ARCH}-jsoncpp mingw-w64-clang-${ARCH}-libvorbis mingw-w64-clang-${ARCH}-luajit mingw-w64-clang-${ARCH}-mesa mingw-w64-clang-${ARCH}-openjpeg2 mingw-w64-clang-${ARCH}-openal mingw-w64-clang-${ARCH}-sqlite3 mingw-w64-clang-${ARCH}-zstd
+```
+
+For 32-bit, change `ARCH` to `i686`.
+
+#### Download
+
+- Using git:
+```sh
+git clone --depth 1 https://gitlab.com/KanuX/freecraft.git
+cd freecraft/
+git clone --depth 1 https://gitlab.com/KanuX/freecraft_game.git ./games/freecraft/
+git clone --depth 1 https://github.com/minetest/irrlicht.git ./lib/irrlichtmt/
+```
+
+- Without using git:
+```sh
+curl -L https://gitlab.com/KanuX/freecraft/-/archive/master/freecraft-master.tar.gz --output freecraft-master.tar.gz
+tar -xvf freecraft-master.tar.gz
+mv freecraft-master/ freecraft/
+curl -L https://gitlab.com/KanuX/freecraft_game/-/archive/master/freecraft-master.tar.gz --output freecraft_game-master.tar.gz
+tar -xvf freecraft_game-master.tar.gz
+mv freecraft_game-master/ games/freecraft/
+curl -L https://github.com/minetest/irrlicht/archive/master.tar.gz --output irrlicht-master.tar.gz
+tar -xvf irrlicht-master.tar.gz
+mv irrlicht-master/ lib/irrlichtmt/
+```
+
+#### Build
+
+Build a version and package it in a single folder:
+```sh
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./build/compiled/ -DRUN_IN_PLACE=TRUE -DENABLE_GETTEXT=OFF -DENABLE_CURSES=OFF -G "Unix Makefiles"
+cmake --build build -j$(nproc)
+cmake --install build
+```
+
+Run it:
+```sh
+build/compiled/bin/freecraft
+```
+
+To use it as a standalone release:
+```sh
+cp -v ${MINGW_PREFIX}/bin/libbrotlicommon.dll \
+      ${MINGW_PREFIX}/bin/libbrotlidec.dll \
+      ${MINGW_PREFIX}/bin/libbz2-1.dll \
+      ${MINGW_PREFIX}/bin/libc++.dll \
+      ${MINGW_PREFIX}/bin/libcrypto-3-x64.dll \
+      ${MINGW_PREFIX}/bin/libfreetype-6.dll \
+      ${MINGW_PREFIX}/bin/libglib-2.0-0.dll \
+      ${MINGW_PREFIX}/bin/libgmp-10.dll \
+      ${MINGW_PREFIX}/bin/libgraphite2.dll \
+      ${MINGW_PREFIX}/bin/libharfbuzz-0.dll \
+      ${MINGW_PREFIX}/bin/libiconv-2.dll \
+      ${MINGW_PREFIX}/bin/libidn2-0.dll \
+      ${MINGW_PREFIX}/bin/libintl-8.dll \
+      ${MINGW_PREFIX}/bin/libjpeg-8.dll \
+      ${MINGW_PREFIX}/bin/libjsoncpp-25.dll \
+      ${MINGW_PREFIX}/bin/libnghttp2-14.dll \
+      ${MINGW_PREFIX}/bin/libopenal-1.dll \
+      ${MINGW_PREFIX}/bin/libogg-0.dll \
+      ${MINGW_PREFIX}/bin/libpcre2-8-0.dll \
+      ${MINGW_PREFIX}/bin/libpng16-16.dll \
+      ${MINGW_PREFIX}/bin/libpsl-5.dll \
+      ${MINGW_PREFIX}/bin/libsqlite3-0.dll \
+      ${MINGW_PREFIX}/bin/libssh2-1.dll \
+      ${MINGW_PREFIX}/bin/libssl-3-x64.dll \
+      ${MINGW_PREFIX}/bin/libunistring-5.dll \
+      ${MINGW_PREFIX}/bin/libunwind.dll \
+      ${MINGW_PREFIX}/bin/libvorbis-0.dll \
+      ${MINGW_PREFIX}/bin/libvorbisfile-3.dll \
+      ${MINGW_PREFIX}/bin/libzstd.dll \
+      ${MINGW_PREFIX}/bin/lua51.dll \
+      ${MINGW_PREFIX}/bin/zlib1.dll build/compiled/bin/
+
+mv build/compiled/ FreeCraft/
+```
+The binary will be located inside `FreeCraft/bin/` folder.
 
 ### Compiling on MacOS
 
