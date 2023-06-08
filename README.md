@@ -321,6 +321,14 @@ ZSTD_LIBRARY                    - Path to libzstd.a/libzstd.so/ztd.lib
 [MSYS2](https://www.msys2.org/) is needed. The program is available for 64-bits for the updated version.<br>
 For 32-bits, use this [old release](https://github.com/msys2/msys2-installer/releases/tag/nightly-i686).
 
+| Type          | Size    |
+|---------------|---------|
+| MSYS2         | 3GB     |
+| Compilation   | 203MB   |
+| Installation  | 78MB    |
+
+It counts already with dependencies installed. Not optional dependencies.
+
 #### Update MSYS2
 
 MSYS2 uses `pacman`. A copy of Arch's package manager, but for Windows.
