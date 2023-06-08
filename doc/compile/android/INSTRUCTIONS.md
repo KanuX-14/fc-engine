@@ -1,6 +1,5 @@
-FreeCraft: Android version
-=========================
-
+Compiling on Android
+====================
 Controls
 --------
 The Android port doesn't support everything you can do on PC due to the
@@ -41,7 +40,6 @@ file can usually be found at /mnt/sdcard/FreeCraft.
 
 Requirements
 ------------
-
 In order to build, your PC has to be set up to build FreeCraft in the usual
 manner (see the regular FreeCraft documentation for how to get this done).
 In addition to what is required for FreeCraft in general, you will need the
@@ -58,11 +56,12 @@ build system, as the Android build will download some source packages.
 
 Build
 -----
-
 The new build system FreeCraft Android is fully functional and is designed to
 speed up and simplify the work, as well as adding the possibility of
 cross-platform build.
-You can use `./gradlew assemblerelease` or `./gradlew assembledebug` from the
+
+Head to the `android/` directory.<br>
+There you can use `./gradlew assemblerelease` or `./gradlew assembledebug` from the
 command line or use Android Studio and click the build button.
 
 When using gradlew, the newest NDK will be downloaded and installed
