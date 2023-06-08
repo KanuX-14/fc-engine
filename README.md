@@ -404,37 +404,24 @@ build/compiled/bin/freecraft
 
 To use it as a standalone release:
 ```sh
-cp -v ${MINGW_PREFIX}/bin/libbrotlicommon.dll \
-      ${MINGW_PREFIX}/bin/libbrotlidec.dll \
-      ${MINGW_PREFIX}/bin/libbz2-1.dll \
-      ${MINGW_PREFIX}/bin/libc++.dll \
-      ${MINGW_PREFIX}/bin/libcrypto-3-x64.dll \
-      ${MINGW_PREFIX}/bin/libfreetype-6.dll \
-      ${MINGW_PREFIX}/bin/libglib-2.0-0.dll \
-      ${MINGW_PREFIX}/bin/libgmp-10.dll \
-      ${MINGW_PREFIX}/bin/libgraphite2.dll \
-      ${MINGW_PREFIX}/bin/libharfbuzz-0.dll \
-      ${MINGW_PREFIX}/bin/libiconv-2.dll \
-      ${MINGW_PREFIX}/bin/libidn2-0.dll \
-      ${MINGW_PREFIX}/bin/libintl-8.dll \
-      ${MINGW_PREFIX}/bin/libjpeg-8.dll \
-      ${MINGW_PREFIX}/bin/libjsoncpp-25.dll \
-      ${MINGW_PREFIX}/bin/libnghttp2-14.dll \
-      ${MINGW_PREFIX}/bin/libopenal-1.dll \
-      ${MINGW_PREFIX}/bin/libogg-0.dll \
-      ${MINGW_PREFIX}/bin/libpcre2-8-0.dll \
-      ${MINGW_PREFIX}/bin/libpng16-16.dll \
-      ${MINGW_PREFIX}/bin/libpsl-5.dll \
-      ${MINGW_PREFIX}/bin/libsqlite3-0.dll \
-      ${MINGW_PREFIX}/bin/libssh2-1.dll \
-      ${MINGW_PREFIX}/bin/libssl-3-x64.dll \
-      ${MINGW_PREFIX}/bin/libunistring-5.dll \
-      ${MINGW_PREFIX}/bin/libunwind.dll \
-      ${MINGW_PREFIX}/bin/libvorbis-0.dll \
-      ${MINGW_PREFIX}/bin/libvorbisfile-3.dll \
-      ${MINGW_PREFIX}/bin/libzstd.dll \
-      ${MINGW_PREFIX}/bin/lua51.dll \
-      ${MINGW_PREFIX}/bin/zlib1.dll build/compiled/bin/
+cp -v ${MINGW_PREFIX}/bin/libbrotlicommon.dll ${MINGW_PREFIX}/bin/libbrotlidec.dll \
+      ${MINGW_PREFIX}/bin/libbz2-1.dll        ${MINGW_PREFIX}/bin/libc++.dll \
+      ${MINGW_PREFIX}/bin/libcrypto-3.dll     ${MINGW_PREFIX}/bin/libcrypto-3-x64.dll \
+      ${MINGW_PREFIX}/bin/libfreetype-6.dll   ${MINGW_PREFIX}/bin/libglib-2.0-0.dll \
+      ${MINGW_PREFIX}/bin/libgmp-10.dll       ${MINGW_PREFIX}/bin/libgraphite2.dll \
+      ${MINGW_PREFIX}/bin/libharfbuzz-0.dll   ${MINGW_PREFIX}/bin/libiconv-2.dll \
+      ${MINGW_PREFIX}/bin/libidn2-0.dll       ${MINGW_PREFIX}/bin/libintl-8.dll \
+      ${MINGW_PREFIX}/bin/libjpeg-8.dll       ${MINGW_PREFIX}/bin/libjsoncpp-25.dll \
+      ${MINGW_PREFIX}/bin/libnghttp2-14.dll   ${MINGW_PREFIX}/bin/libogg-0.dll \
+      ${MINGW_PREFIX}/bin/libopenal-1.dll     ${MINGW_PREFIX}/bin/libpcre2-8-0.dll \
+      ${MINGW_PREFIX}/bin/libpng16-16.dll     ${MINGW_PREFIX}/bin/libpsl-5.dll \
+      ${MINGW_PREFIX}/bin/libsqlite3-0.dll    ${MINGW_PREFIX}/bin/libssh2-1.dll \
+      ${MINGW_PREFIX}/bin/libssl-3.dll        ${MINGW_PREFIX}/bin/libssl-3-x64.dll \
+      ${MINGW_PREFIX}/bin/libstdc++-6.dll     ${MINGW_PREFIX}/bin/libunistring-5.dll \
+      ${MINGW_PREFIX}/bin/libunwind.dll       ${MINGW_PREFIX}/bin/libvorbis-0.dll \
+      ${MINGW_PREFIX}/bin/libvorbisfile-3.dll ${MINGW_PREFIX}/bin/libwinpthread-1.dll \
+      ${MINGW_PREFIX}/bin/libzstd.dll         ${MINGW_PREFIX}/bin/lua51.dll \
+      ${MINGW_PREFIX}/bin/zlib1.dll           build/compiled/bin/
 
 mv build/compiled/ FreeCraft/
 ```
