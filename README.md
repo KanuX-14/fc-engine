@@ -345,6 +345,17 @@ pacman -Syu --noconfirm
 ```
 Now MSYS2 can be used. Remind to update it regularly.
 
+If MSYS2 throws a GPG error, head to `C:/msysXX/etc/` and edit the file `pacman.conf`.<br>
+Find `SigLevel` line and comment it. Then paste this line instead:
+```sh
+SigLevel = Never TrustAll
+```
+Then proceed to install the keyrings:
+```sh
+pacman -S --noconfirm msys2-keyrings
+```
+Then remove the recently added line from `pacman.conf` and uncomment the `SigLevel` line.
+
 #### Dependencies
 
 Open Clang variant of MSYS2 and install all necessary packages:
