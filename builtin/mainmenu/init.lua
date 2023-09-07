@@ -28,6 +28,8 @@ local basepath = core.get_builtin_path()
 defaulttexturedir = core.get_texturepath_share() .. DIR_DELIM .. "base" ..
 					DIR_DELIM .. "pack" .. DIR_DELIM
 
+dofile(menupath .. DIR_DELIM .. "misc.lua")
+
 dofile(basepath .. "common" .. DIR_DELIM .. "filterlist.lua")
 dofile(basepath .. "fstk" .. DIR_DELIM .. "buttonbar.lua")
 dofile(basepath .. "fstk" .. DIR_DELIM .. "dialog.lua")
@@ -40,7 +42,7 @@ dofile(menupath .. DIR_DELIM .. "serverlistmgr.lua")
 dofile(menupath .. DIR_DELIM .. "game_theme.lua")
 
 dofile(menupath .. DIR_DELIM .. "dlg_config_world.lua")
-dofile(menupath .. DIR_DELIM .. "dlg_settings_advanced.lua")
+dofile(menupath .. DIR_DELIM .. "settings" .. DIR_DELIM .. "init.lua")
 dofile(menupath .. DIR_DELIM .. "dlg_contentstore.lua")
 dofile(menupath .. DIR_DELIM .. "dlg_create_world.lua")
 dofile(menupath .. DIR_DELIM .. "dlg_delete_content.lua")
@@ -51,7 +53,23 @@ dofile(menupath .. DIR_DELIM .. "dlg_version_info.lua")
 
 local tabs = {}
 
-tabs.settings = dofile(menupath .. DIR_DELIM .. "tab_settings.lua")
+tabs.settings = {
+	name = "settings",
+	caption = fgettext("Settings"),
+	cbf_formspec = function()
+		return "button[0.1,0.1;3,0.8;open_settings;" .. fgettext("Open Settings") .. "]"
+	end,
+	cbf_button_handler = function(tabview, fields)
+		if fields.open_settings then
+			local dlg = create_settings_dlg()
+			dlg:set_parent(tabview)
+			tabview:hide()
+			dlg:show()
+			return true
+		end
+	end,
+}
+
 tabs.content  = dofile(menupath .. DIR_DELIM .. "tab_content.lua")
 tabs.about    = dofile(menupath .. DIR_DELIM .. "tab_about.lua")
 tabs.local_game = dofile(menupath .. DIR_DELIM .. "tab_local.lua")
@@ -97,13 +115,11 @@ local function init_globals()
 	mm_game_theme.init()
 
 	-- Create main tabview
-	local tv_main = tabview_create("maintab", {x = 12, y = 5.9}, {x = 0, y = 0})
-	-- note: size would be 15.5,7.1 in real coordinates mode
+	local tv_main = tabview_create("maintab", {x = 15.5, y = 7.1}, {x = 0, y = 0})
 
 	tv_main:set_autosave_tab(true)
 	tv_main:add(tabs.local_game)
 	tv_main:add(tabs.play_online)
-
 	tv_main:add(tabs.content)
 	tv_main:add(tabs.settings)
 	tv_main:add(tabs.about)

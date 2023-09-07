@@ -148,11 +148,13 @@ public:
 			std::vector<CollisionInfo> *collision_info)
 	{}
 
+	// in BS-space
 	v3f getSpeed() const
 	{
 		return m_speed;
 	}
 
+	// in BS-space
 	void setSpeed(v3f speed)
 	{
 		m_speed = speed;
@@ -225,7 +227,7 @@ public:
 
 protected:
 	char m_name[PLAYERNAME_SIZE];
-	v3f m_speed;
+	v3f m_speed; // velocity; in BS-space
 	u16 m_wield_index = 0;
 	PlayerFovSpec m_fov_override_spec = { 0.0f, false, 0.0f };
 

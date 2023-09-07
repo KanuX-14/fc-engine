@@ -174,10 +174,11 @@ void set_default_settings()
 #else
 	settings->setDefault("show_debug", "true");
 #endif
-	settings->setDefault("fsaa", "0");
-	settings->setDefault("undersampling", "0");
+	settings->setDefault("fsaa", "2");
+	settings->setDefault("undersampling", "1");
 	settings->setDefault("world_aligned_mode", "enable");
 	settings->setDefault("autoscale_mode", "disable");
+	settings->setDefault("texture_min_size", "64");
 	settings->setDefault("enable_fog", "true");
 	settings->setDefault("fog_start", "0.4");
 	settings->setDefault("3d_mode", "none");
@@ -188,11 +189,9 @@ void set_default_settings()
 	settings->setDefault("fps_max_unfocused", "20");
 	settings->setDefault("viewing_range", "190");
 	settings->setDefault("client_mesh_chunk", "1");
-#if ENABLE_GLES
-	settings->setDefault("near_plane", "0.1");
-#endif
 	settings->setDefault("screen_w", "1024");
 	settings->setDefault("screen_h", "600");
+	settings->setDefault("window_maximized", "false");
 	settings->setDefault("autosave_screensize", "true");
 	settings->setDefault("fullscreen", "false");
 	settings->setDefault("vsync", "false");
@@ -210,11 +209,7 @@ void set_default_settings()
 	settings->setDefault("lighting_gamma", "15");
 	settings->setDefault("texture_path", "");
 	settings->setDefault("shader_path", "");
-#if ENABLE_GLES
-	settings->setDefault("video_driver", "ogles2");
-#else
-	settings->setDefault("video_driver", "opengl");
-#endif
+	settings->setDefault("video_driver", "");
 	settings->setDefault("cinematic", "false");
 	settings->setDefault("camera_smoothing", "0.35");
 	settings->setDefault("cinematic_camera_smoothing", "0.7");
@@ -230,8 +225,6 @@ void set_default_settings()
 	settings->setDefault("console_alpha", "200");
 	settings->setDefault("formspec_fullscreen_bg_color", "(0,0,0)");
 	settings->setDefault("formspec_fullscreen_bg_opacity", "140");
-	settings->setDefault("formspec_default_bg_color", "(0,0,0)");
-	settings->setDefault("formspec_default_bg_opacity", "140");
 	settings->setDefault("selectionbox_color", "(0,0,0)");
 	settings->setDefault("selectionbox_width", "2");
 	settings->setDefault("node_highlighting", "box");
@@ -242,12 +235,10 @@ void set_default_settings()
 	settings->setDefault("gui_scaling", "0.8");
 	settings->setDefault("gui_scaling_filter", "false");
 	settings->setDefault("gui_scaling_filter_txr2img", "true");
-	settings->setDefault("desynchronize_mapblock_texture_animation", "true");
+	settings->setDefault("desynchronize_mapblock_texture_animation", "false");
 	settings->setDefault("hud_hotbar_max_width", "1.0");
 	settings->setDefault("enable_local_map_saving", "false");
 	settings->setDefault("show_entity_selectionbox", "false");
-	settings->setDefault("texture_clean_transparent", "false");
-	settings->setDefault("texture_min_size", "64");
 	settings->setDefault("ambient_occlusion_gamma", "1.8");
 	settings->setDefault("enable_shaders", "true");
 	settings->setDefault("enable_particles", "true");
@@ -263,9 +254,9 @@ void set_default_settings()
 	settings->setDefault("directional_colored_fog", "true");
 	settings->setDefault("inventory_items_animations", "false");
 	settings->setDefault("mip_map", "false");
-	settings->setDefault("anisotropic_filter", "false");
 	settings->setDefault("bilinear_filter", "false");
 	settings->setDefault("trilinear_filter", "false");
+	settings->setDefault("anisotropic_filter", "false");
 	settings->setDefault("tone_mapping", "false");
 	settings->setDefault("enable_waving_water", "false");
 	settings->setDefault("water_wave_height", "1.0");
@@ -276,6 +267,7 @@ void set_default_settings()
 	settings->setDefault("exposure_factor", "1.5");
 	settings->setDefault("exposure_compensation", "0.0");
 	settings->setDefault("enable_auto_exposure", "false");
+	settings->setDefault("antialiasing", "none");
 	settings->setDefault("enable_bloom", "false");
 	settings->setDefault("enable_bloom_debug", "false");
 	settings->setDefault("bloom_strength_factor", "1.5");
@@ -298,6 +290,8 @@ void set_default_settings()
 
 	// Input
 	settings->setDefault("invert_mouse", "false");
+	settings->setDefault("enable_hotbar_mouse_wheel", "true");
+	settings->setDefault("invert_hotbar_mouse_wheel", "false");
 	settings->setDefault("mouse_sensitivity", "0.2");
 	settings->setDefault("repeat_place_time", "0.25");
 	settings->setDefault("safe_dig_and_place", "false");
@@ -313,7 +307,7 @@ void set_default_settings()
 	settings->setDefault("continuous_forward", "false");
 	settings->setDefault("enable_joysticks", "false");
 	settings->setDefault("joystick_id", "0");
-	settings->setDefault("joystick_type", "");
+	settings->setDefault("joystick_type", "auto");
 	settings->setDefault("repeat_joystick_button_time", "0.17");
 	settings->setDefault("joystick_frustum_sensitivity", "170");
 	settings->setDefault("joystick_deadzone", "2048");
@@ -487,7 +481,8 @@ void set_default_settings()
 #endif
 
 #ifdef HAVE_TOUCHSCREENGUI
-	settings->setDefault("touchscreen_threshold","20");
+	settings->setDefault("touchscreen_threshold", "20");
+	settings->setDefault("touchscreen_sensitivity", "0.2");
 	settings->setDefault("touch_use_crosshair", "false");
 	settings->setDefault("fixed_virtual_joystick", "false");
 	settings->setDefault("virtual_joystick_triggers_aux1", "false");

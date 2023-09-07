@@ -1,11 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 project.ext.set("versionMajor", 0)      // Version Major
-project.ext.set("versionMinor", 1)      // Version Minor
-project.ext.set("versionPatch", 4)      // Version Patch
-project.ext.set("versionExtra", "-devonly") // Version Extra
-project.ext.set("versionCode", 40)      // Android Version Code
-project.ext.set("developmentBuild", 1) // Whether it is a development build, or a release
+project.ext.set("versionMinor", 2)      // Version Minor
+project.ext.set("versionPatch", 0)      // Version Patch
+// ^ keep in sync with cmake
+project.ext.set("versionCode", 44)      // Android Version Code
 // NOTE: +2 after each release!
 // +1 for ARM and +1 for ARM64 APK's, because
 // each APK must have a larger `versionCode` than the previous

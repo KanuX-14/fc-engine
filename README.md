@@ -55,7 +55,7 @@ Some can be changed in the key config dialog in the settings tab.
 | Shift                         | Sneak/move down                                                |
 | Q                             | Drop itemstack                                                 |
 | Shift + Q                     | Drop single item                                               |
-| Left mouse button             | Dig/punch/take item                                            |
+| Left mouse button             | Dig/punch/use                                                  |
 | Right mouse button            | Place/use                                                      |
 | Shift + right mouse button    | Build (without using)                                          |
 | E                             | Inventory menu                                                 |
@@ -133,6 +133,9 @@ It can be accessed [here](doc/compile/INSTRUCTIONS.md).
 
 Docker
 ------
+
+- [Developing freecraftserver with Docker](doc/developing/docker.md)
+
 We provide FreeCraft server Docker images using the GitLab mirror registry.
 
 Images are built on each commit and available using the following tag scheme:

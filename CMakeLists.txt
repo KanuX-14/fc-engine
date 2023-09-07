@@ -11,15 +11,15 @@ endif()
 project(freecraft)
 set(PROJECT_NAME_CAPITALIZED "FreeCraft")
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
-set(GCC_MINIMUM_VERSION "5.1")
-set(CLANG_MINIMUM_VERSION "3.5")
+set(GCC_MINIMUM_VERSION "7.5")
+set(CLANG_MINIMUM_VERSION "6.0")
 
 # You should not need to edit these manually, use util/bump_version.sh
 set(VERSION_MAJOR 0)
-set(VERSION_MINOR 1)
-set(VERSION_PATCH 4)
+set(VERSION_MINOR 2)
+set(VERSION_PATCH 0)
 set(VERSION_EXTRA "" CACHE STRING "Stuff to append to version string")
 
 # Change to false for releases
@@ -67,9 +67,17 @@ set(ENABLE_UPDATE_CHECKER (NOT ${DEVELOPMENT_BUILD}) CACHE BOOL
 # Included stuff
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
+# Load default options for Android
+if(ANDROID)
+	cmake_minimum_required(VERSION 3.20)
+	include(FreeCraftAndroidLibs)
+endif()
+
 
 set(IRRLICHTMT_BUILD_DIR "" CACHE PATH "Path to IrrlichtMt build directory.")
-if(NOT "${IRRLICHTMT_BUILD_DIR}" STREQUAL "")
+if(ANDROID)
+	# currently manually provided
+elseif(NOT "${IRRLICHTMT_BUILD_DIR}" STREQUAL "")
 	find_package(IrrlichtMt QUIET
 		PATHS "${IRRLICHTMT_BUILD_DIR}"
 		NO_DEFAULT_PATH
@@ -108,7 +116,7 @@ else()
 			message(FATAL_ERROR "IrrlichtMt is required to build the client, but it was not found.\n${explanation_msg}")
 		endif()
 
-		include(MinetestFindIrrlichtHeaders)
+		include(FreeCraftFindIrrlichtHeaders)
 		if(NOT IRRLICHT_INCLUDE_DIR)
 			message(FATAL_ERROR "IrrlichtMt headers are required to build the server, but none found.\n${explanation_msg}")
 		endif()
@@ -120,14 +128,16 @@ else()
 	endif()
 endif()
 
-if(BUILD_CLIENT AND TARGET IrrlichtMt::IrrlichtMt)
+if(ANDROID)
+	# skipped for now
+elseif(BUILD_CLIENT AND TARGET IrrlichtMt::IrrlichtMt)
 	# retrieve version somehow
 	if(NOT IrrlichtMt_VERSION)
 		get_target_property(IrrlichtMt_VERSION IrrlichtMt VERSION)
 	endif()
 	message(STATUS "Found IrrlichtMt ${IrrlichtMt_VERSION}")
 
-	set(TARGET_VER_S 1.9.0mt10)
+	set(TARGET_VER_S 1.9.0mt12)
 	string(REPLACE "mt" "." TARGET_VER ${TARGET_VER_S})
 	if(IrrlichtMt_VERSION VERSION_LESS ${TARGET_VER})
 		message(FATAL_ERROR "At least IrrlichtMt ${TARGET_VER_S} is required to build")
@@ -248,7 +258,7 @@ if(RUN_IN_PLACE)
 endif()
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/games/freecraft" DESTINATION "${SHAREDIR}/games/"
-	COMPONENT "SUBGAME_MINETEST_GAME" OPTIONAL PATTERN ".git*" EXCLUDE )
+	COMPONENT "SUBGAME_FREECRAFT_GAME" OPTIONAL PATTERN ".git*" EXCLUDE )
 
 set(INSTALL_DEVTEST FALSE CACHE BOOL "Install Development Test")
 
@@ -267,10 +277,10 @@ if(BUILD_CLIENT)
 endif()
 
 install(FILES "README.md" DESTINATION "${DOCDIR}" COMPONENT "Docs")
-install(FILES "doc/lua_api.txt" DESTINATION "${DOCDIR}" COMPONENT "Docs")
-install(FILES "doc/client_lua_api.txt" DESTINATION "${DOCDIR}" COMPONENT "Docs")
-install(FILES "doc/menu_lua_api.txt" DESTINATION "${DOCDIR}" COMPONENT "Docs")
-install(FILES "doc/texture_packs.txt" DESTINATION "${DOCDIR}" COMPONENT "Docs")
+install(FILES "doc/lua_api.md" DESTINATION "${DOCDIR}" COMPONENT "Docs")
+install(FILES "doc/client_lua_api.md" DESTINATION "${DOCDIR}" COMPONENT "Docs")
+install(FILES "doc/menu_lua_api.md" DESTINATION "${DOCDIR}" COMPONENT "Docs")
+install(FILES "doc/texture_packs.md" DESTINATION "${DOCDIR}" COMPONENT "Docs")
 install(FILES "doc/world_format.txt" DESTINATION "${DOCDIR}" COMPONENT "Docs")
 install(FILES "freecraft.conf.example" DESTINATION "${EXAMPLE_CONF_DIR}")
 
