@@ -291,8 +291,19 @@ private:
 	// apply joystick status
 	void applyJoystickStatus();
 
+  /* Double-click detection */
+  struct key_event
+  {
+    u64 down_time;
+    s32 x;
+    s32 y;
+  };
+
 	// array for saving last known position of a pointer
 	std::unordered_map<size_t, v2s32> m_pointer_pos;
+  
+  /* Array for double-click detection */
+  key_event m_key_events[2];
 
 	// settings bar
 	AutoHideButtonBar m_settings_bar;

@@ -516,26 +516,26 @@ void TouchScreenGUI::init(ISimpleTextureSource *tsrc)
 						m_screensize.Y - (3.5 * button_size)),
 				L"spc1", false);
 
-	m_settingsbar.init(m_texturesource, "gear_icon.png", settings_starter_id,
+	m_settings_bar.init(m_texturesource, "gear_icon.png", settings_starter_id,
 					   v2s32(m_screensize.X - (1.25 * button_size), m_screensize.Y - ((SETTINGS_BAR_Y_OFFSET + 1.0) * button_size) + (0.5 * button_size)),
 					   v2s32(m_screensize.X - (0.25 * button_size), m_screensize.Y - (SETTINGS_BAR_Y_OFFSET * button_size) + (0.5 * button_size)),
 					   AHBB_Dir_Right_Left, 3.0);
 
-	m_settingsbar.addButton(minimap_id, L"minimap",   "minimap_btn.png");
-	m_settingsbar.addButton(range_id,   L"rangeview", "rangeview_btn.png");
-	m_settingsbar.addButton(zoom_id, 	L"zoom",   	  "zoom.png");
-	m_settingsbar.addButton(fly_id,     L"fly",       "fly_btn.png");
-	m_settingsbar.addButton(noclip_id,  L"noclip",    "noclip_btn.png");
-	m_settingsbar.addButton(fast_id,    L"fast",      "fast_btn.png");
+	m_settings_bar.addButton(minimap_id, L"minimap",   "minimap_btn.png");
+	m_settings_bar.addButton(range_id,   L"rangeview", "rangeview_btn.png");
+	m_settings_bar.addButton(zoom_id, 	L"zoom",   	  "zoom.png");
+	m_settings_bar.addButton(fly_id,     L"fly",       "fly_btn.png");
+	m_settings_bar.addButton(noclip_id,  L"noclip",    "noclip_btn.png");
+	m_settings_bar.addButton(fast_id,    L"fast",      "fast_btn.png");
 	// Chat is shown by default, so chat_hide_btn.png is shown first.
-	m_settingsbar.addToggleButton(toggle_chat_id,
+	m_settings_bar.addToggleButton(toggle_chat_id,
 								  L"togglechat",
 								  "chat_hide_btn.png",
 								  "chat_show_btn.png");
-	m_settingsbar.addButton(camera_id,  L"camera",    "camera_btn.png");
-	m_settingsbar.addButton(debug_id,   L"debug",     "debug_btn.png");
+	m_settings_bar.addButton(camera_id,  L"camera",    "camera_btn.png");
+	m_settings_bar.addButton(debug_id,   L"debug",     "debug_btn.png");
 
-	m_rarecontrolsbar.init(m_texturesource, "rare_controls.png",
+	m_rare_controls_bar.init(m_texturesource, "rare_controls.png",
 						   rare_controls_starter_id,
 						   v2s32(0.25 * button_size, m_screensize.Y - ((RARE_CONTROLS_BAR_Y_OFFSET + 1.0) * button_size) + (0.5 * button_size)),
 						   v2s32(0.75 * button_size, m_screensize.Y - (RARE_CONTROLS_BAR_Y_OFFSET * button_size) + (0.5 * button_size)),
@@ -942,12 +942,14 @@ bool TouchScreenGUI::doRightClick(bool bIsLegacy)
 		m_key_events[1].down_time = m_move_downtime;
 		m_key_events[1].x         = m_move_downlocation.X;
 		m_key_events[1].y         = m_move_downlocation.Y;
-		double distance			  = sqrt((m_key_events[0].x - m_key_events[1].x) *
-							   			 (m_key_events[0].x - m_key_events[1].x) +
-							   			 (m_key_events[0].y - m_key_events[1].y) *
-							   			 (m_key_events[0].y - m_key_events[1].y));
+		double distance	= sqrt((m_key_events[0].x - m_key_events[1].x) *
+                           (m_key_events[0].x - m_key_events[1].x) +
+                           (m_key_events[0].y - m_key_events[1].y) *
+                           (m_key_events[0].y - m_key_events[1].y));
 		if (distance > (20 + m_touchscreen_threshold))
+    {
 			return false;
+    }
 	}
 	else
 	{
@@ -963,8 +965,9 @@ bool TouchScreenGUI::doRightClick(bool bIsLegacy)
 		return false;
   }
 
-	v2s32 mPos = v2s32(m_move_downlocation.X, m_move_downlocation.Y);
-	if (m_draw_crosshair) {
+	v2s32 mPos = v2s32(m_key_events[0].x, m_key_events[0].y);
+	if (m_draw_crosshair)
+  {
 		mPos.X = m_screensize.X / 2;
 		mPos.Y = m_screensize.Y / 2;
 	}

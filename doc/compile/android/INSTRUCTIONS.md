@@ -9,7 +9,7 @@ due to limited capabilities of common devices. What can be done is described bel
 While you're playing the game normally (that is, no menu or inventory is
 shown), the following controls are available:
 * Look around: touch screen and slide finger
-* Tap: Place a node
+* Tap: Place a node (double-tap if legacy is selected)
 * Long tap: Dig node or use the held item
 * Press back: Pause menu
 * Touch buttons: Press button
